@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COMP1016 — Weekly Modules</title>
+<style>
+  :root { --teal: #1F4E5F; --green: #2E7D6E; --orange: #C9720C; --bg: #f5f8f8; --grey: #9aa; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Segoe UI', Calibri, Arial, sans-serif; background: var(--bg); color: #1a1a1a; }
+  header { background: var(--teal); color: #fff; padding: 34px 20px 26px; text-align: center; }
+  header h1 { margin: 0 0 6px; font-size: 26px; }
+  header p { margin: 0; color: #cfe3e6; font-size: 15px; }
+  main { max-width: 720px; margin: 0 auto; padding: 28px 20px 60px; }
+  .card {
+    background: #fff; border: 1px solid #dde6e6; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .card.live { border: 2px solid var(--green); }
+  .card.pending { opacity: 0.6; }
+  .card .info h2 { margin: 0 0 6px; font-size: 18px; color: var(--teal); }
+  .card .info p { margin: 0; font-size: 14px; color: #555; }
+  .card a.btn {
+    display: inline-block; background: var(--green); color: #fff; text-decoration: none;
+    padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 14px; white-space: nowrap;
+  }
+  .card .soon {
+    font-size: 13px; font-weight: 700; color: var(--grey); text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 8px 14px;
+  }
+  footer { text-align: center; color: #888; font-size: 13px; padding-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>COMP1016 — Weekly Modules</h1>
+  <p>One link per week. Updated as each module is delivered.</p>
+</header>
+
+<main>
+  <div class="card live">
+    <div class="info">
+      <h2>Module 1.1 — Introduction to Networks</h2>
+      <p>Jeopardy review game — runs in the browser.</p>
+    </div>
+    <a class="btn" href="module-1-1/">Open</a>
+  </div>
+
+  <div class="card pending">
+    <div class="info">
+      <h2>Module 2.1 — IPv4 and Subnetting</h2>
+      <p>Not uploaded yet.</p>
+    </div>
+    <span class="soon">Coming soon</span>
+  </div>
+
+  <div class="card pending">
+    <div class="info">
+      <h2>Module 3.1 — Transport and Application Layers</h2>
+      <p>Not uploaded yet.</p>
+    </div>
+    <span class="soon">Coming soon</span>
+  </div>
+
+  <div class="card pending">
+    <div class="info">
+      <h2>Module 4.1 — LAN Security</h2>
+      <p>Not uploaded yet.</p>
+    </div>
+    <span class="soon">Coming soon</span>
+  </div>
+</main>
+
+<footer>Add a new folder each week, then update this page's links — see the repo's own notes for the pattern.</footer>
+
+</body>
+</html>
