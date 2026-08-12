@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1.2 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.clock button.alt{background:rgba(255,255,255,.12);border:1px solid #3d6a78}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.pills.tight{margin-bottom:10px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 13px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pills .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);align-self:center;font-weight:700;margin-right:2px}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:#fff;font-weight:700}
+.dev.dim{opacity:.22}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.8}
+.wire.dim{opacity:.18}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+/* bars */
+.barset{display:flex;flex-direction:column;gap:11px}
+.barrow{display:grid;grid-template-columns:96px 1fr;gap:11px;align-items:center;opacity:.45;transition:.25s}
+.barrow.lit{opacity:1}
+.barrow .bl{font-size:13px;font-weight:700;color:var(--teal);text-align:right}
+.bartrack{background:#e9f0f0;border-radius:6px;height:32px;position:relative;overflow:hidden}
+.barfill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:11.5px;font-weight:700;color:#fff;transition:width .4s}
+.barfill.b1{background:var(--teal)}
+.barfill.b2{background:var(--green)}
+.barfill.b3{background:var(--orange)}
+
+/* quiz shared */
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:16.5px;line-height:1.45;color:var(--teal-dark)}
+.opts{display:grid;gap:8px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opts.c3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:520px){.opts.c2,.opts.c3{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+/* frame strip */
+.framestrip{display:flex;gap:3px;margin-bottom:12px}
+.fseg{flex:1;border-radius:6px;padding:9px 6px;text-align:center;font-family:var(--mono);font-size:10.5px;font-weight:700;color:#fff;cursor:pointer;transition:.2s;line-height:1.3}
+.fseg.hdr{background:var(--teal)}
+.fseg.pay{background:var(--teal-dark);flex:1.8}
+.fseg.trl{background:var(--orange)}
+.fseg:hover{filter:brightness(1.18)}
+.fseg.sel{outline:3px solid #f7b955;outline-offset:2px}
+
+/* mac dissector */
+.macline{font-family:var(--mono);font-size:clamp(15px,3.4vw,24px);font-weight:700;text-align:center;margin:6px 0 12px;letter-spacing:.02em}
+.macline span{padding:4px 3px;border-radius:5px;transition:.2s}
+.macline .oui{background:#d6e6ea;color:var(--teal)}
+.macline .ven{background:#fbe3c6;color:#8a4d05}
+.macline.plain span{background:transparent;color:var(--text)}
+
+/* mac table */
+.mtable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
+.mtable th{background:var(--teal);color:#fff;text-align:left;padding:6px 9px;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.mtable td{border-bottom:1px solid var(--line);padding:6px 9px}
+.mtable tr.fresh td{background:#fff3e0}
+.mtable .empty{color:var(--muted);font-style:italic;font-family:var(--sans)}
+
+/* hop */
+.hopbox{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px}
+.hoprow{display:grid;grid-template-columns:74px 1fr 1fr;gap:9px;align-items:center;padding:6px 0;font-family:var(--mono);font-size:12.5px}
+.hoprow+.hoprow{border-top:1px solid var(--line)}
+.hoprow .rl{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700}
+.hoprow .v{background:#fff;border:1px solid var(--line);border-radius:5px;padding:5px 8px;transition:.25s}
+.hoprow .v.changed{background:#ffe6c2;border-color:var(--orange);font-weight:700}
+.hoprow .v.same{color:var(--muted)}
+
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.65;white-space:pre-wrap}
+.term .pass{color:#8fe3c7}
+.term .fail{color:#ff9aa8}
+
+.handoff{margin-top:26px;background:var(--teal);border-radius:12px;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.handoff p{margin:0;color:#cfe3e6;font-size:15px;max-width:52ch}
+.handoff p b{color:#fff;display:block;font-size:18px;margin-bottom:4px}
+.handoff a{background:var(--orange);color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;font-size:15px;white-space:nowrap}
+.handoff a:hover{filter:brightness(1.12)}
+
+#notes{position:fixed;right:0;top:0;bottom:0;width:min(420px,93vw);z-index:60;background:var(--teal-dark);color:#dfeaec;padding:22px;overflow-y:auto;transform:translateX(101%);transition:transform .28s ease;box-shadow:-14px 0 40px rgba(0,0,0,.3)}
+#notes.open{transform:none}
+#notes h2{font-size:19px;margin:0 0 4px;color:#fff}
+#notes .sub{font-size:12.5px;color:#8fb0b8;margin:0 0 18px}
+#notes h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#f7b955;margin:20px 0 7px;font-weight:700}
+#notes p{font-size:13.5px;line-height:1.55;margin:0 0 9px}
+#notes code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.1);padding:1px 5px;border-radius:4px}
+#notes .close{position:absolute;top:16px;right:18px;background:rgba(255,255,255,.1);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 10px;font-size:12px}
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 1.2 Recap</div>
+    <div class="clock">
+      <output id="clock">25:00</output>
+      <button id="clockBtn">Start</button>
+      <button id="notesBtn" class="alt">Notes</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — The physical layer</p>
+    <h1>Layer 1 doesn't care what the data says.</h1>
+    <p class="lede">It takes finished frames from Layer 2, turns them into signals the medium can carry, and pushes them out. Content is irrelevant. Only signal integrity matters.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Physical hardware, encoding schemes, signalling methods. Three things, and the standards cover all of them.</p>
+      <p>The physical layer receives fully formed frames from the data link layer, encodes them into signals appropriate for the medium, and delivers them. At the other end they're decoded and passed back up.</p>
+      <p><strong>Physical hardware</strong> — NICs, cables, connectors, transmission interfaces. Ethernet NICs for wired, WLAN NICs for wireless.</p>
+      <p><strong>Encoding</strong> converts digital bits into patterns the receiver can recognise and decode.</p>
+      <p><strong>Signalling</strong> determines how those patterns physically travel — and that depends entirely on the medium you picked.</p>
+      <p>Ask the room: <em>what does copper actually send down the wire?</em> Not ones and zeros. Electrical pulses.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a medium, watch the signal change</h3>
+      <div class="pills" id="l1Pills">
+        <button data-m="copper" aria-pressed="true">Copper</button>
+        <button data-m="fibre" aria-pressed="false">Fibre optic</button>
+        <button data-m="wireless" aria-pressed="false">Wireless</button>
+      </div>
+      <svg class="viz" id="l1Viz" viewBox="0 0 470 180" role="img" aria-label="Physical layer pipeline"></svg>
+      <p class="readout" id="l1Out"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Performance metrics</p>
+    <h1>Promised, delivered, useful.</h1>
+    <p class="lede">Bandwidth is what your ISP promises. Throughput is what you usually get. Goodput is what your download actually uses. Three numbers, and they get smaller in that order.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Bandwidth is theoretical. Throughput is real. Goodput is real and useful.</p>
+      <p><strong>Bandwidth</strong> — the theoretical maximum capacity of a link, in kbps, Mbps or Gbps. Under ideal conditions. It excludes nothing, because it's a limit, not a measurement.</p>
+      <p><strong>Throughput</strong> — the actual rate achieved right now. Lower than bandwidth because of congestion, latency and hardware limits. It still counts overheads and retransmissions.</p>
+      <p><strong>Goodput</strong> — useful data delivered to the application, with protocol overhead and retransmissions stripped out. The smallest of the three.</p>
+      <p><strong>Latency</strong> is different in kind: not a rate at all, but the delay from source to destination.</p>
+      <p>The module's analogy: bandwidth is how many lanes the highway has. Throughput is how many cars are actually moving in rush hour. Goodput counts only the passengers who reached their destination.</p>
+    </div>
+    <div class="stage">
+      <h3>Same link, three numbers</h3>
+      <div class="pills" id="perfPills">
+        <button data-m="bw" aria-pressed="true">Bandwidth</button>
+        <button data-m="tp" aria-pressed="false">Throughput</button>
+        <button data-m="gp" aria-pressed="false">Goodput</button>
+        <button data-m="lat" aria-pressed="false">Latency</button>
+      </div>
+      <div class="barset" id="perfBars"></div>
+      <p class="readout" id="perfOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — Copper cabling</p>
+    <h1>Cheap, easy, and easily disturbed.</h1>
+    <p class="lede">Copper is affordable and simple to deploy. It also weakens over distance, picks up interference from anything electrical nearby, and leaks between its own wire pairs.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Attenuation, EMI/RFI, crosstalk. Three problems, and the cable types exist to fight them.</p>
+      <p><strong>Attenuation</strong> — the signal weakens over distance.</p>
+      <p><strong>EMI and RFI</strong> — electromagnetic and radio frequency interference from nearby electrical equipment.</p>
+      <p><strong>Crosstalk</strong> — signal leaking between adjacent wires inside the same cable.</p>
+      <p><strong>UTP</strong> is the most common Ethernet cable. The twisting itself reduces crosstalk through signal cancellation — that's what the twists are for. <strong>STP</strong> adds shielding for electrically noisy environments. <strong>Coaxial</strong> uses a central conductor with shielding, common in older networks and antenna connections.</p>
+      <p>Then there's which cable to grab: <strong>straight-through</strong> connects different device types, like a switch to a PC. <strong>Crossover</strong> connects similar devices directly, like switch to switch.</p>
+    </div>
+    <div class="stage">
+      <h3>Cable types and wiring</h3>
+      <div class="pills tight" id="cabPills">
+        <span class="lbl">Type</span>
+        <button data-c="utp" aria-pressed="true">UTP</button>
+        <button data-c="stp" aria-pressed="false">STP</button>
+        <button data-c="coax" aria-pressed="false">Coaxial</button>
+      </div>
+      <svg class="viz" id="cabViz" viewBox="0 0 470 140" role="img" aria-label="Cable cross-section"></svg>
+      <p class="readout" id="cabOut"></p>
+      <div class="pills" id="wirePills" style="margin-top:16px">
+        <span class="lbl">Wiring</span>
+        <button data-w="st" aria-pressed="true">Straight-through</button>
+        <button data-w="cr" aria-pressed="false">Crossover</button>
+      </div>
+      <svg class="viz" id="wireViz" viewBox="0 0 470 110" role="img" aria-label="Straight-through versus crossover"></svg>
+      <p class="readout" id="wireOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — Fibre and wireless</p>
+    <h1>Light goes furthest. Radio goes anywhere.</h1>
+    <p class="lede">Fibre carries light through ultra-pure glass and is completely immune to interference. Wireless trades all physical constraints for coverage limits, interference and security risk.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Fibre is immune to EMI and RFI. Copper never is. That's the headline difference.</p>
+      <p><strong>Fibre optic</strong> transmits data as light through strands of ultra-pure glass or plastic, with minimal attenuation over long distances. Classified by mode: single-mode or multi-mode, each optimised for different distance and bandwidth needs.</p>
+      <p>Where you find it: enterprise backbone links, fibre-to-the-home, submarine cable systems, and long-haul provider networks connecting cities and countries.</p>
+      <p><strong>Wireless</strong> sends data as electromagnetic signals — radio and microwave. It costs you coverage (obstacles block it), interference resistance, and security, since signals can be intercepted without physical access.</p>
+      <p>Most wireless operates <strong>half-duplex</strong> — transmit or receive, never both at once. That halves the effective bandwidth per device.</p>
+      <p>The IEEE standards worth knowing: <strong>802.11</strong> Wi-Fi, <strong>802.15</strong> Bluetooth, <strong>802.16</strong> WiMAX, <strong>802.15.4</strong> Zigbee.</p>
+    </div>
+    <div class="stage">
+      <h3>Which medium fits the job?</h3>
+      <div class="qcard">
+        <p class="qn" id="medN">Scenario 1 of 5</p>
+        <p class="qt" id="medQ"></p>
+      </div>
+      <div class="opts c3" id="medBtns">
+        <button data-a="copper">Copper</button>
+        <button data-a="fibre">Fibre optic</button>
+        <button data-a="wireless">Wireless</button>
+      </div>
+      <p class="readout" id="medOut">Call it out loud first.</p>
+      <div class="controls">
+        <button id="medNext" class="ghost" disabled>Next scenario</button>
+        <button id="medReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="medScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — The data link layer</p>
+    <h1>Two sublayers, and they don't do the same job.</h1>
+    <p class="lede">Layer 2 hides the physical medium from everything above it. LLC manages the conversation. MAC does the packaging, the addressing and the error checking.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">LLC manages communication and flow control. MAC handles encapsulation, delimiting, addressing and error detection.</p>
+      <p>The data link layer enables NICs to communicate directly with each other, whatever the medium underneath.</p>
+      <p>Its key trick is <strong>abstraction</strong> — hiding whether the data is crossing copper, fibre or air, so that IP at Layer 3 never has to care. That's what lets upper layers work identically on any medium.</p>
+      <p><strong>Logical Link Control (LLC)</strong> manages communication and flow control between devices.</p>
+      <p><strong>Media Access Control (MAC)</strong> handles data encapsulation, frame delimiting, addressing and error detection.</p>
+      <p>Sort the six tasks on the right. If a student can't split these, they'll guess on every Layer 2 question.</p>
+    </div>
+    <div class="stage">
+      <h3>LLC or MAC?</h3>
+      <div class="qcard">
+        <p class="qn" id="subN">Task 1 of 6</p>
+        <p class="qt" id="subQ"></p>
+      </div>
+      <div class="opts c2" id="subBtns">
+        <button data-a="LLC">LLC sublayer</button>
+        <button data-a="MAC">MAC sublayer</button>
+      </div>
+      <p class="readout" id="subOut">Decide before you click.</p>
+      <div class="controls">
+        <button id="subNext" class="ghost" disabled>Next task</button>
+        <button id="subReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="subScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — Topologies, duplex, access</p>
+    <h1>Shape of the wiring, shape of the conversation.</h1>
+    <p class="lede">Physical topology is where the cables actually run. Logical topology is how frames move and how devices take turns. WANs and LANs favour different shapes.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">WAN: point-to-point, hub-and-spoke, mesh. LAN: star, extended star, bus, ring.</p>
+      <p><strong>Physical topologies</strong> define the actual layout of cabling and connections. <strong>Logical topologies</strong> influence how frames are structured and how media access control operates.</p>
+      <p><strong>Half-duplex</strong> — one device transmits at a time, alternating send and receive. <strong>Full-duplex</strong> — both directions at once, improving throughput.</p>
+      <p>A <strong>duplex mismatch</strong>, where one end is full and the other half, causes collisions, latency and degraded throughput. It's a configuration error, not a hardware fault.</p>
+      <p>On shared media, access has to be coordinated. <strong>Contention-based</strong> access has devices listen before transmitting — CSMA/CA in WLANs, operating half-duplex. <strong>Controlled access</strong> assigns specific times or tokens, which is more orderly and predictable.</p>
+      <p>Switch-based Ethernet sidesteps the whole problem by supporting full-duplex.</p>
+    </div>
+    <div class="stage">
+      <h3>Draw the topology</h3>
+      <div class="pills" id="topoPills">
+        <button data-t="p2p" aria-pressed="true">Point-to-point</button>
+        <button data-t="hub" aria-pressed="false">Hub-and-spoke</button>
+        <button data-t="mesh" aria-pressed="false">Mesh</button>
+        <button data-t="star" aria-pressed="false">Star</button>
+        <button data-t="estar" aria-pressed="false">Extended star</button>
+        <button data-t="bus" aria-pressed="false">Bus</button>
+        <button data-t="ring" aria-pressed="false">Ring</button>
+      </div>
+      <svg class="viz" id="topoViz" viewBox="0 0 470 220" role="img" aria-label="Network topology"></svg>
+      <p class="readout" id="topoOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — The Ethernet frame</p>
+    <h1>Header, payload, trailer. And a size limit at both ends.</h1>
+    <p class="lede">Layer 2 wraps the Layer 3 packet in a frame. Too small and it's a runt. Too big and it's a jumbo. Either way the receiver drops it.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">64 bytes minimum. 1518 bytes maximum. Outside that range, discarded.</p>
+      <p>Encapsulation at Layer 2 takes an IPv4 or IPv6 packet from the network layer and wraps it in a frame with three parts: a <strong>header</strong> carrying addressing and control fields, the <strong>payload</strong> — the original Layer 3 packet — and a <strong>trailer</strong> holding error detection data, the Frame Check Sequence.</p>
+      <p>Frame fields vary by medium and topology, but typically include start and stop delimiters, MAC addresses, type and control indicators, the data itself, and error detection codes.</p>
+      <p>Ethernet enforces size boundaries. Below 64 bytes a frame is a <strong>collision fragment</strong> or <strong>runt</strong>. Above 1518 it's a <strong>jumbo</strong> or <strong>baby giant</strong>. Receiving devices discard both.</p>
+      <p>Click each part of the frame, then test some sizes.</p>
+    </div>
+    <div class="stage">
+      <h3>Anatomy, then size check</h3>
+      <div class="framestrip" id="frameStrip">
+        <div class="fseg hdr" data-f="hdr">HEADER<br>addressing + control</div>
+        <div class="fseg pay" data-f="pay">PAYLOAD<br>the L3 packet</div>
+        <div class="fseg trl" data-f="trl">TRAILER<br>FCS</div>
+      </div>
+      <p class="readout" id="frameOut">Click a part of the frame.</p>
+      <div class="pills" id="sizePills" style="margin-top:16px">
+        <span class="lbl">Size</span>
+        <button data-s="32" aria-pressed="false">32 B</button>
+        <button data-s="64" aria-pressed="false">64 B</button>
+        <button data-s="900" aria-pressed="false">900 B</button>
+        <button data-s="1518" aria-pressed="false">1518 B</button>
+        <button data-s="9000" aria-pressed="false">9000 B</button>
+      </div>
+      <div class="term" id="sizeOut">Pick a frame size to test it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — MAC addressing</p>
+    <h1>48 bits, burned in at the factory, half of it not the vendor's choice.</h1>
+    <p class="lede">A MAC address identifies a device on the local segment. The first 24 bits are registered with the IEEE. The last 24 are the vendor's to assign.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">First 24 bits: the OUI, registered with the IEEE. Last 24 bits: assigned by the vendor.</p>
+      <p>MAC addresses are 48-bit identifiers written in <strong>hexadecimal</strong>, base 16, because it's compact and readable. Binary <code>0000 1011</code> becomes <code>0B</code>.</p>
+      <p>Vendors must register with the IEEE for a 24-bit <strong>Organisationally Unique Identifier</strong>. The remaining 24 bits are theirs. The whole thing is embedded in the NIC at manufacture — the <strong>Burned-In Address</strong> — though some systems allow a temporary software override.</p>
+      <p>Every frame carries a source and destination MAC. The <strong>source is always unicast</strong>. The receiving NIC checks the destination: if it matches its own address, or a recognised broadcast or multicast address, the frame is accepted and passed up. Otherwise it's dropped.</p>
+      <p>To find the MAC behind an IP, devices use <strong>ARP</strong> for IPv4 and <strong>Neighbor Discovery</strong> for IPv6.</p>
+    </div>
+    <div class="stage">
+      <h3>Take an address apart</h3>
+      <div class="macline" id="macLine"></div>
+      <p class="readout" id="macOut"></p>
+      <div class="pills" id="macPills" style="margin-top:14px">
+        <button data-k="split" aria-pressed="true">Show OUI split</button>
+        <button data-k="bcast" aria-pressed="false">Broadcast</button>
+        <button data-k="mc4" aria-pressed="false">IPv4 multicast</button>
+        <button data-k="mc6" aria-pressed="false">IPv6 multicast</button>
+      </div>
+      <div class="qcard" style="margin-top:6px">
+        <p class="qn">Convert it</p>
+        <p class="qt" id="hexQ">Binary <code>0000 1011</code> in hexadecimal?</p>
+      </div>
+      <div class="opts c3" id="hexBtns">
+        <button data-a="0B">0B</button>
+        <button data-a="11">11</button>
+        <button data-a="B0">B0</button>
+      </div>
+      <p class="readout" id="hexOut">Four bits per hex digit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — Hop by hop</p>
+    <h1>The MAC addresses change at every router. The IP addresses never do.</h1>
+    <p class="lede">This is the single most tested idea in the module. A frame is local. It gets torn down and rebuilt at every segment boundary. The packet inside survives the whole journey unchanged.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">MAC addresses are only meaningful within the local segment. Routing between networks uses hierarchical IP addresses.</p>
+      <p>The data link layer's scope stops at the segment. For anything crossing networks, Layer 3 takes over.</p>
+      <p>A router receives a frame and <strong>de-encapsulates</strong> it to reach the IP packet inside. It reads the destination IP, works out the optimal path, then <strong>re-encapsulates</strong> that same packet in a brand new frame built for the next segment.</p>
+      <p>New frame means new MAC addresses: the router's own NIC as source, the next device's NIC as destination.</p>
+      <p>Step through it on the right. Watch the MAC row light up on every hop while the IP row sits still.</p>
+    </div>
+    <div class="stage">
+      <h3>Follow one packet across three segments</h3>
+      <svg class="viz" id="hopViz" viewBox="0 0 470 110" role="img" aria-label="PC to router to router to server"></svg>
+      <div class="hopbox">
+        <div class="hoprow">
+          <span class="rl">Layer 2</span>
+          <span class="v" id="hSrcMac"></span>
+          <span class="v" id="hDstMac"></span>
+        </div>
+        <div class="hoprow">
+          <span class="rl">Layer 3</span>
+          <span class="v same" id="hSrcIp"></span>
+          <span class="v same" id="hDstIp"></span>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="hopNext">Next hop →</button>
+        <button id="hopReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="hopOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — Ethernet switching</p>
+    <h1>A switch starts out knowing nothing.</h1>
+    <p class="lede">The MAC address table isn't configured, it's learned. Every frame that arrives teaches the switch where the sender lives. Until it knows the destination, it floods.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Learn the source. Look up the destination. Flood if it isn't there yet.</p>
+      <p>Switches operate at Layer 2 and use a <strong>MAC address table</strong> — also called a <strong>CAM table</strong> — to pick the right output port for each frame.</p>
+      <p>They typically use <strong>store-and-forward</strong> switching: buffer the entire frame, verify it with the FCS, and only then forward it. Invalid frames never leave.</p>
+      <p><strong>Buffering</strong> handles congestion two ways. <strong>Port-based</strong> reserves memory per port. <strong>Shared memory</strong> pools it and allocates dynamically based on traffic.</p>
+      <p><strong>Auto negotiation</strong> works out the best speed and duplex for each link. <strong>Auto-MDIX</strong> detects whether the cable is straight-through or crossover and configures the port to match — which is why you can plug almost anything into anything now.</p>
+      <p>Run the simulation. The first frame floods. The second doesn't.</p>
+    </div>
+    <div class="stage">
+      <h3>Watch the table fill up</h3>
+      <svg class="viz" id="swViz" viewBox="0 0 470 200" role="img" aria-label="Switch with four PCs"></svg>
+      <div class="controls">
+        <button id="sw13">PC1 → PC3</button>
+        <button id="sw31" class="ghost">PC3 → PC1</button>
+        <button id="sw24" class="ghost">PC2 → PC4</button>
+        <button id="swReset" class="ghost">Clear table</button>
+      </div>
+      <p class="readout" id="swOut">Table is empty. The switch knows nothing yet.</p>
+      <table class="mtable"><thead><tr><th>MAC address</th><th>Port</th></tr></thead><tbody id="swTable"></tbody></table>
+    </div>
+  </div>
+  <div class="handoff">
+    <p><b>That's the recap. Now the game.</b>The board covers some things this recap didn't — that's deliberate. Your own reading has to carry the rest.</p>
+    <a href="jeopardy.html">Open Jeopardy →</a>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">← → to move · N for instructor notes</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+<aside id="notes" aria-label="Instructor notes" aria-hidden="true">
+  <button class="close" id="notesClose">Close</button>
+  <h2>Instructor notes</h2>
+  <p class="sub">Hidden from students unless you open this panel.</p>
+
+  <h3>Problems in the module</h3>
+  <p><b>1. CSMA/CD is never explained.</b> It appears twice — in a video title and as a wrong answer in the check-your-knowledge quiz — but the body text only ever defines CSMA/CA. Students who meet CSMA/CD in an exam have nothing to draw on. Worth two minutes in class: CD detects collisions after they happen on wired Ethernet, CA avoids them beforehand on wireless.</p>
+  <p><b>2. A quiz answer is cut off mid-sentence.</b> Part 3, third question, fourth option reads "The MAC address is fully" and stops. The correct answer for that question is "The router rebuilds a new frame" — concept 09 covers it.</p>
+  <p><b>3. Heading typo.</b> "Contention-base vs. controlled media access" should be "Contention-based".</p>
+  <p><b>4. Inconsistent terminology.</b> The router section uses "de-capsulates" where Module 1.1 taught "de-encapsulation". Same operation, different word. Flag it before a student thinks they're two things.</p>
+
+  <h3>Fills a Module 1.1 gap</h3>
+  <p>Module 1.1 never mentioned MAC addresses once — I checked all 56 pages — despite the 1.1 Jeopardy board testing Layer 2 concepts. Module 1.2 is where physical addressing finally arrives. If students were confused in the last session, this is why.</p>
+
+  <h3>Added beyond the source</h3>
+  <p>The five medium-choice scenarios on concept 04 and the six sublayer tasks on concept 05 are mine, built from the module's own descriptions. The switch learning simulation on concept 10 demonstrates flooding behaviour, which the module implies but never states outright — it says switches use the table to minimise unnecessary traffic, not what happens on a table miss.</p>
+  <p>The specific MAC addresses used throughout are invented. The multicast prefixes 01-00-5E and 33-33 and the broadcast address are from the module.</p>
+
+  <h3>Timing</h3>
+  <p>25 minutes, ten concepts, about 2:30 each. Concepts 09 and 10 are the two that repay slowing down for.</p>
+
+  <h3>Questions for the room</h3>
+  <p>01 — "What physically travels down a copper cable?"</p>
+  <p>02 — "Which number does your ISP advertise, and which one do you actually get?"</p>
+  <p>03 — "Why are the pairs twisted at all?"</p>
+  <p>04 — "Why would you never run copper under the ocean?"</p>
+  <p>05 — "Which sublayer puts the MAC address in the frame?"</p>
+  <p>06 — "What breaks if one end is full-duplex and the other is half?"</p>
+  <p>07 — "A 40-byte frame arrives. What happens to it?"</p>
+  <p>08 — "Who decides the first half of a MAC address?"</p>
+  <p>09 — "How many times does this packet's destination IP change? None."</p>
+  <p>10 — "The switch has never seen this destination. What does it do?"</p>
+</aside>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+/* shell */
+var LABELS=["Physical layer","Metrics","Copper","Fibre / wireless","Data link layer","Topologies","The frame","MAC addresses","Hop by hop","Switching"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+
+var notes=document.getElementById("notes");
+function tog(o){notes.classList.toggle("open",o);notes.setAttribute("aria-hidden",o?"false":"true");}
+document.getElementById("notesBtn").addEventListener("click",function(){tog(!notes.classList.contains("open"));});
+document.getElementById("notesClose").addEventListener("click",function(){tog(false);});
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+  else if(e.key==="n"||e.key==="N")tog(!notes.classList.contains("open"));
+  else if(e.key==="Escape")tog(false);
+});
+
+/* clock */
+var total=25*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* 01 physical layer */
+(function(){
+  var svg=document.getElementById("l1Viz");
+  svg.appendChild(el("rect",{x:16,y:52,width:96,height:48,rx:8,fill:"#fff",stroke:"#1F4E5F","stroke-width":1.8}));
+  svg.appendChild(el("text",{x:64,y:74,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11",fill:"#1F4E5F"},"frame"));
+  svg.appendChild(el("text",{x:64,y:88,"text-anchor":"middle",class:"cap"},"from Layer 2"));
+  svg.appendChild(el("path",{d:"M118 76 L150 76",class:"wire hi"}));
+  svg.appendChild(el("rect",{x:154,y:52,width:96,height:48,rx:8,fill:"#eef4f4",stroke:"#1F4E5F","stroke-width":1.8}));
+  svg.appendChild(el("text",{x:202,y:74,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11",fill:"#1F4E5F"},"encode"));
+  svg.appendChild(el("text",{x:202,y:88,"text-anchor":"middle",class:"cap"},"bits → pattern"));
+  svg.appendChild(el("path",{d:"M256 76 L288 76",class:"wire hi"}));
+  var sig=el("rect",{x:292,y:52,width:162,height:48,rx:8,fill:"#C9720C",stroke:"#C9720C","stroke-width":1.8});
+  svg.appendChild(sig);
+  var sigT=el("text",{x:373,y:74,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11.5",fill:"#fff","font-weight":"700"},"");
+  svg.appendChild(sigT);
+  var sigS=el("text",{x:373,y:89,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"9.5",fill:"#ffe0bd"},"");
+  svg.appendChild(sigS);
+  var wave=el("path",{d:"",stroke:"#1F4E5F","stroke-width":2,fill:"none"});
+  svg.appendChild(wave);
+  svg.appendChild(el("text",{x:235,y:26,"text-anchor":"middle",class:"cap"},"Layer 1 does not read the data. It only moves the signal."));
+  var M={
+    copper:{t:"electrical pulses",s:"UTP / STP / coax",w:"M20 140 L60 140 L60 122 L100 122 L100 140 L140 140 L140 122 L180 122 L180 140 L230 140",
+      o:"<b>Copper</b> carries electrical pulses. Cheap and easy, but it weakens over distance and picks up interference."},
+    fibre:{t:"light pulses",s:"single-mode / multi-mode",w:"M20 132 L230 132",
+      o:"<b>Fibre optic</b> carries pulses of light through glass. Minimal attenuation, completely immune to EMI and RFI."},
+    wireless:{t:"electromagnetic waves",s:"802.11 / 802.15 / 802.16",w:"M20 132 Q 40 112 60 132 T 100 132 T 140 132 T 180 132 T 220 132",
+      o:"<b>Wireless</b> uses radio and microwave. No cable at all, but limited coverage, more interference and interceptable without physical access."}
+  };
+  function set(k){
+    sigT.textContent=M[k].t;sigS.textContent=M[k].s;
+    wave.setAttribute("d",M[k].w);
+    document.getElementById("l1Out").innerHTML=M[k].o;
+  }
+  document.getElementById("l1Pills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;
+    pressed(this,b);set(b.dataset.m);
+  });
+  set("copper");
+})();
+
+/* 02 metrics */
+(function(){
+  var rows=[
+    {k:"bw",l:"Bandwidth",c:"b1",w:100,v:"1000 Mbps"},
+    {k:"tp",l:"Throughput",c:"b2",w:62,v:"620 Mbps"},
+    {k:"gp",l:"Goodput",c:"b3",w:44,v:"440 Mbps"}
+  ];
+  var box=document.getElementById("perfBars");
+  rows.forEach(function(r){
+    var d=document.createElement("div");
+    d.className="barrow";d.dataset.k=r.k;
+    d.innerHTML='<div class="bl">'+r.l+'</div><div class="bartrack"><div class="barfill '+r.c+'" style="width:'+r.w+'%">'+r.v+'</div></div>';
+    box.appendChild(d);
+  });
+  var COPY={
+    bw:"<b>Bandwidth</b> — the theoretical maximum. What the ISP advertises. Excludes nothing, because it's a limit rather than a measurement.",
+    tp:"<b>Throughput</b> — what you actually get right now. Lower than bandwidth because of congestion, latency and hardware limits. Still counts overhead and retransmissions.",
+    gp:"<b>Goodput</b> — useful data reaching the application, overhead and retransmissions removed. Always the smallest number.",
+    lat:"<b>Latency</b> — the delay from source to destination. Not a rate at all, which is why it has no bar here. A link can have huge bandwidth and terrible latency at the same time."
+  };
+  document.getElementById("perfPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;
+    var k=b.dataset.m;
+    pressed(this,b);
+    [].forEach.call(box.children,function(r){r.classList.toggle("lit",r.dataset.k===k);});
+    document.getElementById("perfOut").innerHTML=COPY[k];
+  });
+  box.children[0].classList.add("lit");
+  document.getElementById("perfOut").innerHTML=COPY.bw;
+})();
+
+/* 03 copper */
+(function(){
+  var svg=document.getElementById("cabViz");
+  var g=el("g",{});svg.appendChild(g);
+  var CAB={
+    utp:{o:"<b>UTP</b> — the most common Ethernet cable. Four twisted pairs, no shielding. The twisting cancels crosstalk between pairs.",draw:function(){
+      g.appendChild(el("circle",{cx:120,cy:70,r:52,fill:"#fff",stroke:"#1F4E5F","stroke-width":2}));
+      [[100,52],[142,52],[100,90],[142,90]].forEach(function(p){
+        g.appendChild(el("circle",{cx:p[0],cy:p[1],r:11,fill:"#eef4f4",stroke:"#2E7D6E","stroke-width":1.6}));
+        g.appendChild(el("circle",{cx:p[0]-4,cy:p[1],r:4,fill:"#C9720C"}));
+        g.appendChild(el("circle",{cx:p[0]+4,cy:p[1],r:4,fill:"#1F4E5F"}));
+      });
+      g.appendChild(el("text",{x:220,y:56,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#1F4E5F"},"4 twisted pairs"));
+      g.appendChild(el("text",{x:220,y:76,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#5b6a6d"},"no shielding"));
+      g.appendChild(el("text",{x:220,y:96,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#C9720C"},"twists cancel crosstalk"));
+    }},
+    stp:{o:"<b>STP</b> — same twisted pairs, plus shielding to block EMI. For electrically noisy environments like factory floors.",draw:function(){
+      g.appendChild(el("circle",{cx:120,cy:70,r:52,fill:"#fff",stroke:"#1F4E5F","stroke-width":2}));
+      g.appendChild(el("circle",{cx:120,cy:70,r:44,fill:"none",stroke:"#C9720C","stroke-width":4}));
+      [[102,54],[140,54],[102,88],[140,88]].forEach(function(p){
+        g.appendChild(el("circle",{cx:p[0],cy:p[1],r:10,fill:"#eef4f4",stroke:"#2E7D6E","stroke-width":1.6}));
+        g.appendChild(el("circle",{cx:p[0]-3,cy:p[1],r:3.5,fill:"#C9720C"}));
+        g.appendChild(el("circle",{cx:p[0]+3,cy:p[1],r:3.5,fill:"#1F4E5F"}));
+      });
+      g.appendChild(el("text",{x:220,y:56,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#1F4E5F"},"twisted pairs + shield"));
+      g.appendChild(el("text",{x:220,y:76,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#C9720C"},"blocks EMI / RFI"));
+      g.appendChild(el("text",{x:220,y:96,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#5b6a6d"},"noisy environments"));
+    }},
+    coax:{o:"<b>Coaxial</b> — a single central conductor wrapped in shielding. Older networks and antenna connections.",draw:function(){
+      g.appendChild(el("circle",{cx:120,cy:70,r:52,fill:"#fff",stroke:"#1F4E5F","stroke-width":2}));
+      g.appendChild(el("circle",{cx:120,cy:70,r:38,fill:"none",stroke:"#C9720C","stroke-width":5}));
+      g.appendChild(el("circle",{cx:120,cy:70,r:24,fill:"#eef4f4",stroke:"#2E7D6E","stroke-width":1.6}));
+      g.appendChild(el("circle",{cx:120,cy:70,r:9,fill:"#1F4E5F"}));
+      g.appendChild(el("text",{x:220,y:56,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#1F4E5F"},"one central conductor"));
+      g.appendChild(el("text",{x:220,y:76,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#C9720C"},"shielded"));
+      g.appendChild(el("text",{x:220,y:96,"font-family":"Consolas, monospace","font-size":"11.5",fill:"#5b6a6d"},"older nets, antennas"));
+    }}
+  };
+  function set(k){g.innerHTML="";CAB[k].draw();document.getElementById("cabOut").innerHTML=CAB[k].o;}
+  document.getElementById("cabPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-c]");if(!b)return;pressed(this,b);set(b.dataset.c);
+  });
+  set("utp");
+
+  var wv=document.getElementById("wireViz");
+  var wg=el("g",{});wv.appendChild(wg);
+  function drawWire(mode){
+    wg.innerHTML="";
+    var L=[26,50,74],R=[26,50,74];
+    ["A","B"].forEach(function(s,i){
+      wg.appendChild(el("rect",{x:i?372:34,y:14,width:64,height:80,rx:6,fill:"#fff",stroke:"#1F4E5F","stroke-width":1.8}));
+      wg.appendChild(el("text",{x:i?404:66,y:106,"text-anchor":"middle",class:"cap"},mode==="st"?(i?"PC":"Switch"):(i?"Switch":"Switch")));
+    });
+    var map=mode==="st"?[0,1,2]:[1,0,2];
+    L.forEach(function(y,i){
+      var y2=R[map[i]];
+      wg.appendChild(el("path",{d:"M98 "+y+" C 200 "+y+", 270 "+y2+", 372 "+y2,class:"wire hi"}));
+      wg.appendChild(el("circle",{cx:98,cy:y,r:4,fill:"#1F4E5F"}));
+      wg.appendChild(el("circle",{cx:372,cy:y2,r:4,fill:"#1F4E5F"}));
+    });
+    document.getElementById("wireOut").innerHTML=mode==="st"
+      ? "<b>Straight-through</b> — pins line up one to one. Use it between <b>different</b> device types, like a switch to a PC."
+      : "<b>Crossover</b> — transmit and receive pairs swap over. Use it between <b>similar</b> devices, like switch to switch.";
+  }
+  document.getElementById("wirePills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-w]");if(!b)return;pressed(this,b);drawWire(b.dataset.w);
+  });
+  drawWire("st");
+})();
+
+/* 04 medium scenarios */
+(function(){
+  var Q=[
+    {q:"A submarine cable carrying traffic between Australia and Singapore.",a:"fibre",why:"Fibre. Submarine cable systems are one of the module's named fibre use cases — minimal attenuation over enormous distance."},
+    {q:"Connecting a desktop PC to the wall port in an office.",a:"copper",why:"Copper. UTP is the standard Ethernet cable for short runs — affordable and easy to deploy."},
+    {q:"A laptop moving between meeting rooms all day.",a:"wireless",why:"Wireless. Mobility is the entire reason it exists, and you accept the coverage and security trade-offs."},
+    {q:"A backbone link running past the building's lift motors and generators.",a:"fibre",why:"Fibre. It's completely immune to EMI and RFI, so heavy electrical equipment nearby doesn't matter."},
+    {q:"A short-range, low-power link to a wireless sensor.",a:"wireless",why:"Wireless — specifically 802.15.4 Zigbee for IoT and sensors, or 802.15 Bluetooth for short-range low-power."}
+  ];
+  quiz(Q,"med",3);
+})();
+
+/* 05 sublayers */
+(function(){
+  var Q=[
+    {q:"Managing flow control between two devices.",a:"LLC",why:"LLC. It manages communication and flow control."},
+    {q:"Putting the MAC address into the frame header.",a:"MAC",why:"MAC. Addressing is a MAC sublayer job."},
+    {q:"Marking where a frame starts and stops.",a:"MAC",why:"MAC. Frame delimiting sits with the MAC sublayer."},
+    {q:"Wrapping the Layer 3 packet into a frame.",a:"MAC",why:"MAC. Data encapsulation is listed under MAC."},
+    {q:"Detecting that a frame arrived corrupted.",a:"MAC",why:"MAC. Error detection is a MAC sublayer responsibility."},
+    {q:"Managing the ongoing communication between two devices.",a:"LLC",why:"LLC. Communication management is the LLC half of the job."}
+  ];
+  quiz(Q,"sub",2);
+})();
+
+/* shared quiz builder */
+function quiz(Q,pfx,cols){
+  var i=0,score=0,ans=0;
+  var qEl=document.getElementById(pfx+"Q"),nEl=document.getElementById(pfx+"N"),oEl=document.getElementById(pfx+"Out");
+  var btns=document.getElementById(pfx+"Btns"),nextB=document.getElementById(pfx+"Next"),sc=document.getElementById(pfx+"Score");
+  var word=pfx==="sub"?"Task":"Scenario";
+  function show(){
+    nEl.textContent=word+" "+(i+1)+" of "+Q.length;
+    qEl.textContent=Q[i].q;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    oEl.textContent=pfx==="sub"?"Decide before you click.":"Call it out loud first.";
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    var right=Q[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    sc.textContent="Score "+score+" / "+ans;
+    oEl.innerHTML=(b.dataset.a===right?"<b>Correct.</b> ":"<b>Not quite.</b> ")+Q[i].why;
+    nextB.disabled=i>=Q.length-1;
+  });
+  nextB.addEventListener("click",function(){if(i<Q.length-1){i++;show();}});
+  document.getElementById(pfx+"Reset").addEventListener("click",function(){i=0;score=0;ans=0;sc.textContent="Score 0 / 0";show();});
+  show();
+}
+
+/* 06 topologies */
+(function(){
+  var svg=document.getElementById("topoViz");
+  var g=el("g",{});svg.appendChild(g);
+  function node(x,y,l){
+    g.appendChild(el("circle",{cx:x,cy:y,r:15,fill:"#fff",stroke:"#1F4E5F","stroke-width":1.8}));
+    if(l)g.appendChild(el("text",{x:x,y:y+29,"text-anchor":"middle",class:"cap"},l));
+  }
+  function hub(x,y,l){
+    g.appendChild(el("rect",{x:x-26,y:y-15,width:52,height:30,rx:5,fill:"#C9720C",stroke:"#C9720C"}));
+    g.appendChild(el("text",{x:x,y:y+4,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"10",fill:"#fff"},l));
+  }
+  function link(x1,y1,x2,y2){g.appendChild(el("path",{d:"M"+x1+" "+y1+" L"+x2+" "+y2,class:"wire hi"}));}
+  var T={
+    p2p:{k:"WAN",o:"<b>Point-to-point</b> — a direct connection between two nodes. The simplest WAN topology there is.",d:function(){
+      link(140,110,330,110);node(140,110,"Site A");node(330,110,"Site B");}},
+    hub:{k:"WAN",o:"<b>Hub-and-spoke</b> — every site connects back through one central hub. Cheap, but the hub is a single point of failure.",d:function(){
+      [[90,50],[90,170],[380,50],[380,170]].forEach(function(p){link(235,110,p[0],p[1]);});
+      hub(235,110,"HUB");
+      [[90,50],[90,170],[380,50],[380,170]].forEach(function(p){node(p[0],p[1],"");});}},
+    mesh:{k:"WAN",o:"<b>Mesh</b> — redundant paths with multiple interconnections. Expensive, but losing one link doesn't isolate anyone.",d:function(){
+      var P=[[110,55],[360,55],[110,165],[360,165]];
+      for(var a=0;a<4;a++)for(var b=a+1;b<4;b++)link(P[a][0],P[a][1],P[b][0],P[b][1]);
+      P.forEach(function(p){node(p[0],p[1],"");});}},
+    star:{k:"LAN",o:"<b>Star</b> — every device connects through one central switch. The standard modern LAN layout.",d:function(){
+      [[90,50],[90,170],[380,50],[380,170],[235,30]].forEach(function(p){link(235,110,p[0],p[1]);});
+      hub(235,110,"SWITCH");
+      [[90,50],[90,170],[380,50],[380,170],[235,30]].forEach(function(p){node(p[0],p[1],"");});}},
+    estar:{k:"LAN",o:"<b>Extended star</b> — stars hanging off a central star. How real buildings are actually wired, floor by floor.",d:function(){
+      link(235,110,110,110);link(235,110,360,110);
+      [[60,55],[60,165]].forEach(function(p){link(110,110,p[0],p[1]);});
+      [[410,55],[410,165]].forEach(function(p){link(360,110,p[0],p[1]);});
+      hub(235,110,"CORE");hub(110,110,"SW1");hub(360,110,"SW2");
+      [[60,55],[60,165],[410,55],[410,165]].forEach(function(p){node(p[0],p[1],"");});}},
+    bus:{k:"LAN",o:"<b>Bus</b> — one shared backbone every device taps into. Traditional, used now only for specific requirements.",d:function(){
+      link(50,110,420,110);
+      [110,180,250,320].forEach(function(x){link(x,110,x,60);node(x,60,"");});}},
+    ring:{k:"LAN",o:"<b>Ring</b> — each device connects to the next, closing a loop. Traditional, kept for specific environments.",d:function(){
+      var P=[[235,40],[350,90],[350,150],[235,190],[120,150],[120,90]];
+      for(var n=0;n<P.length;n++){var m=(n+1)%P.length;link(P[n][0],P[n][1],P[m][0],P[m][1]);}
+      P.forEach(function(p){node(p[0],p[1],"");});}}
+  };
+  function set(k){
+    g.innerHTML="";T[k].d();
+    document.getElementById("topoOut").innerHTML='<b>'+T[k].k+'</b> topology. '+T[k].o.replace(/^<b>[^<]+<\/b> — /,"");
+  }
+  document.getElementById("topoPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-t]");if(!b)return;pressed(this,b);set(b.dataset.t);
+  });
+  set("p2p");
+})();
+
+/* 07 frame */
+(function(){
+  var F={
+    hdr:"<b>Header</b> — addressing and control. Carries the start delimiter, destination and source MAC addresses, and type or control indicators.",
+    pay:"<b>Payload</b> — the original Layer 3 packet, IPv4 or IPv6, handed down from the network layer untouched.",
+    trl:"<b>Trailer</b> — error detection. Holds the Frame Check Sequence, which the receiver uses to confirm nothing was corrupted."
+  };
+  var strip=document.getElementById("frameStrip");
+  strip.addEventListener("click",function(e){
+    var s=e.target.closest(".fseg");if(!s)return;
+    [].forEach.call(strip.children,function(x){x.classList.toggle("sel",x===s);});
+    document.getElementById("frameOut").innerHTML=F[s.dataset.f];
+  });
+  var SZ={
+    32:'<span class="fail">32 bytes — DISCARDED</span>\nBelow the 64-byte minimum. This is a collision fragment, also called a runt frame.',
+    64:'<span class="pass">64 bytes — VALID</span>\nExactly the minimum. Anything smaller gets dropped.',
+    900:'<span class="pass">900 bytes — VALID</span>\nComfortably inside the 64 to 1518 byte range.',
+    1518:'<span class="pass">1518 bytes — VALID</span>\nExactly the maximum. One more byte and it fails.',
+    9000:'<span class="fail">9000 bytes — DISCARDED</span>\nOver the 1518-byte maximum. This is a jumbo, or baby giant, frame.'
+  };
+  document.getElementById("sizePills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-s]");if(!b)return;
+    pressed(this,b);
+    document.getElementById("sizeOut").innerHTML=SZ[b.dataset.s];
+  });
+})();
+
+/* 08 MAC */
+(function(){
+  var line=document.getElementById("macLine"),outEl=document.getElementById("macOut");
+  var K={
+    split:{h:'<span class="oui">00-1A-2B</span>-<span class="ven">3C-4D-5E</span>',p:false,
+      o:'The first <b>24 bits</b> are the Organisationally Unique Identifier, registered with the IEEE by the vendor. The last <b>24 bits</b> are assigned by that vendor. 48 bits total, burned into the NIC at manufacture.'},
+    bcast:{h:'<span>FF-FF-FF-FF-FF-FF</span>',p:true,
+      o:'The <b>broadcast</b> MAC address. Delivered to every device on the LAN — and blocked by routers, so it never leaves the local segment.'},
+    mc4:{h:'<span class="oui">01-00-5E</span>-<span class="ven">xx-xx-xx</span>',p:false,
+      o:'<b>IPv4 multicast</b> frames use the 01-00-5E prefix. Routers only forward them when explicitly configured to.'},
+    mc6:{h:'<span class="oui">33-33</span>-<span class="ven">xx-xx-xx-xx</span>',p:false,
+      o:'<b>IPv6 multicast</b> frames use the 33-33 prefix. Same principle — a specific group, not everyone.'}
+  };
+  function set(k){
+    line.className="macline"+(K[k].p?" plain":"");
+    line.innerHTML=K[k].h;
+    outEl.innerHTML=K[k].o;
+  }
+  document.getElementById("macPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-k]");if(!b)return;pressed(this,b);set(b.dataset.k);
+  });
+  set("split");
+  var hb=document.getElementById("hexBtns");
+  hb.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    [].forEach.call(hb.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a==="0B")x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    document.getElementById("hexOut").innerHTML=b.dataset.a==="0B"
+      ?"<b>Correct.</b> 0000 is 0, 1011 is B. Four bits per hex digit, every time."
+      :"<b>Not quite.</b> Split it into two groups of four: 0000 → 0, 1011 → B. So 0B.";
+  });
+})();
+
+/* 09 hop */
+(function(){
+  var svg=document.getElementById("hopViz");
+  var pts=[{x:44,l:"PC1"},{x:180,l:"R1"},{x:316,l:"R2"},{x:436,l:"Server"}];
+  var segs=[];
+  for(var i=0;i<3;i++){
+    segs.push(el("path",{d:"M"+(pts[i].x+30)+" 52 L"+(pts[i+1].x-30)+" 52",class:"wire"}));
+    svg.appendChild(segs[i]);
+  }
+  var nodes=[];
+  pts.forEach(function(p,n){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-30,y:36,width:60,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:56,"text-anchor":"middle"},p.l));
+    svg.appendChild(g);nodes.push(g);
+  });
+  svg.appendChild(el("text",{x:235,y:96,"text-anchor":"middle",class:"cap"},"three segments, three different frames, one packet"));
+  var HOPS=[
+    {sm:"PC1 NIC",dm:"R1 NIC",n:"Hop 1. PC1 builds a frame addressed to R1's NIC — not to the server. The server is not on this segment."},
+    {sm:"R1 NIC",dm:"R2 NIC",n:"Hop 2. R1 de-encapsulated the frame, read the destination IP, chose a path, and built a <b>brand new frame</b>. Both MAC addresses changed."},
+    {sm:"R2 NIC",dm:"Server NIC",n:"Hop 3. Same again at R2. Three frames have existed. The IP addresses have not moved once."}
+  ];
+  var at=-1;
+  var sm=document.getElementById("hSrcMac"),dm=document.getElementById("hDstMac");
+  var si=document.getElementById("hSrcIp"),di=document.getElementById("hDstIp");
+  si.textContent="src 192.168.1.10";di.textContent="dst 203.0.113.50";
+  function draw(){
+    if(at<0){
+      sm.textContent="src —";dm.textContent="dst —";
+      sm.classList.remove("changed");dm.classList.remove("changed");
+      segs.forEach(function(s){s.classList.remove("hi");});
+      nodes.forEach(function(n){n.classList.remove("hi");});
+      document.getElementById("hopOut").innerHTML="Press next hop to send the packet.";
+      document.getElementById("hopNext").disabled=false;
+      return;
+    }
+    var h=HOPS[at];
+    sm.textContent="src "+h.sm;dm.textContent="dst "+h.dm;
+    sm.classList.add("changed");dm.classList.add("changed");
+    segs.forEach(function(s,i){s.classList.toggle("hi",i===at);});
+    nodes.forEach(function(n,i){n.classList.toggle("hi",i===at||i===at+1);});
+    document.getElementById("hopOut").innerHTML=h.n;
+    document.getElementById("hopNext").disabled=at>=HOPS.length-1;
+  }
+  document.getElementById("hopNext").addEventListener("click",function(){if(at<HOPS.length-1){at++;draw();}});
+  document.getElementById("hopReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+/* 10 switching */
+(function(){
+  var svg=document.getElementById("swViz");
+  var PCS=[
+    {l:"PC1",mac:"00-1A-2B-00-00-01",port:"Fa0/1",x:60,y:34},
+    {l:"PC2",mac:"00-1A-2B-00-00-02",port:"Fa0/2",x:60,y:160},
+    {l:"PC3",mac:"00-1A-2B-00-00-03",port:"Fa0/3",x:410,y:34},
+    {l:"PC4",mac:"00-1A-2B-00-00-04",port:"Fa0/4",x:410,y:160}
+  ];
+  svg.appendChild(el("rect",{x:170,y:78,width:130,height:44,rx:8,fill:"#C9720C",stroke:"#C9720C"}));
+  svg.appendChild(el("text",{x:235,y:105,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"12",fill:"#fff","font-weight":"700"},"SWITCH"));
+  var wires=[],nodes=[];
+  PCS.forEach(function(p){
+    var w=el("path",{d:"M"+(p.x+(p.x<235?32:-32))+" "+p.y+" C 150 "+p.y+", 150 100, "+(p.x<235?170:300)+" 100",class:"wire"});
+    svg.appendChild(w);wires.push(w);
+  });
+  PCS.forEach(function(p){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-32,y:p.y-16,width:64,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:p.y+4,"text-anchor":"middle"},p.l));
+    g.appendChild(el("text",{x:p.x,y:p.y+28,"text-anchor":"middle",class:"cap"},p.port));
+    svg.appendChild(g);nodes.push(g);
+  });
+  var table={},fresh=null;
+  var tb=document.getElementById("swTable"),outEl=document.getElementById("swOut");
+  function drawTable(){
+    tb.innerHTML="";
+    var keys=Object.keys(table);
+    if(!keys.length){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td colspan="2" class="empty">Empty — the switch has not learned anything yet.</td>';
+      tb.appendChild(tr);return;
+    }
+    keys.forEach(function(m){
+      var tr=document.createElement("tr");
+      if(m===fresh)tr.className="fresh";
+      tr.innerHTML="<td>"+m+"</td><td>"+table[m]+"</td>";
+      tb.appendChild(tr);
+    });
+  }
+  function send(si,di){
+    var s=PCS[si],d=PCS[di];
+    var learned=!(s.mac in table);
+    table[s.mac]=s.port;fresh=learned?s.mac:null;
+    var known=d.mac in table;
+    nodes.forEach(function(n,i){n.classList.toggle("hi",i===si||(known?i===di:i!==si));});
+    wires.forEach(function(w,i){w.classList.toggle("hi",i===si||(known?i===di:i!==si));});
+    var msg="";
+    if(learned)msg+="Learned <b>"+s.mac+"</b> is on "+s.port+". ";
+    else msg+=s.l+" was already in the table. ";
+    msg+=known
+      ? "Destination is known, so the frame goes out <b>"+d.port+" only</b>. Nobody else sees it."
+      : "Destination is unknown, so the switch <b>floods</b> the frame out every port except "+s.port+".";
+    outEl.innerHTML=msg;
+    drawTable();
+  }
+  document.getElementById("sw13").addEventListener("click",function(){send(0,2);});
+  document.getElementById("sw31").addEventListener("click",function(){send(2,0);});
+  document.getElementById("sw24").addEventListener("click",function(){send(1,3);});
+  document.getElementById("swReset").addEventListener("click",function(){
+    table={};fresh=null;drawTable();
+    nodes.forEach(function(n){n.classList.remove("hi");});
+    wires.forEach(function(w){w.classList.remove("hi");});
+    outEl.textContent="Table is empty. The switch knows nothing yet.";
+  });
+  drawTable();
+})();
+
+go(0);
+})();
+</script>
+</body>
+</html>
