@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1.1 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.clock button.alt{background:rgba(255,255,255,.12);border:1px solid #3d6a78}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 13px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:var(--orange);font-weight:700}
+.dev.dim{opacity:.2}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.6}
+.wire.dim{opacity:.18}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+.stackrow{display:flex;flex-direction:column;gap:8px}
+.layerrow{display:grid;grid-template-columns:110px 1fr 72px;gap:11px;align-items:center;opacity:.28;transition:opacity .3s}
+.layerrow.lit{opacity:1}
+.lname{font-size:12.5px;font-weight:700;text-align:right;line-height:1.2;color:var(--teal)}
+.lname em{display:block;font-style:normal;font-weight:400;font-size:10.5px;color:var(--muted)}
+.pdu{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--orange);text-transform:uppercase}
+.blocks{display:flex;gap:3px;min-height:36px}
+.blk{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;border-radius:4px;padding:0 6px;white-space:nowrap;animation:pop .3s ease-out}
+@keyframes pop{from{transform:scaleX(.2);opacity:0}to{transform:none;opacity:1}}
+.blk.data{background:var(--teal-dark);color:#fff;flex:1;min-width:70px}
+.blk.h4{background:var(--green);color:#fff}
+.blk.h3{background:var(--teal);color:#fff}
+.blk.h2{background:var(--orange);color:#fff}
+.blk.bits{background:#eef4f4;border:1px dashed #b9cbcd;color:var(--muted);flex:1;letter-spacing:.2em}
+
+.maps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mapcol h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px;color:var(--muted);text-align:center;font-weight:700}
+.lyr{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 9px;margin-bottom:5px;font-size:12.5px;display:flex;gap:7px;align-items:baseline;transition:.2s}
+.lyr i{font-family:var(--mono);font-style:normal;font-size:10.5px;color:var(--muted);min-width:12px}
+.lyr.dim{opacity:.25}
+.lyr.match{background:var(--orange);border-color:var(--orange);color:#fff}
+.lyr.match i{color:#ffe0bd}
+.mapcol.tcp .lyr{cursor:pointer}
+.mapcol.tcp .lyr:hover{border-color:var(--teal)}
+.mapcol.tcp .lyr.sel{background:var(--teal);border-color:var(--teal);color:#fff}
+.mapcol.tcp .lyr.sel i{color:#9fc2c9}
+
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:16.5px;line-height:1.45;color:var(--teal-dark)}
+.opts{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}
+@media(max-width:520px){.opts{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+.mem{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(max-width:520px){.mem{grid-template-columns:1fr}}
+.memcard{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+.memhead{padding:8px 11px;border-bottom:1px solid var(--line)}
+.memcard.ram .memhead{background:#e3eef0}
+.memcard.nvram .memhead{background:#f3ece1}
+.memhead .t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--teal)}
+.memhead .s{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.memcard pre{margin:0;padding:10px;font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre-wrap;min-height:100px}
+.memcard pre .chg{background:#ffe6c2;padding:0 3px;border-radius:3px}
+.flag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:4px;margin-left:6px}
+.flag.unsaved{background:var(--orange);color:#fff}
+.flag.saved{background:var(--green);color:#fff}
+
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.65;white-space:pre-wrap;overflow-y:auto}
+.term .fail{color:#ff9aa8}
+.term .pass{color:#8fe3c7}
+.term .cmd{color:#f7b955}
+.term .note{color:#7fa0a8}
+#cliTerm{min-height:210px;max-height:260px}
+.modechip{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:4px 10px;border-radius:6px;background:var(--orange);color:#fff;margin-bottom:11px;font-weight:700}
+
+.port rect{fill:#fff;stroke:var(--teal);stroke-width:1.6}
+.port text{font-family:var(--mono);font-size:9px;fill:var(--muted)}
+.svibox rect{fill:#fff;stroke:#b9cbcd;stroke-width:1.6;stroke-dasharray:4 3}
+.svibox.live rect{fill:var(--orange);stroke:var(--orange);stroke-dasharray:none}
+.svibox text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.svibox.live text{fill:#fff;font-weight:700}
+
+
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 1.1 Recap</div>
+    <div class="clock">
+      <output id="clock">25:00</output>
+      <button id="clockBtn">Start</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — Network components</p>
+    <h1>Some devices talk. Others carry the talking.</h1>
+    <p class="lede">End devices are where data starts and stops. Intermediary devices move it in between. Media is what it travels on. Every network diagram is those three things and nothing else.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">End devices are the source and destination. Intermediary devices are everything in the middle.</p>
+      <p><strong>End devices</strong> — also called <strong>hosts</strong> — are computers, smartphones and printers. They interact directly with users, and they initiate or receive the data. Each one has an IP address, the way a house has a street address.</p>
+      <p><strong>Intermediary devices</strong> — routers and switches. They don't create the data, they handle it: routing it to the right destination, regenerating signals, prioritising traffic, detecting errors, enforcing security.</p>
+      <p><strong>Network media</strong> — copper cable, fibre optic, radio waves. The physical or wireless channel the data crosses.</p>
+      <p>Also worth naming: the <strong>NIC</strong> is the card that lets an end device join the network at all. <strong>Ports</strong> are the sockets. <strong>Interfaces</strong> are the specialised ports on routers that act as gateways between separate networks.</p>
+    </div>
+    <div class="stage">
+      <h3>Highlight a group</h3>
+      <div class="pills" id="devPills">
+        <button data-g="end" aria-pressed="false">End devices</button>
+        <button data-g="mid" aria-pressed="false">Intermediary devices</button>
+        <button data-g="media" aria-pressed="false">Media</button>
+        <button data-g="all" aria-pressed="false">Show all</button>
+      </div>
+      <svg class="viz" id="devViz" viewBox="0 0 470 250" role="img" aria-label="Network topology"></svg>
+      <p class="readout" id="devOut">Pick a group to highlight it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Network scale</p>
+    <h1>LAN, WAN, and everything between.</h1>
+    <p class="lede">Networks are classified by scale and purpose. A LAN covers one restricted area. A WAN links LANs across geography. The internet is the largest WAN there is.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">LAN is one place. WAN links places. The internet is the biggest WAN.</p>
+      <p>A <strong>LAN</strong> operates within a restricted area — a home, an office, a campus. Fast, efficient connections inside a limited space.</p>
+      <p>A <strong>WAN</strong> covers large geographic areas, linking multiple LANs through telecommunications infrastructure such as fibre optics or satellites.</p>
+      <p>Between those two sit the labels the module uses: <strong>SOHO</strong> for homes and small businesses, <strong>enterprise</strong> for large organisations with secure access and centralised management, and the <strong>internet</strong> — a global network of many smaller public and private networks.</p>
+      <p>Getting on the internet needs an <strong>ISP</strong>, offering broadband cable, DSL, wireless WAN or mobile connections.</p>
+    </div>
+    <div class="stage">
+      <h3>Step up the scale</h3>
+      <div class="pills" id="scalePills">
+        <button data-s="0" aria-pressed="true">LAN</button>
+        <button data-s="1" aria-pressed="false">SOHO</button>
+        <button data-s="2" aria-pressed="false">Enterprise</button>
+        <button data-s="3" aria-pressed="false">WAN / internet</button>
+      </div>
+      <svg class="viz" id="scaleViz" viewBox="0 0 470 230" role="img" aria-label="Network scale"></svg>
+      <p class="readout" id="scaleOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — Two ways to organise</p>
+    <h1>With a server, or without one.</h1>
+    <p class="lede">Client-server puts a specialised machine at the centre. Peer-to-peer removes it and lets devices talk directly. One device can play both roles at once, depending on the software it runs.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">In peer-to-peer, every device is both client and server. That's the whole idea, and also the whole problem.</p>
+      <p><strong>Client-server.</strong> Clients request services. Servers are specialised computers running software to provide them — storing files, hosting websites, managing email. Centralised, managed, and it scales.</p>
+      <p><strong>Peer-to-peer.</strong> Devices communicate directly with no centralised server, sharing resources like files or printers. Common in homes and small businesses.</p>
+      <p>P2P wins on simplicity, low cost and ease of setup. It loses on security, scalability and performance — bottlenecks build as the number of connected devices grows, because nothing is managing the load.</p>
+      <p>The exam framing: <em>why doesn't a large organisation run peer-to-peer?</em> No central management, and it doesn't scale.</p>
+    </div>
+    <div class="stage">
+      <h3>Switch the model</h3>
+      <div class="pills" id="modelPills">
+        <button data-m="cs" aria-pressed="true">Client-server</button>
+        <button data-m="p2p" aria-pressed="false">Peer-to-peer</button>
+      </div>
+      <svg class="viz" id="modelViz" viewBox="0 0 470 240" role="img" aria-label="Network model"></svg>
+      <p class="readout" id="modelOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — Network security</p>
+    <h1>Confidentiality. Integrity. Availability.</h1>
+    <p class="lede">Three principles, and every security control in this module serves one of them. If you can sort a scenario into the right bucket, you understand it.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Kept secret. Kept correct. Kept reachable.</p>
+      <p><strong>Confidentiality</strong> — only authorised individuals access sensitive information. Enforced by encryption and access controls.</p>
+      <p><strong>Integrity</strong> — data stays accurate and unchanged in transit. Verified by checksums, hashing and authentication protocols.</p>
+      <p><strong>Availability</strong> — legitimate users can reach services without disruption. Supported by load balancing, redundancy and defence against attacks.</p>
+      <p>The threats map onto these: interception and theft breaks confidentiality, tampering breaks integrity, denial of service breaks availability.</p>
+      <p>Controls scale with the network. Home and small office: antivirus, antispyware, firewall filtering. Corporate: dedicated firewalls, access control lists, intrusion prevention systems, VPNs.</p>
+    </div>
+    <div class="stage">
+      <h3>Which principle does this break?</h3>
+      <div class="qcard">
+        <p class="qn" id="ciaN">Scenario 1 of 6</p>
+        <p class="qt" id="ciaQ"></p>
+      </div>
+      <div class="opts" id="ciaBtns">
+        <button data-a="C">Confidentiality</button>
+        <button data-a="I">Integrity</button>
+        <button data-a="A">Availability</button>
+      </div>
+      <p class="readout" id="ciaOut">Answer out loud first, then click.</p>
+      <div class="controls">
+        <button id="ciaNext" class="ghost" disabled>Next scenario</button>
+        <button id="ciaReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="ciaScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — Encapsulation</p>
+    <h1>The data doesn't change. Its wrapping does.</h1>
+    <p class="lede">Each layer adds its own header on the way down. The receiving device strips them off in reverse. The name of the thing changes at every step — and that name is what gets asked about.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Segment → packet → frame → bits. Four names, one piece of data.</p>
+      <p>Going down the stack on the sending device, every protocol layer wraps the data in its own header. That's <strong>encapsulation</strong>.</p>
+      <p>At the far end the process runs backwards, header by header, until the original data comes back out. That's <strong>de-encapsulation</strong>.</p>
+      <p>The form the data takes at each layer is the <strong>Protocol Data Unit</strong>, or PDU. Packet and frame are the two that get mixed up most often, so learn the order.</p>
+      <p>Before you click, answer this: <em>what is it called at the network layer?</em></p>
+    </div>
+    <div class="stage">
+      <h3>Push the data down the stack</h3>
+      <div class="stackrow" id="encStack"></div>
+      <div class="controls">
+        <button id="encDown">Encapsulate ↓</button>
+        <button id="encUp" class="ghost">De-encapsulate ↑</button>
+        <button id="encReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="encOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — OSI and TCP/IP</p>
+    <h1>Two models, one job, different resolution.</h1>
+    <p class="lede">OSI splits communication into seven layers to explain it. TCP/IP collapses the same work into four because that's what gets built. Your subject teaches OSI — but you're expected to line them up.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Seven layers to think with. Four layers to build with.</p>
+      <p>OSI is the teaching model: seven layers, each with one responsibility, from raw bits on the wire up to the application a person touches.</p>
+      <p>TCP/IP is the model that runs the internet. Four layers: <strong>network access, internet, transport, application</strong>. Same work, coarser divisions.</p>
+      <p>The three top OSI layers fold into TCP/IP's application layer. The two bottom OSI layers fold into network access. Transport and network map one-to-one.</p>
+      <p>Click a TCP/IP layer on the right to see what it swallows.</p>
+    </div>
+    <div class="stage">
+      <h3>Click a TCP/IP layer</h3>
+      <div class="maps">
+        <div class="mapcol osi"><h4>OSI — 7 layers</h4><div id="osiCol"></div></div>
+        <div class="mapcol tcp"><h4>TCP/IP — 4 layers</h4><div id="tcpCol"></div></div>
+      </div>
+      <p class="readout" id="mapOut">Nothing selected.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — Transmission types</p>
+    <h1>One, some, or all.</h1>
+    <p class="lede">Unicast, multicast and broadcast differ only in how many devices the data is aimed at. Three words, three shapes — the easiest marks in this module once you can picture them.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Unicast is one-to-one. Multicast is one-to-a-group. Broadcast is one-to-everyone on the segment.</p>
+      <p><strong>Unicast</strong> sends data directly to a single recipient.</p>
+      <p><strong>Multicast</strong> targets a specific group of devices. It exists to save bandwidth — send once, reach many, without flooding the rest.</p>
+      <p><strong>Broadcast</strong> distributes to every device on the network segment. Every device has to process it whether it cares or not.</p>
+      <p>The give-away word in a question is <em>group</em>. Group means multicast, every time.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a delivery scope</h3>
+      <div class="pills" id="castBtns">
+        <button data-m="uni" aria-pressed="false">Unicast</button>
+        <button data-m="multi" aria-pressed="false">Multicast</button>
+        <button data-m="broad" aria-pressed="false">Broadcast</button>
+      </div>
+      <svg class="viz" id="castViz" viewBox="0 0 470 250" role="img" aria-label="Delivery scope"></svg>
+      <p class="readout" id="castOut">Choose a mode to send.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — IOS command modes</p>
+    <h1>The prompt tells you where you are.</h1>
+    <p class="lede">Every Cisco question starts with reading the prompt. &gt; is user EXEC. # is privileged EXEC. Anything in brackets is a configuration mode. Build that reflex and half the CLI marks are free.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Switch&gt; is limited. Switch# is full power. Switch(config)# is where you change things.</p>
+      <p><strong>User EXEC</strong>, the <code>&gt;</code> prompt, gives limited functionality — basic operations and monitoring.</p>
+      <p><strong>Privileged EXEC</strong>, the <code>#</code> prompt, gives advanced configuration and troubleshooting commands. You get there with <code>enable</code> and back with <code>disable</code>.</p>
+      <p><strong>Global configuration</strong>, <code>Switch(config)#</code>, is where device settings change. Entered with <code>configure terminal</code>.</p>
+      <p>From there you drop into sub-modes: <code>line console 0</code> and <code>line vty 0 15</code> land you in <code>(config-line)#</code>, and <code>interface vlan 1</code> lands you in <code>(config-if)#</code>.</p>
+      <p><strong>exit</strong> steps back one level. <strong>end</strong> jumps straight to privileged EXEC from anywhere. That distinction gets tested.</p>
+    </div>
+    <div class="stage">
+      <h3>Drive the switch</h3>
+      <span class="modechip" id="cliMode">User EXEC</span>
+      <div class="term" id="cliTerm"></div>
+      <div class="controls" id="cliBtns"></div>
+      <div class="controls"><button id="cliReset" class="ghost">Reset session</button></div>
+      <p class="readout" id="cliOut">Only the commands valid in this mode are shown.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — Config files</p>
+    <h1>RAM forgets. NVRAM remembers.</h1>
+    <p class="lede">running-config is live and volatile. startup-config survives a reboot. Losing an hour of lab work almost always comes down to this distinction, not the commands.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">If you didn't save it to NVRAM, the reload deletes it.</p>
+      <p>The <strong>running-config</strong> sits in RAM. It is the device's current active configuration, and changes take effect the instant you type them.</p>
+      <p>The <strong>startup-config</strong> sits in NVRAM. It holds the commands the device executes when it boots.</p>
+      <p>RAM is volatile. Power off or reload without saving and everything is gone — the device reloads whatever NVRAM was holding.</p>
+      <p>Change the hostname below, then reload without saving. Then do it properly.</p>
+    </div>
+    <div class="stage">
+      <h3>Change it, reload it, lose it</h3>
+      <div class="mem">
+        <div class="memcard ram">
+          <div class="memhead"><span class="t">running-config</span><span class="s">RAM — volatile, live<span id="ramFlag"></span></span></div>
+          <pre id="ramPre"></pre>
+        </div>
+        <div class="memcard nvram">
+          <div class="memhead"><span class="t">startup-config</span><span class="s">NVRAM — survives reboot</span></div>
+          <pre id="nvPre"></pre>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="cfgChange">Set hostname S1</button>
+        <button id="cfgSave" class="ghost">Save to NVRAM</button>
+        <button id="cfgReload" class="ghost">Reload device</button>
+      </div>
+      <p class="readout" id="cfgOut">Both files match. Nothing pending.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — Switch Virtual Interface</p>
+    <h1>A Layer 2 switch has no IP. Until you give it one.</h1>
+    <p class="lede">The physical ports on a Layer 2 switch don't do IP addressing — that's Layer 3 work. The SVI is the workaround that makes remote management possible, and interface VLAN 1 is the default.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">You can't ping a port. You ping the SVI.</p>
+      <p>A Layer 2 switch forwards frames. Its physical ports operate at Layer 2 and don't support Layer 3 IP addressing, so there's nothing on the front of the box to address.</p>
+      <p>Cisco IOS gets around this with a <strong>Switch Virtual Interface</strong> — a logical interface not tied to any one physical port. It supports both IPv4 and IPv6.</p>
+      <p>The default SVI is <strong>interface VLAN 1</strong>, the main access point for managing the device across the network.</p>
+      <p>Try the ping first. Watch it fail. Then configure it.</p>
+    </div>
+    <div class="stage">
+      <h3>Give the switch an address</h3>
+      <svg class="viz" id="sviViz" viewBox="0 0 470 190" role="img" aria-label="Switch with virtual interface"></svg>
+      <div class="controls">
+        <button id="sviPing">Ping 192.168.10.10</button>
+        <button id="sviConf" class="ghost">Configure the SVI</button>
+        <button id="sviReset" class="ghost">Reset</button>
+      </div>
+      <div class="term" id="sviTerm" style="min-height:112px;margin-top:14px">PCA&gt; _</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">Use ← → or the buttons to move</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+var LABELS=["Components","LAN / WAN","Client-server / P2P","Security (CIA)","Encapsulation","OSI vs TCP/IP","Cast types","IOS modes","running vs startup","SVI"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+});
+
+var total=25*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* 01 */
+(function(){
+  var svg=document.getElementById("devViz");
+  var ends=[{x:44,y:44,l:"PC"},{x:44,y:120,l:"Phone"},{x:44,y:196,l:"Printer"}];
+  var mids=[{x:200,y:120,l:"Switch",w:74},{x:330,y:120,l:"Router",w:74}];
+  var wires=[],devs=[];
+  ends.forEach(function(e){
+    var p=el("path",{d:"M"+(e.x+30)+" "+e.y+" C 130 "+e.y+", 130 120, 162 120",class:"wire"});
+    svg.appendChild(p);wires.push(p);
+  });
+  ["M238 120 L292 120","M368 120 L424 120"].forEach(function(d){
+    var p=el("path",{d:d,class:"wire"});svg.appendChild(p);wires.push(p);
+  });
+  ends.forEach(function(e){
+    var g=el("g",{class:"dev","data-g":"end"});
+    g.appendChild(el("rect",{x:e.x-30,y:e.y-16,width:60,height:32,rx:5}));
+    g.appendChild(el("text",{x:e.x,y:e.y+4,"text-anchor":"middle"},e.l));
+    svg.appendChild(g);devs.push(g);
+  });
+  mids.forEach(function(m){
+    var g=el("g",{class:"dev","data-g":"mid"});
+    g.appendChild(el("rect",{x:m.x-m.w/2,y:m.y-18,width:m.w,height:36,rx:5}));
+    g.appendChild(el("text",{x:m.x,y:m.y+4,"text-anchor":"middle"},m.l));
+    svg.appendChild(g);devs.push(g);
+  });
+  var g3=el("g",{class:"dev","data-g":"mid"});
+  g3.appendChild(el("circle",{cx:444,cy:120,r:19}));
+  g3.appendChild(el("text",{x:444,y:152,"text-anchor":"middle"},"WAN"));
+  svg.appendChild(g3);devs.push(g3);
+  svg.appendChild(el("text",{x:118,y:234,class:"cap","text-anchor":"middle"},"copper / fibre / radio"));
+  var COPY={
+    end:"<b>End devices</b>, also called hosts — the source and destination of data. Each has an IP address and a NIC.",
+    mid:"<b>Intermediary devices</b> — route, regenerate, prioritise, detect errors, enforce security.",
+    media:"<b>Media</b> — copper cable, fibre optic, radio waves. The channel the data crosses.",
+    all:"Every network diagram is these three things: end devices, intermediary devices, media."
+  };
+  document.getElementById("devPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-g]");if(!b)return;
+    var g=b.dataset.g;
+    pressed(this,b);
+    devs.forEach(function(d){
+      d.classList.toggle("hi",(g==="end"||g==="mid")&&d.dataset.g===g);
+      d.classList.toggle("dim",g==="media"||(g!=="all"&&d.dataset.g!==g));
+    });
+    wires.forEach(function(w){
+      w.classList.toggle("hi",g==="media");
+      w.classList.toggle("dim",g!=="media"&&g!=="all");
+    });
+    document.getElementById("devOut").innerHTML=COPY[g];
+  });
+})();
+
+/* 02 */
+(function(){
+  var svg=document.getElementById("scaleViz");
+  function box(x,y,w,h,label){
+    var g=el("g",{});
+    g.appendChild(el("rect",{x:x,y:y,width:w,height:h,rx:6,fill:"#fff",stroke:"#1F4E5F","stroke-width":1.8}));
+    g.appendChild(el("text",{x:x+w/2,y:y+h+16,"text-anchor":"middle",class:"cap"},label));
+    for(var i=0;i<3;i++)g.appendChild(el("circle",{cx:x+14+i*(w-28)/2,cy:y+h/2,r:5,fill:"#C9720C"}));
+    return g;
+  }
+  var b1=box(30,70,110,54,"LAN 1"),b2=box(180,70,110,54,"LAN 2"),b3=box(330,70,110,54,"LAN 3");
+  var cloud=el("g",{});
+  cloud.appendChild(el("ellipse",{cx:235,cy:180,rx:98,ry:26,fill:"#e3eef0",stroke:"#1F4E5F","stroke-width":1.8}));
+  cloud.appendChild(el("text",{x:235,y:184,"text-anchor":"middle",class:"cap"},"WAN / internet"));
+  var links=el("g",{});
+  [85,235,385].forEach(function(x){links.appendChild(el("path",{d:"M"+x+" 124 L"+x+" 158",class:"wire hi"}));});
+  svg.appendChild(links);svg.appendChild(cloud);
+  svg.appendChild(b1);svg.appendChild(b2);svg.appendChild(b3);
+  var SC=[
+    {n:1,c:0,t:"<b>LAN</b> — one restricted area. Home, office or campus. Fast connections in a limited space."},
+    {n:1,c:0,t:"<b>SOHO</b> — small office or home office. A LAN supporting remote work and shared printers or cloud tools."},
+    {n:2,c:0,t:"<b>Enterprise</b> — large organisation. Secure access, centralised management, large-scale storage."},
+    {n:3,c:1,t:"<b>WAN / internet</b> — links multiple LANs over fibre or satellite. The internet is the largest WAN."}
+  ];
+  function set(i){
+    var s=SC[i];
+    [b1,b2,b3].forEach(function(g,n){g.style.display=n<s.n?"":"none";});
+    cloud.style.display=s.c?"":"none";
+    links.style.display=s.c?"":"none";
+    document.getElementById("scaleOut").innerHTML=s.t;
+  }
+  document.getElementById("scalePills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-s]");if(!b)return;pressed(this,b);set(+b.dataset.s);
+  });
+  set(0);
+})();
+
+/* 03 */
+(function(){
+  var svg=document.getElementById("modelViz");
+  var peers=[{x:100,y:60},{x:370,y:60},{x:100,y:190},{x:370,y:190}];
+  var linkG=el("g",{});svg.appendChild(linkG);
+  var nodeG=el("g",{});svg.appendChild(nodeG);
+  var srv=el("g",{class:"dev hi"});
+  srv.appendChild(el("rect",{x:200,y:100,width:70,height:44,rx:6}));
+  srv.appendChild(el("text",{x:235,y:126,"text-anchor":"middle"},"Server"));
+  svg.appendChild(srv);
+  peers.forEach(function(p,i){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-34,y:p.y-16,width:68,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:p.y+4,"text-anchor":"middle",id:"pn"+i},"Client"));
+    nodeG.appendChild(g);
+  });
+  var cap=el("text",{x:235,y:226,"text-anchor":"middle",class:"cap"},"");
+  svg.appendChild(cap);
+  function draw(mode){
+    linkG.innerHTML="";
+    if(mode==="cs"){
+      srv.style.display="";
+      peers.forEach(function(p){linkG.appendChild(el("path",{d:"M"+p.x+" "+p.y+" L 235 122",class:"wire hi"}));});
+      peers.forEach(function(p,i){document.getElementById("pn"+i).textContent="Client";});
+      cap.textContent="every request passes through the server";
+      document.getElementById("modelOut").innerHTML="<b>Client-server</b> — centralised, managed, scales. Servers provide the service; clients request it.";
+    }else{
+      srv.style.display="none";
+      for(var a=0;a<peers.length;a++)for(var b=a+1;b<peers.length;b++)
+        linkG.appendChild(el("path",{d:"M"+peers[a].x+" "+peers[a].y+" L "+peers[b].x+" "+peers[b].y,class:"wire hi"}));
+      peers.forEach(function(p,i){document.getElementById("pn"+i).textContent="Peer";});
+      cap.textContent="every device is both client and server";
+      document.getElementById("modelOut").innerHTML="<b>Peer-to-peer</b> — simple, cheap, easy to set up. Costs you security, scalability and performance.";
+    }
+  }
+  document.getElementById("modelPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;pressed(this,b);draw(b.dataset.m);
+  });
+  draw("cs");
+})();
+
+/* 04 */
+(function(){
+  var Q=[
+    {q:"An attacker captures data as it crosses the network and reads the contents.",a:"C",why:"Data interception and theft. The information was seen by someone unauthorised."},
+    {q:"A denial of service attack floods the server and staff can't reach the booking system.",a:"A",why:"The service is intact and still secret — it's just unreachable."},
+    {q:"A payment file is altered in transit and arrives different from what was sent.",a:"I",why:"The data is no longer accurate. Checksums and hashing exist to catch this."},
+    {q:"Passwords in the config file are encrypted so they can't be extracted.",a:"C",why:"Encryption restricting who can read sensitive information."},
+    {q:"Redundant links keep the network running when one path fails.",a:"A",why:"Redundancy and fault tolerance keep legitimate users connected."},
+    {q:"An authentication protocol confirms the message came from who it claims.",a:"I",why:"Authentication verifies the data wasn't altered or forged."}
+  ];
+  var i=0,score=0,ans=0;
+  var qEl=document.getElementById("ciaQ"),nEl=document.getElementById("ciaN"),oEl=document.getElementById("ciaOut");
+  var btns=document.getElementById("ciaBtns"),nextB=document.getElementById("ciaNext"),sc=document.getElementById("ciaScore");
+  function show(){
+    nEl.textContent="Scenario "+(i+1)+" of "+Q.length;
+    qEl.textContent=Q[i].q;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    oEl.textContent="Answer out loud first, then click.";
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    var right=Q[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    sc.textContent="Score "+score+" / "+ans;
+    oEl.innerHTML=(b.dataset.a===right?"<b>Correct.</b> ":"<b>Not quite.</b> ")+Q[i].why;
+    nextB.disabled=i>=Q.length-1;
+    if(i>=Q.length-1)oEl.innerHTML+=" That's all six.";
+  });
+  nextB.addEventListener("click",function(){if(i<Q.length-1){i++;show();}});
+  document.getElementById("ciaReset").addEventListener("click",function(){i=0;score=0;ans=0;sc.textContent="Score 0 / 0";show();});
+  show();
+})();
+
+/* 05 */
+(function(){
+  var ENC=[
+    {n:"Application",sub:"data created",pdu:"Data",blocks:[["data","Data"]]},
+    {n:"Transport",sub:"adds its header",pdu:"Segment",blocks:[["h4","Transport hdr"],["data","Data"]]},
+    {n:"Network",sub:"adds its header",pdu:"Packet",blocks:[["h3","Network hdr"],["h4","Transport hdr"],["data","Data"]]},
+    {n:"Data link",sub:"adds its header",pdu:"Frame",blocks:[["h2","Data link hdr"],["h3","Network hdr"],["h4","Transport hdr"],["data","Data"]]},
+    {n:"Physical",sub:"on the medium",pdu:"Bits",blocks:[["bits","1 0 1 1 0 0 1 0"]]}
+  ];
+  var stack=document.getElementById("encStack"),outEl=document.getElementById("encOut"),at=0;
+  ENC.forEach(function(L){
+    var row=document.createElement("div");row.className="layerrow";
+    row.innerHTML='<div class="lname">'+L.n+'<em>'+L.sub+'</em></div><div class="blocks"></div><div class="pdu">'+L.pdu+'</div>';
+    stack.appendChild(row);
+  });
+  function repaint(){
+    [].forEach.call(stack.children,function(row,n){
+      row.classList.toggle("lit",n<=at);
+      var box=row.querySelector(".blocks");
+      if(n>at){box.innerHTML="";box.dataset.done="0";return;}
+      if(box.dataset.done==="1")return;
+      box.innerHTML="";
+      ENC[n].blocks.forEach(function(b){
+        var d=document.createElement("div");d.className="blk "+b[0];d.textContent=b[1];box.appendChild(d);
+      });
+      box.dataset.done="1";
+    });
+    document.getElementById("encDown").disabled=at===ENC.length-1;
+    document.getElementById("encUp").disabled=at===0;
+    outEl.innerHTML=at===0?"At the application, the data is just data. Click to send it down."
+      :"At the <b>"+ENC[at].n.toLowerCase()+" layer</b> the PDU is called a <b>"+ENC[at].pdu.toLowerCase()+"</b>.";
+  }
+  document.getElementById("encDown").addEventListener("click",function(){if(at<ENC.length-1){at++;repaint();}});
+  document.getElementById("encUp").addEventListener("click",function(){if(at>0){at--;repaint();}});
+  document.getElementById("encReset").addEventListener("click",function(){at=0;repaint();});
+  repaint();
+})();
+
+/* 06 */
+(function(){
+  var OSI=[[7,"Application"],[6,"Presentation"],[5,"Session"],[4,"Transport"],[3,"Network"],[2,"Data link"],[1,"Physical"]];
+  var TCP=[[4,"Application",[7,6,5]],[3,"Transport",[4]],[2,"Internet",[3]],[1,"Network access",[2,1]]];
+  var osiCol=document.getElementById("osiCol"),tcpCol=document.getElementById("tcpCol"),mapOut=document.getElementById("mapOut");
+  OSI.forEach(function(L){
+    var d=document.createElement("div");d.className="lyr";d.dataset.n=L[0];
+    d.innerHTML="<i>"+L[0]+"</i><span>"+L[1]+"</span>";osiCol.appendChild(d);
+  });
+  TCP.forEach(function(L,idx){
+    var d=document.createElement("div");d.className="lyr";d.tabIndex=0;d.setAttribute("role","button");
+    d.innerHTML="<i>"+L[0]+"</i><span>"+L[1]+"</span>";
+    function sel(){
+      [].forEach.call(tcpCol.children,function(x,n){x.classList.toggle("sel",n===idx);});
+      [].forEach.call(osiCol.children,function(x){
+        var n=+x.dataset.n;
+        x.classList.toggle("match",L[2].indexOf(n)>-1);
+        x.classList.toggle("dim",L[2].indexOf(n)<0);
+      });
+      var names=L[2].map(function(n){return OSI.filter(function(o){return o[0]===n;})[0][1].toLowerCase();});
+      mapOut.innerHTML="<b>"+L[1]+"</b> covers OSI "+(names.length>1?"layers ":"layer ")+names.join(", ")+".";
+    }
+    d.addEventListener("click",sel);
+    d.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();sel();}});
+    tcpCol.appendChild(d);
+  });
+})();
+
+/* 07 */
+(function(){
+  var svg=document.getElementById("castViz");
+  var hosts=[{x:396,y:36,l:"H1"},{x:406,y:90,l:"H2"},{x:412,y:145,l:"H3"},{x:396,y:200,l:"H4"},{x:336,y:228,l:"H5"}];
+  var SRC={x:60,y:125},links=[],nodes=[];
+  hosts.forEach(function(h){
+    var p=el("path",{d:"M"+(SRC.x+22)+" "+SRC.y+" Q 235 "+((SRC.y+h.y)/2)+" "+(h.x-18)+" "+h.y,class:"wire"});
+    svg.appendChild(p);links.push(p);
+  });
+  var g0=el("g",{class:"dev hi"});
+  g0.appendChild(el("circle",{cx:SRC.x,cy:SRC.y,r:21}));
+  g0.appendChild(el("text",{x:SRC.x,y:SRC.y+38,"text-anchor":"middle"},"Sender"));
+  svg.appendChild(g0);
+  hosts.forEach(function(h){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("circle",{cx:h.x,cy:h.y,r:16}));
+    g.appendChild(el("text",{x:h.x,y:h.y+30,"text-anchor":"middle"},h.l));
+    svg.appendChild(g);nodes.push(g);
+  });
+  var T={uni:[2],multi:[1,3],broad:[0,1,2,3,4]};
+  var C={
+    uni:"<b>Unicast</b> — one sender, one recipient. Nobody else sees it.",
+    multi:"<b>Multicast</b> — delivered to a specific group only. Bandwidth saved on everyone else.",
+    broad:"<b>Broadcast</b> — every device on the segment receives it, wanted or not."
+  };
+  document.getElementById("castBtns").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;
+    var t=T[b.dataset.m];
+    pressed(this,b);
+    links.forEach(function(p,i){p.classList.toggle("hi",t.indexOf(i)>-1);});
+    nodes.forEach(function(g,i){g.classList.toggle("hi",t.indexOf(i)>-1);});
+    document.getElementById("castOut").innerHTML=C[b.dataset.m];
+  });
+})();
+
+/* 08 */
+(function(){
+  var host="Switch",mode="user",lines=[];
+  var MODES={
+    user:{p:function(){return host+">";},name:"User EXEC"},
+    priv:{p:function(){return host+"#";},name:"Privileged EXEC"},
+    global:{p:function(){return host+"(config)#";},name:"Global configuration"},
+    line:{p:function(){return host+"(config-line)#";},name:"Line configuration"},
+    iface:{p:function(){return host+"(config-if)#";},name:"Interface configuration"}
+  };
+  var CMDS=[
+    {c:"enable",from:["user"],to:"priv",note:"Moves up to privileged EXEC. The prompt changes from &gt; to #."},
+    {c:"disable",from:["priv"],to:"user",note:"Drops back down to user EXEC."},
+    {c:"configure terminal",from:["priv"],to:"global",note:"Enters global configuration mode. Now you can change the device."},
+    {c:"hostname S1",from:["global"],to:"global",act:function(){host="S1";},note:"Renames the device. Watch the prompt change immediately."},
+    {c:"no hostname",from:["global"],to:"global",act:function(){host="Switch";},note:"Returns the switch to its default name."},
+    {c:"enable secret class",from:["global"],to:"global",note:"Secures privileged EXEC access with the password class."},
+    {c:"line console 0",from:["global"],to:"line",note:"Enters line configuration for the console port."},
+    {c:"line vty 0 15",from:["global"],to:"line",note:"Enters line configuration for the 16 virtual terminal lines — this is what SSH and Telnet use."},
+    {c:"password cisco",from:["line"],to:"line",note:"Sets the password on this line."},
+    {c:"login",from:["line"],to:"line",note:"Tells the line to actually prompt for that password."},
+    {c:"interface vlan 1",from:["global"],to:"iface",note:"Enters interface configuration for the default SVI."},
+    {c:"service password-encryption",from:["global"],to:"global",note:"Encrypts all plaintext passwords in the running-config."},
+    {c:"banner motd #Do not access device without authorisation!#",short:"banner motd #...#",from:["global"],to:"global",note:"Message of the day, wrapped in two # characters."},
+    {c:"exit",from:["line","iface"],to:"global",note:"Steps back ONE level, to global configuration."},
+    {c:"exit",from:["global"],to:"priv",note:"Steps back ONE level, to privileged EXEC."},
+    {c:"exit",from:["priv"],to:"user",note:"Steps back to user EXEC."},
+    {c:"end",from:["global","line","iface"],to:"priv",note:"Jumps STRAIGHT to privileged EXEC from any config mode. This is the difference from exit."},
+    {c:"show ip interface brief",from:["priv"],to:"priv",note:"Shows interface status — use it to check connectivity."},
+    {c:"show running-config",from:["priv"],to:"priv",note:"Shows the configuration currently active in RAM."},
+    {c:"copy running-config startup-config",short:"copy run start",from:["priv"],to:"priv",note:"Saves RAM to NVRAM. This command is missing from the module's command list."},
+    {c:"ping 192.168.10.1",from:["priv"],to:"priv",note:"Tests connectivity to another device."},
+    {c:"reload",from:["priv"],to:"priv",note:"Restarts the device. Anything unsaved in RAM is lost."}
+  ];
+  var term=document.getElementById("cliTerm"),btnBox=document.getElementById("cliBtns");
+  var chip=document.getElementById("cliMode"),outEl=document.getElementById("cliOut");
+  function render(){
+    var html=lines.join("\n");
+    term.innerHTML=html+(html?"\n":"")+esc(MODES[mode].p())+" _";
+    term.scrollTop=term.scrollHeight;
+    chip.textContent=MODES[mode].name;
+    btnBox.innerHTML="";
+    CMDS.forEach(function(cmd,idx){
+      if(cmd.from.indexOf(mode)<0)return;
+      var b=document.createElement("button");
+      b.className="ghost";
+      b.textContent=cmd.short||cmd.c;
+      b.addEventListener("click",function(){run(idx);});
+      btnBox.appendChild(b);
+    });
+  }
+  function run(idx){
+    var cmd=CMDS[idx];
+    lines.push('<span class="note">'+esc(MODES[mode].p())+'</span> <span class="cmd">'+esc(cmd.c)+'</span>');
+    if(cmd.act)cmd.act();
+    mode=cmd.to;
+    outEl.innerHTML=cmd.note;
+    render();
+  }
+  document.getElementById("cliReset").addEventListener("click",function(){
+    host="Switch";mode="user";lines=[];
+    outEl.textContent="Only the commands valid in this mode are shown.";
+    render();
+  });
+  render();
+})();
+
+/* 09 */
+(function(){
+  var BASE=["hostname Switch","interface vlan 1"," ip address 192.168.10.10 255.255.255.0","line console 0"," password cisco"];
+  var ram=BASE.slice(),nv=BASE.slice(),dirty=false;
+  var ramPre=document.getElementById("ramPre"),nvPre=document.getElementById("nvPre");
+  var ramFlag=document.getElementById("ramFlag"),cfgOut=document.getElementById("cfgOut");
+  function repaint(){
+    ramPre.innerHTML=ram.map(function(l,i){return(dirty&&i===0)?'<span class="chg">'+esc(l)+'</span>':esc(l);}).join("\n");
+    nvPre.innerHTML=nv.map(esc).join("\n");
+    ramFlag.innerHTML=dirty?'<span class="flag unsaved">unsaved</span>':'';
+    document.getElementById("cfgSave").disabled=!dirty;
+    document.getElementById("cfgChange").disabled=dirty;
+  }
+  document.getElementById("cfgChange").addEventListener("click",function(){
+    ram[0]="hostname S1";dirty=true;repaint();
+    cfgOut.innerHTML="Live in RAM immediately. NVRAM hasn't moved. <b>Reload now and it's gone.</b>";
+  });
+  document.getElementById("cfgSave").addEventListener("click",function(){
+    nv=ram.slice();dirty=false;repaint();
+    ramFlag.innerHTML='<span class="flag saved">saved</span>';
+    cfgOut.innerHTML="Copied to NVRAM. Command: <b>copy running-config startup-config</b>";
+  });
+  document.getElementById("cfgReload").addEventListener("click",function(){
+    var lost=dirty;ram=nv.slice();dirty=false;repaint();
+    cfgOut.innerHTML=lost?"Reloaded from NVRAM. <b>The hostname change is gone.</b> RAM is volatile."
+      :"Reloaded from NVRAM. Everything matched, so nothing was lost.";
+  });
+  repaint();
+})();
+
+/* 10 */
+(function(){
+  var sw=document.getElementById("sviViz");
+  sw.appendChild(el("rect",{x:40,y:50,width:390,height:96,rx:8,fill:"#eef4f4",stroke:"#1F4E5F","stroke-width":2}));
+  sw.appendChild(el("text",{x:56,y:72,"font-family":"Consolas, monospace","font-size":"11",fill:"#5b6a6d"},"Layer 2 switch"));
+  ["Fa0/1","Fa0/2","Fa0/3","Fa0/4"].forEach(function(p,i){
+    var g=el("g",{class:"port"});
+    g.appendChild(el("rect",{x:56+i*54,y:90,width:42,height:26,rx:4}));
+    g.appendChild(el("text",{x:77+i*54,y:130,"text-anchor":"middle"},p));
+    sw.appendChild(g);
+  });
+  sw.appendChild(el("text",{x:56,y:170,"font-family":"Consolas, monospace","font-size":"10",fill:"#C9720C"},"physical ports — Layer 2 only, no IP addressing"));
+  var box=el("g",{class:"svibox"});
+  box.appendChild(el("rect",{x:292,y:86,width:124,height:34,rx:5}));
+  box.appendChild(el("text",{x:354,y:100,"text-anchor":"middle"},"interface vlan 1"));
+  var t2=el("text",{x:354,y:113,"text-anchor":"middle"},"not configured");
+  box.appendChild(t2);sw.appendChild(box);
+  var up=false,term=document.getElementById("sviTerm");
+  document.getElementById("sviPing").addEventListener("click",function(){
+    term.innerHTML=up
+      ?"PCA&gt; ping 192.168.10.10\n\n<span class=\"pass\">Reply from 192.168.10.10: bytes=32 time&lt;1ms TTL=255\nReply from 192.168.10.10: bytes=32 time&lt;1ms TTL=255</span>\n\nThe SVI answers. The switch is manageable."
+      :"PCA&gt; ping 192.168.10.10\n\n<span class=\"fail\">Request timed out.\nRequest timed out.</span>\n\nNo Layer 3 interface to answer. The ports can't hold an IP.";
+  });
+  document.getElementById("sviConf").addEventListener("click",function(){
+    up=true;box.classList.add("live");t2.textContent="192.168.10.10";
+    term.innerHTML="Switch(config)# interface vlan 1\nSwitch(config-if)# ip address 192.168.10.10 255.255.255.0\nSwitch(config-if)# no shutdown\nSwitch(config-if)# exit\nSwitch(config)# ip default-gateway 192.168.10.1\n\n<span class=\"pass\">VLAN 1 is up. Now try the ping.</span>";
+  });
+  document.getElementById("sviReset").addEventListener("click",function(){
+    up=false;box.classList.remove("live");t2.textContent="not configured";
+    term.innerHTML="PCA&gt; _";
+  });
+})();
+
+go(0);
+})();
+</script>
+</body>
+</html>
