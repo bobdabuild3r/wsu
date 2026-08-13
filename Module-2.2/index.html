@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.2 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pills .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);align-self:center;font-weight:700}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:#fff;font-weight:700}
+.dev.ans rect,.dev.ans circle{fill:var(--green);stroke:var(--green)}
+.dev.ans text{fill:#fff;font-weight:700}
+.dev.bad rect,.dev.bad circle{fill:var(--red);stroke:var(--red)}
+.dev.bad text{fill:#fff;font-weight:700}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.8}
+.wire.ans{stroke:var(--green);stroke-width:2.8}
+.wire.bad{stroke:var(--red);stroke-width:2.8;stroke-dasharray:5 3}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+/* frame rows */
+.frow{display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center;padding:6px 0;font-family:var(--mono);font-size:12.5px}
+.frow+.frow{border-top:1px solid var(--line)}
+.frow .rl{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.frow .v{background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 8px;transition:.25s;overflow-x:auto;white-space:nowrap}
+.frow .v.changed{background:#ffe6c2;border-color:var(--orange);font-weight:700}
+.frow .v.same{color:var(--muted)}
+.fbox{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
+.tbl th{background:var(--teal);color:#fff;text-align:left;padding:6px 8px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.tbl td{border-bottom:1px solid var(--line);padding:6px 8px}
+.tbl tr.fresh td{background:#fff3e0}
+.tbl tr.bad td{background:#f7e3e3;color:#7a3b3b;font-weight:700}
+.tbl .empty{color:var(--muted);font-style:italic;font-family:var(--sans)}
+
+/* cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.cards{grid-template-columns:1fr}}
+.cards button{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 11px;text-align:left;transition:.15s;color:var(--teal)}
+.cards button .t{font-weight:700;font-size:14.5px}
+.cards button .s{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px}
+.cards button:hover{border-color:var(--teal)}
+.cards button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.cards button[aria-pressed="true"] .s{color:#9fc2c9}
+
+/* compare */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmpcol{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.cmpcol h4{margin:0;padding:9px;text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.cmpcol.a h4{background:#e3eef0;color:var(--teal)}
+.cmpcol.b h4{background:#f3ece1;color:#8a4d05}
+.cmpcol .body{padding:10px}
+
+/* quiz */
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:16.5px;line-height:1.45;color:var(--teal-dark)}
+.opts{display:grid;gap:8px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opts.c3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:520px){.opts.c2,.opts.c3{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+/* terminal */
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.65;white-space:pre-wrap;overflow-y:auto}
+.term .pass{color:#8fe3c7}
+.term .fail{color:#ff9aa8}
+.term .cmd{color:#f7b955}
+.term .note{color:#7fa0a8}
+#cliTerm{min-height:200px;max-height:250px}
+#showTerm{min-height:190px}
+.modechip{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:4px 10px;border-radius:6px;background:var(--orange);color:#fff;margin-bottom:11px;font-weight:700}
+
+/* steps */
+.steplist{display:flex;gap:5px;margin-bottom:12px}
+.stepdot{flex:1;height:6px;border-radius:3px;background:#dfe7e8;transition:.25s}
+.stepdot.on{background:var(--orange)}
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 2.2 Recap</div>
+    <div class="clock">
+      <output id="clock">25:00</output>
+      <button id="clockBtn">Start</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — Two addresses per device</p>
+    <h1>The IP gets it to the neighbourhood. The MAC gets it to the door.</h1>
+    <p class="lede">Every networked device carries a logical address and a physical one. They do different jobs at different layers, and neither works without the other.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">IP is logical and routes between networks. MAC is physical and delivers within one.</p>
+      <p>The <strong>IP address</strong> is the logical address. It routes packets across different networks, guiding data toward the correct destination network.</p>
+      <p>The <strong>MAC address</strong> is the physical address. Once the packet reaches the right network, the MAC delivers it to the correct device on that segment.</p>
+      <p>Ethernet can only deliver using MAC addresses. So a host that knows a destination IP but not its MAC cannot build a frame at all — it has to find out first.</p>
+      <p>Your laptop may get <code>192.168.1.45</code> from DHCP, but when it talks to your printer it uses the printer's MAC for actual delivery on the local network.</p>
+    </div>
+    <div class="stage">
+      <h3>Which address does which job?</h3>
+      <div class="pills" id="addrPills">
+        <button data-k="ip" aria-pressed="true">IP address</button>
+        <button data-k="mac" aria-pressed="false">MAC address</button>
+      </div>
+      <svg class="viz" id="addrViz" viewBox="0 0 470 170" role="img" aria-label="IP versus MAC delivery"></svg>
+      <p class="readout" id="addrOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — How ARP works</p>
+    <h1>Shout at everyone. One device answers.</h1>
+    <p class="lede">ARP maps an IP address to a MAC address. It does it by broadcasting a question to the whole LAN and waiting for the single device that recognises itself in it.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">ARP request goes to FF-FF-FF-FF-FF-FF. The reply comes back to one device only.</p>
+      <p>PC-A at <code>192.168.100.10</code> wants to reach PC-B at <code>192.168.100.11</code>. Same local network. PC-A builds the IP packet, then needs an Ethernet frame — and for that it needs PC-B's MAC.</p>
+      <p>It checks its <strong>ARP table</strong> first, a temporary cache of IP-to-MAC mappings. Nothing there.</p>
+      <p>So it sends an <strong>ARP request</strong> to <code>FF-FF-FF-FF-FF-FF</code>, the Ethernet broadcast address. Every device on the segment receives it and has to look at it.</p>
+      <p>Only PC-B matches the IP being asked about. It sends an <strong>ARP reply</strong> directly back to PC-A — not a broadcast — giving its MAC.</p>
+      <p>PC-A caches the mapping and sends the frame. Step through it on the right.</p>
+    </div>
+    <div class="stage">
+      <h3>Five steps, one MAC address</h3>
+      <div class="steplist" id="arpDots"></div>
+      <svg class="viz" id="arpViz" viewBox="0 0 470 200" role="img" aria-label="ARP request and reply"></svg>
+      <div class="controls">
+        <button id="arpNext">Next step →</button>
+        <button id="arpReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="arpOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — The ARP table</p>
+    <h1>Cached, but not for long.</h1>
+    <p class="lede">Resolving an address every single time would flood the network, so the mapping gets cached. Entries expire quickly — and then the whole process runs again.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Entries are temporary. On Windows 10 they typically last 15 to 45 seconds.</p>
+      <p>The ARP table is a temporary memory cache of IP-to-MAC mappings. Once a mapping is in there, communication is direct — no broadcast needed.</p>
+      <p>If a device doesn't communicate again within the ageing window, the entry is removed. Need it again and the whole ARP process repeats.</p>
+      <p>You can inspect it. <code>arp -a</code> on Windows. <code>show ip arp</code> on Cisco routers. The cache can also be cleared manually.</p>
+      <p>ARP can affect performance at startup, when many devices power on and resolve addresses at once. That broadcast spike is temporary — once the tables fill, traffic settles.</p>
+    </div>
+    <div class="stage">
+      <h3>Inspect the cache</h3>
+      <div class="pills" id="arpCmds">
+        <button data-c="win" aria-pressed="true">arp -a</button>
+        <button data-c="ios" aria-pressed="false">show ip arp</button>
+      </div>
+      <div class="term" id="arpTerm"></div>
+      <div class="controls">
+        <button id="arpAge" class="ghost">Let entries age out</button>
+        <button id="arpFill" class="ghost">Repopulate</button>
+      </div>
+      <p class="readout" id="arpTblOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — Sending to a remote network</p>
+    <h1>The frame goes to the router. The packet goes to the destination.</h1>
+    <p class="lede">When the destination is on another network, the destination MAC is not the destination device — it's the router. This is the distinction that trips people up.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Destination IP is the far end. Destination MAC is only ever the next device on this link.</p>
+      <p>PC-A wants to reach a host on a remote network. It knows it can't get there directly, so it sends the packet to its <strong>default gateway</strong>.</p>
+      <p>The IP packet carries the real source and destination IPs. But the Ethernet frame's destination MAC is the <strong>router's interface</strong>.</p>
+      <p>The router receives the frame, strips the Ethernet layer, inspects the IP address, works out the next hop, and re-encapsulates the same packet in a brand new frame with new MAC addresses.</p>
+      <p>MAC addresses are <strong>link-specific</strong> — they only matter between two directly connected devices. The IP header stays consistent all the way from source to destination, unless NAT modifies it.</p>
+    </div>
+    <div class="stage">
+      <h3>Watch the MACs change and the IPs hold</h3>
+      <svg class="viz" id="hopViz" viewBox="0 0 470 110" role="img" aria-label="Hop by hop delivery"></svg>
+      <div class="fbox">
+        <div class="frow">
+          <span class="rl">Layer 2</span>
+          <span class="v" id="hSrcMac"></span>
+          <span class="v" id="hDstMac"></span>
+        </div>
+        <div class="frow">
+          <span class="rl">Layer 3</span>
+          <span class="v same" id="hSrcIp"></span>
+          <span class="v same" id="hDstIp"></span>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="hopNext">Next hop →</button>
+        <button id="hopReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="hopOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — ARP spoofing</p>
+    <h1>ARP believes whatever it's told.</h1>
+    <p class="lede">There is no authentication in ARP. Any device can send a reply, and the receiver updates its table without checking. That single design decision is the whole vulnerability.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">ARP has no authentication or validation. An unsolicited reply is trusted like any other.</p>
+      <p>ARP operates on trust. Any device on the network can send an ARP reply, and the recipient updates its ARP table without verifying whether the reply came from the legitimate source.</p>
+      <p>A malicious actor exploits this by sending <strong>fake ARP replies</strong>, associating their own MAC address with someone else's IP — most commonly the <strong>default gateway</strong>.</p>
+      <p>The attacker announces "I'm the gateway, my MAC is XYZ." Your machine updates its table. Every packet you send toward the internet now goes to the attacker instead of the router.</p>
+      <p>This is <strong>ARP spoofing</strong>, also called ARP poisoning. It's the classic route into a man-in-the-middle position.</p>
+    </div>
+    <div class="stage">
+      <h3>Poison the table</h3>
+      <svg class="viz" id="spoofViz" viewBox="0 0 470 190" role="img" aria-label="ARP spoofing"></svg>
+      <table class="tbl"><thead><tr><th>IP address</th><th>MAC address</th><th>Points to</th></tr></thead><tbody id="spoofBody"></tbody></table>
+      <div class="controls">
+        <button id="spoofGo">Attacker sends a fake reply</button>
+        <button id="spoofReset" class="ghost">Restore</button>
+      </div>
+      <p class="readout" id="spoofOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — IPv6 Neighbour Discovery</p>
+    <h1>IPv6 doesn't use ARP at all.</h1>
+    <p class="lede">Same job, different mechanism. Neighbour Discovery uses ICMPv6 and multicast instead of broadcast, so only the device that needs to answer is ever disturbed.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">ARP broadcasts to everyone. ND multicasts to a group derived from the target address.</p>
+      <p>IPv6 replaced ARP with the <strong>Neighbour Discovery Protocol</strong>, which uses multicast and ICMPv6 messages for address resolution.</p>
+      <p>To find another device's MAC, an IPv6 device sends a <strong>Neighbour Solicitation</strong> to a special multicast address derived from the target IP.</p>
+      <p>The target replies with a <strong>Neighbour Advertisement</strong> containing its MAC address.</p>
+      <p>The advantage is that every other device on the segment is left alone. ARP forces all of them to process a broadcast; ND doesn't. That's why it scales better, and why the startup broadcast spike is less of a problem in IPv6.</p>
+    </div>
+    <div class="stage">
+      <h3>Same question, two protocols</h3>
+      <div class="pills" id="ndPills">
+        <button data-p="arp" aria-pressed="true">IPv4 — ARP</button>
+        <button data-p="nd" aria-pressed="false">IPv6 — ND</button>
+      </div>
+      <svg class="viz" id="ndViz" viewBox="0 0 470 190" role="img" aria-label="ARP versus Neighbour Discovery"></svg>
+      <div class="cmp" style="margin-top:12px">
+        <div class="cmpcol a"><h4>Ask</h4><div class="body" id="ndAsk"></div></div>
+        <div class="cmpcol b"><h4>Answer</h4><div class="body" id="ndAns"></div></div>
+      </div>
+      <p class="readout" id="ndOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — What else ND does</p>
+    <h1>Address resolution is only a quarter of the job.</h1>
+    <p class="lede">Neighbour Discovery is an all-in-one protocol. Beyond finding MAC addresses it handles routers, prefixes, redirects, and lets a device build its own address without a DHCP server.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Router Discovery, Prefix Discovery, Redirects, and SLAAC — all from one protocol.</p>
+      <p><strong>Router Discovery</strong> lets hosts automatically identify the available routers on the network.</p>
+      <p><strong>Prefix Discovery</strong> lets devices learn the subnet and routing information they need to communicate.</p>
+      <p><strong>Redirects</strong> inform a device when a better default gateway is available for a particular route.</p>
+      <p><strong>SLAAC</strong> — Stateless Address Autoconfiguration — lets devices generate their own IPv6 addresses without relying on a DHCP server at all.</p>
+      <p>In practice this means plug-and-play connectivity for IoT devices and mobile clients, less manual setup, and fewer address conflicts. It's a large part of why data centres and smart buildings are adopting IPv6.</p>
+    </div>
+    <div class="stage">
+      <h3>Click a function</h3>
+      <div class="cards" id="ndCards">
+        <button data-f="router" aria-pressed="true"><div class="t">Router Discovery</div><div class="s">find the routers</div></button>
+        <button data-f="prefix" aria-pressed="false"><div class="t">Prefix Discovery</div><div class="s">learn the subnet</div></button>
+        <button data-f="redirect" aria-pressed="false"><div class="t">Redirects</div><div class="s">use a better gateway</div></button>
+        <button data-f="slaac" aria-pressed="false"><div class="t">SLAAC</div><div class="s">build your own address</div></button>
+      </div>
+      <div class="term" id="ndFnTerm" style="margin-top:14px;min-height:120px"></div>
+      <p class="readout" id="ndFnOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — Router initial configuration</p>
+    <h1>Mostly the same commands you used on the switch.</h1>
+    <p class="lede">Hostname, passwords, banner, domain name, a local user, and the lines. If you configured a switch in Module 1.1, almost all of this will look familiar.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Set the hostname, secure enable mode, warn on the banner, then lock down the console and VTY lines.</p>
+      <p><code>hostname Router1</code> identifies the device. <code>enable secret</code> protects privileged EXEC mode. <code>banner motd</code> displays a warning to anyone connecting.</p>
+      <p><code>ip domain-name example.com</code> is needed before you can generate SSH keys.</p>
+      <p><code>username admin privilege 15 secret AdminPass123</code> creates a local account with administrative privileges for SSH login.</p>
+      <p>On the VTY lines, <code>login local</code> tells them to authenticate against that local user database, and <code>transport input ssh</code> permits SSH only — which disables Telnet.</p>
+      <p>Finally <code>service password-encryption</code> hides the plaintext passwords in the config.</p>
+    </div>
+    <div class="stage">
+      <h3>Configure Router1</h3>
+      <span class="modechip" id="cliMode">Privileged EXEC</span>
+      <div class="term" id="cliTerm"></div>
+      <div class="controls" id="cliBtns"></div>
+      <div class="controls"><button id="cliReset" class="ghost">Reset session</button></div>
+      <p class="readout" id="cliOut">Only the commands valid in this mode are shown.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — Interfaces and show commands</p>
+    <h1>An interface does nothing until you say no shutdown.</h1>
+    <p class="lede">A router with two configured interfaces can route between two networks. Configure the address, bring it up, then verify — because an interface that looks configured can still be administratively down.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">description, ip address, no shutdown. Then verify with show ip interface brief.</p>
+      <p>Each interface gets a <code>description</code>, an <code>ip address</code> with subnet mask, and <code>no shutdown</code> to bring it up. Router interfaces start administratively down by default.</p>
+      <p>Two interfaces on different networks is what makes the box a router: <code>G0/0</code> on 192.168.1.1/24 for the office LAN, <code>G0/1</code> on 10.0.0.1/24 for HQ.</p>
+      <p>Verification splits three ways. <strong>Status and config</strong>: <code>show running-config</code> for what's live in RAM, <code>show startup-config</code> for what's saved in NVRAM, <code>show version</code> for hardware, software and uptime.</p>
+      <p><strong>Interfaces</strong>: <code>show ip interface brief</code> and <code>show ipv6 interface brief</code>.</p>
+      <p><strong>Routing</strong>: <code>show ip route</code> and <code>show ipv6 route</code>.</p>
+    </div>
+    <div class="stage">
+      <h3>Run a show command</h3>
+      <div class="pills" id="showPills">
+        <button data-c="brief" aria-pressed="true">show ip interface brief</button>
+        <button data-c="route" aria-pressed="false">show ip route</button>
+        <button data-c="ver" aria-pressed="false">show version</button>
+        <button data-c="run" aria-pressed="false">show running-config</button>
+      </div>
+      <div class="term" id="showTerm"></div>
+      <p class="readout" id="showOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — The default gateway</p>
+    <h1>Hosts need one to leave. Switches need one to answer.</h1>
+    <p class="lede">A host without a gateway is stuck on its own subnet. A switch without one can't reply to an administrator on a different network — even though it forwards local traffic perfectly.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">The gateway must sit in the same subnet as the host, so it can be reached at Layer 2.</p>
+      <p>The default gateway is normally an IP address on one of the router's interfaces. Hosts send it anything destined outside their own subnet.</p>
+      <p>A host needs three things configured: its own IP, its subnet mask, and the gateway address — set manually or by DHCP. The gateway <strong>must be in the same subnet as the host</strong>, otherwise the host can't reach it using MAC addresses.</p>
+      <p>A <strong>Layer 2 switch</strong> doesn't need an IP to forward local traffic. But for remote management over SSH it needs an address on the <strong>SVI, VLAN 1</strong>, plus a default gateway — otherwise replies to an administrator on another subnet never get out.</p>
+      <p>In <strong>IPv6</strong>, the gateway is usually learned automatically from ICMPv6 Router Advertisement messages, so no manual configuration is needed on hosts or switches.</p>
+    </div>
+    <div class="stage">
+      <h3>Configure the switch for remote management</h3>
+      <div class="steplist" id="gwDots"></div>
+      <div class="term" id="gwTerm"></div>
+      <div class="controls">
+        <button id="gwNext">Next command →</button>
+        <button id="gwReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="gwOut"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">Use ← → or the buttons to move</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+/* shell */
+var LABELS=["MAC vs IP","How ARP works","ARP table","Remote delivery","ARP spoofing","Neighbour Discovery","What ND does","Router config","Interfaces / show","Default gateway"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+});
+
+/* clock */
+var total=25*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* 01 IP vs MAC */
+(function(){
+  var svg=document.getElementById("addrViz");
+  var g=el("g",{});svg.appendChild(g);
+  function draw(k){
+    g.innerHTML="";
+    var ipHi=k==="ip";
+    g.appendChild(el("ellipse",{cx:110,cy:80,rx:80,ry:44,fill:ipHi?"#fff4e6":"#f2f6f6",stroke:ipHi?"#C9720C":"#b9cbcd","stroke-width":ipHi?2.2:1.6}));
+    g.appendChild(el("text",{x:110,y:46,"text-anchor":"middle",class:"cap"},"network A"));
+    g.appendChild(el("ellipse",{cx:360,cy:80,rx:80,ry:44,fill:ipHi?"#fff4e6":"#f2f6f6",stroke:ipHi?"#C9720C":"#b9cbcd","stroke-width":ipHi?2.2:1.6}));
+    g.appendChild(el("text",{x:360,y:46,"text-anchor":"middle",class:"cap"},"network B"));
+    g.appendChild(el("path",{d:"M192 80 L278 80",class:"wire"+(ipHi?" hi":"")}));
+    g.appendChild(el("text",{x:235,y:70,"text-anchor":"middle",class:"cap"},ipHi?"IP routes here":""));
+    [[78,90,"PC"],[142,90,"PC"]].forEach(function(p){
+      var d=el("g",{class:"dev"+(!ipHi?"":"")});
+      d.appendChild(el("rect",{x:p[0]-26,y:p[1]-13,width:52,height:26,rx:4}));
+      d.appendChild(el("text",{x:p[0],y:p[1]+4,"text-anchor":"middle"},p[2]));
+      g.appendChild(d);
+    });
+    [[328,90,"PC"],[392,90,"PC"]].forEach(function(p,i){
+      var d=el("g",{class:"dev"+(!ipHi&&i===1?" hi":"")});
+      d.appendChild(el("rect",{x:p[0]-26,y:p[1]-13,width:52,height:26,rx:4}));
+      d.appendChild(el("text",{x:p[0],y:p[1]+4,"text-anchor":"middle"},p[2]));
+      g.appendChild(d);
+    });
+    if(!ipHi)g.appendChild(el("path",{d:"M354 118 Q 392 138 392 106",class:"wire hi"}));
+    g.appendChild(el("text",{x:235,y:158,"text-anchor":"middle",class:"cap"},
+      ipHi?"logical — gets the packet to the right network":"physical — delivers it to the right device"));
+    document.getElementById("addrOut").innerHTML=ipHi
+      ? "<b>IP address</b> — logical. Routes packets across different networks, guiding data toward the correct destination network. Assigned by DHCP or manually."
+      : "<b>MAC address</b> — physical. Once the packet is on the right network, this delivers it to the correct device. Ethernet cannot deliver without it.";
+  }
+  document.getElementById("addrPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-k]");if(!b)return;pressed(this,b);draw(b.dataset.k);
+  });
+  draw("ip");
+})();
+
+/* 02 ARP walkthrough */
+(function(){
+  var svg=document.getElementById("arpViz");
+  var PCS=[
+    {l:"PC-A",ip:"192.168.100.10",mac:"AA-AA-AA-33-33-33",x:60,y:44},
+    {l:"PC-B",ip:"192.168.100.11",mac:"55-55-55-BB-BB-BB",x:410,y:44},
+    {l:"PC-C",ip:"192.168.100.12",mac:"CC-CC-CC-11-11-11",x:60,y:160},
+    {l:"PC-D",ip:"192.168.100.13",mac:"DD-DD-DD-22-22-22",x:410,y:160}
+  ];
+  var wires=[],nodes=[];
+  svg.appendChild(el("rect",{x:196,y:82,width:78,height:36,rx:7,fill:"#1F4E5F"}));
+  svg.appendChild(el("text",{x:235,y:105,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11",fill:"#fff"},"SWITCH"));
+  PCS.forEach(function(p){
+    var w=el("path",{d:"M"+(p.x+(p.x<235?30:-30))+" "+p.y+" C 160 "+p.y+", 160 100, "+(p.x<235?196:274)+" 100",class:"wire"});
+    svg.appendChild(w);wires.push(w);
+  });
+  PCS.forEach(function(p){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-30,y:p.y-15,width:60,height:30,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:p.y+4,"text-anchor":"middle"},p.l));
+    g.appendChild(el("text",{x:p.x,y:p.y+27,"text-anchor":"middle",class:"cap"},p.ip.split(".")[3]));
+    svg.appendChild(g);nodes.push(g);
+  });
+  var dots=document.getElementById("arpDots");
+  for(var i=0;i<5;i++){var d=document.createElement("div");d.className="stepdot";dots.appendChild(d);}
+  var STEPS=[
+    {n:[0],w:[],cls:"hi",t:"<b>Step 1 — check the cache.</b> PC-A wants to reach 192.168.100.11. It looks in its ARP table for a matching entry. Nothing there, so it can't build the frame yet."},
+    {n:[0,1,2,3],w:[0,1,2,3],cls:"hi",t:"<b>Step 2 — broadcast the request.</b> PC-A sends an ARP request to <b>FF-FF-FF-FF-FF-FF</b>. Every device on the segment receives it and must process it."},
+    {n:[1],w:[1],cls:"ans",t:"<b>Step 3 — only PC-B matches.</b> PC-C and PC-D see the request, find it isn't about them, and discard it. PC-B recognises its own IP."},
+    {n:[0,1],w:[1],cls:"ans",t:"<b>Step 4 — the reply comes back.</b> PC-B sends an ARP reply <b>directly to PC-A</b>, not as a broadcast: 192.168.100.11 is at 55-55-55-BB-BB-BB."},
+    {n:[0,1],w:[0,1],cls:"hi",t:"<b>Step 5 — cached and sent.</b> PC-A stores the mapping and builds the frame: source AA-AA-AA-33-33-33, destination 55-55-55-BB-BB-BB. No more broadcasts until the entry expires."}
+  ];
+  var at=-1;
+  function draw(){
+    nodes.forEach(function(n){n.className.baseVal="dev";});
+    wires.forEach(function(w){w.className.baseVal="wire";});
+    [].forEach.call(dots.children,function(d,i){d.classList.toggle("on",i<=at);});
+    if(at<0){
+      document.getElementById("arpOut").innerHTML="PC-A needs the MAC address behind 192.168.100.11. Press next to start.";
+      document.getElementById("arpNext").disabled=false;
+      return;
+    }
+    var s=STEPS[at];
+    s.n.forEach(function(i){nodes[i].className.baseVal="dev "+s.cls;});
+    s.w.forEach(function(i){wires[i].className.baseVal="wire "+s.cls;});
+    document.getElementById("arpOut").innerHTML=s.t;
+    document.getElementById("arpNext").disabled=at>=STEPS.length-1;
+  }
+  document.getElementById("arpNext").addEventListener("click",function(){if(at<STEPS.length-1){at++;draw();}});
+  document.getElementById("arpReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+/* 03 ARP table */
+(function(){
+  var full=true,mode="win";
+  var WIN="C:\\> <span class=\"cmd\">arp -a</span>\n\nInterface: 192.168.100.10 --- 0x5\n  Internet Address      Physical Address      Type\n  192.168.100.11        55-55-55-bb-bb-bb     dynamic\n  192.168.100.12        cc-cc-cc-11-11-11     dynamic\n  192.168.100.1         11-11-11-ee-ee-ee     dynamic\n  192.168.100.255       ff-ff-ff-ff-ff-ff     static";
+  var IOS="Router1# <span class=\"cmd\">show ip arp</span>\n\nProtocol  Address          Age (min)  Hardware Addr   Type\nInternet  192.168.100.10         0     aaaa.aa33.3333  ARPA\nInternet  192.168.100.11         2     5555.55bb.bbbb  ARPA\nInternet  192.168.100.12         7     cccc.cc11.1111  ARPA\nInternet  192.168.100.1          -     1111.11ee.eeee  ARPA";
+  var EMPTY_W="C:\\> <span class=\"cmd\">arp -a</span>\n\nInterface: 192.168.100.10 --- 0x5\n  Internet Address      Physical Address      Type\n  <span class=\"note\">No dynamic entries. All mappings have aged out.</span>";
+  var EMPTY_I="Router1# <span class=\"cmd\">show ip arp</span>\n\nProtocol  Address          Age (min)  Hardware Addr   Type\n<span class=\"note\">No dynamic entries. All mappings have aged out.</span>";
+  function draw(){
+    document.getElementById("arpTerm").innerHTML=full?(mode==="win"?WIN:IOS):(mode==="win"?EMPTY_W:EMPTY_I);
+    document.getElementById("arpTblOut").innerHTML=full
+      ? "Every mapping here was learned by an ARP request and reply. While an entry exists, traffic to that IP goes out directly — no broadcast."
+      : "<b>The cache is empty.</b> The next packet to any of those addresses triggers a fresh ARP request. On Windows 10 entries typically last only 15 to 45 seconds without traffic.";
+  }
+  document.getElementById("arpCmds").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-c]");if(!b)return;pressed(this,b);mode=b.dataset.c;draw();
+  });
+  document.getElementById("arpAge").addEventListener("click",function(){full=false;draw();});
+  document.getElementById("arpFill").addEventListener("click",function(){full=true;draw();});
+  draw();
+})();
+
+/* 04 hop */
+(function(){
+  var svg=document.getElementById("hopViz");
+  var pts=[{x:48,l:"PC-A"},{x:182,l:"R1"},{x:318,l:"R2"},{x:434,l:"PC-B"}];
+  var segs=[],nodes=[];
+  for(var i=0;i<3;i++){
+    var p=el("path",{d:"M"+(pts[i].x+30)+" 52 L"+(pts[i+1].x-30)+" 52",class:"wire"});
+    svg.appendChild(p);segs.push(p);
+  }
+  pts.forEach(function(p){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-30,y:36,width:60,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:56,"text-anchor":"middle"},p.l));
+    svg.appendChild(g);nodes.push(g);
+  });
+  svg.appendChild(el("text",{x:235,y:96,"text-anchor":"middle",class:"cap"},"three links, three frames, one packet"));
+  var HOPS=[
+    {sm:"AA-AA-AA-33-33-33",dm:"11-11-11-EE-EE-EE",n:"<b>Hop 1.</b> PC-A addresses the frame to <b>the router's interface</b>, not to PC-B. PC-B is not on this link, so its MAC is irrelevant here."},
+    {sm:"R1 interface",dm:"R2 interface",n:"<b>Hop 2.</b> R1 stripped the Ethernet layer, read the destination IP, chose the next hop, and built a <b>new frame</b>. Both MACs changed."},
+    {sm:"R2 interface",dm:"PC-B NIC",n:"<b>Hop 3.</b> Only on the final link does PC-B's MAC appear. Three frames existed. The IP header never moved."}
+  ];
+  var at=-1;
+  var sm=document.getElementById("hSrcMac"),dm=document.getElementById("hDstMac");
+  document.getElementById("hSrcIp").textContent="src 192.168.100.10";
+  document.getElementById("hDstIp").textContent="dst 203.0.113.250";
+  function draw(){
+    if(at<0){
+      sm.textContent="src —";dm.textContent="dst —";
+      sm.classList.remove("changed");dm.classList.remove("changed");
+      segs.forEach(function(s){s.className.baseVal="wire";});
+      nodes.forEach(function(n){n.className.baseVal="dev";});
+      document.getElementById("hopOut").innerHTML="Press next hop to send the packet toward a remote network.";
+      document.getElementById("hopNext").disabled=false;
+      return;
+    }
+    var h=HOPS[at];
+    sm.textContent="src "+h.sm;dm.textContent="dst "+h.dm;
+    sm.classList.add("changed");dm.classList.add("changed");
+    segs.forEach(function(s,i){s.className.baseVal="wire"+(i===at?" hi":"");});
+    nodes.forEach(function(n,i){n.className.baseVal="dev"+((i===at||i===at+1)?" hi":"");});
+    document.getElementById("hopOut").innerHTML=h.n;
+    document.getElementById("hopNext").disabled=at>=HOPS.length-1;
+  }
+  document.getElementById("hopNext").addEventListener("click",function(){if(at<HOPS.length-1){at++;draw();}});
+  document.getElementById("hopReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+/* 05 spoofing */
+(function(){
+  var svg=document.getElementById("spoofViz");
+  var g=el("g",{});svg.appendChild(g);
+  var poisoned=false;
+  function draw(){
+    g.innerHTML="";
+    g.appendChild(el("path",{d:"M104 60 C 200 60, 240 60, 366 60",class:"wire"+(poisoned?"":" ans")}));
+    g.appendChild(el("path",{d:"M104 72 C 200 130, 250 150, 356 150",class:"wire"+(poisoned?" bad":"")}));
+    [[60,60,"PC-A","dev"],[400,60,"Router","dev"+(poisoned?"":" ans")],[400,150,"Attacker","dev"+(poisoned?" bad":"")]].forEach(function(p){
+      var d=el("g",{class:p[3]});
+      d.appendChild(el("rect",{x:p[0]-42,y:p[1]-16,width:84,height:32,rx:5}));
+      d.appendChild(el("text",{x:p[0],y:p[1]+4,"text-anchor":"middle"},p[2]));
+      g.appendChild(d);
+    });
+    g.appendChild(el("text",{x:235,y:46,"text-anchor":"middle",class:"cap"},poisoned?"":"traffic to the internet"));
+    g.appendChild(el("text",{x:225,y:180,"text-anchor":"middle",class:"cap"},poisoned?"all gateway traffic now goes here":""));
+    var body=document.getElementById("spoofBody");
+    body.innerHTML=poisoned
+      ? "<tr class='bad'><td>192.168.100.1</td><td>66-66-66-FF-FF-FF</td><td>the attacker</td></tr><tr><td>192.168.100.11</td><td>55-55-55-BB-BB-BB</td><td>PC-B</td></tr>"
+      : "<tr><td>192.168.100.1</td><td>11-11-11-EE-EE-EE</td><td>the router</td></tr><tr><td>192.168.100.11</td><td>55-55-55-BB-BB-BB</td><td>PC-B</td></tr>";
+    document.getElementById("spoofOut").innerHTML=poisoned
+      ? "<b>The table was updated without any verification.</b> PC-A still thinks it's talking to the gateway — the IP is unchanged. Only the MAC behind it moved. Every packet bound for the internet now reaches the attacker first."
+      : "Normal state. 192.168.100.1 maps to the router's real MAC, learned through an ordinary ARP reply.";
+  }
+  document.getElementById("spoofGo").addEventListener("click",function(){poisoned=true;draw();});
+  document.getElementById("spoofReset").addEventListener("click",function(){poisoned=false;draw();});
+  draw();
+})();
+
+/* 06 ARP vs ND */
+(function(){
+  var svg=document.getElementById("ndViz");
+  var g=el("g",{});svg.appendChild(g);
+  function draw(p){
+    g.innerHTML="";
+    var arp=p==="arp";
+    var targets=[[400,40],[400,95],[400,150]];
+    targets.forEach(function(t,i){
+      var lit=arp||i===1;
+      g.appendChild(el("path",{d:"M104 95 C 240 95, 260 "+t[1]+", "+(t[0]-42)+" "+t[1],class:"wire"+(lit?(arp?" hi":" ans"):"")}));
+    });
+    var d0=el("g",{class:"dev hi"});
+    d0.appendChild(el("rect",{x:20,y:79,width:84,height:32,rx:5}));
+    d0.appendChild(el("text",{x:62,y:99,"text-anchor":"middle"},"asking"));
+    g.appendChild(d0);
+    targets.forEach(function(t,i){
+      var lit=arp||i===1;
+      var d=el("g",{class:"dev"+(i===1?(arp?" hi":" ans"):(arp?" hi":""))});
+      d.appendChild(el("rect",{x:t[0]-42,y:t[1]-16,width:84,height:32,rx:5}));
+      d.appendChild(el("text",{x:t[0],y:t[1]+4,"text-anchor":"middle"},i===1?"target":"bystander"));
+      g.appendChild(d);
+    });
+    g.appendChild(el("text",{x:235,y:180,"text-anchor":"middle",class:"cap"},
+      arp?"broadcast — all three must process it":"multicast — only the target is disturbed"));
+    document.getElementById("ndAsk").innerHTML=arp
+      ? "<b>ARP request</b><br>sent to FF-FF-FF-FF-FF-FF<br>every device processes it"
+      : "<b>Neighbour Solicitation</b><br>ICMPv6, sent to a multicast address derived from the target IP";
+    document.getElementById("ndAns").innerHTML=arp
+      ? "<b>ARP reply</b><br>sent directly back to the asker with the MAC address"
+      : "<b>Neighbour Advertisement</b><br>ICMPv6, returned by the target with its MAC address";
+    document.getElementById("ndOut").innerHTML=arp
+      ? "<b>IPv4 uses ARP.</b> The request is a broadcast, so every device on the segment burns CPU checking a question that mostly isn't about them."
+      : "<b>IPv6 uses Neighbour Discovery.</b> No ARP at all. The solicitation goes to a multicast group derived from the target address, so bystanders never see it. Cleaner, more efficient, and it scales better.";
+  }
+  document.getElementById("ndPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;pressed(this,b);draw(b.dataset.p);
+  });
+  draw("arp");
+})();
+
+/* 07 ND functions */
+(function(){
+  var F={
+    router:{t:"<span class=\"note\">host boots on an IPv6 network</span>\n\n→ listens for <span class=\"cmd\">Router Advertisement</span>\n← R1 announces itself\n\n<span class=\"pass\">default gateway found automatically</span>",
+      o:"<b>Router Discovery</b> — hosts automatically identify the routers available on the network. No manual gateway configuration needed."},
+    prefix:{t:"<span class=\"note\">host needs to know its subnet</span>\n\n← Router Advertisement carries\n   prefix 2001:db8:acad:1::/64\n\n<span class=\"pass\">host now knows what is local</span>",
+      o:"<b>Prefix Discovery</b> — devices learn the subnet and routing information they need. This is how an IPv6 host decides whether a destination is local or remote."},
+    redirect:{t:"<span class=\"note\">host sends via R1</span>\n\n← R1: <span class=\"cmd\">ICMPv6 Redirect</span>\n   \"use R2 for that destination\"\n\n<span class=\"pass\">host updates its next hop</span>",
+      o:"<b>Redirects</b> — a router informs a device that a better default gateway exists for a particular route, and the device starts using it."},
+    slaac:{t:"<span class=\"note\">no DHCP server on this network</span>\n\n← prefix 2001:db8:acad:1::/64\n→ host generates interface ID\n\n<span class=\"pass\">2001:db8:acad:1::a1b2  self-assigned</span>",
+      o:"<b>SLAAC</b> — Stateless Address Autoconfiguration. Devices generate their own IPv6 addresses without any DHCP server. This is what makes IPv6 plug-and-play for IoT and mobile clients."}
+  };
+  function set(k){
+    document.getElementById("ndFnTerm").innerHTML=F[k].t;
+    document.getElementById("ndFnOut").innerHTML=F[k].o;
+  }
+  document.getElementById("ndCards").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-f]");if(!b)return;pressed(this,b);set(b.dataset.f);
+  });
+  set("router");
+})();
+
+/* 08 router CLI */
+(function(){
+  var host="Router",mode="priv",lines=[];
+  var MODES={
+    priv:{p:function(){return host+"#";},name:"Privileged EXEC"},
+    global:{p:function(){return host+"(config)#";},name:"Global configuration"},
+    line:{p:function(){return host+"(config-line)#";},name:"Line configuration"},
+    iface:{p:function(){return host+"(config-if)#";},name:"Interface configuration"}
+  };
+  var CMDS=[
+    {c:"configure terminal",from:["priv"],to:"global",note:"Enters global configuration mode."},
+    {c:"hostname Router1",from:["global"],to:"global",act:function(){host="Router1";},note:"Identifies the device on the network. Watch the prompt change."},
+    {c:"enable secret YourSecret",from:["global"],to:"global",note:"Protects access to privileged EXEC mode."},
+    {c:"banner motd # Unauthorised access is prohibited! #",short:"banner motd #...#",from:["global"],to:"global",note:"Displays a security warning to anyone who connects."},
+    {c:"ip domain-name example.com",from:["global"],to:"global",note:"Sets the domain name. Required before SSH keys can be generated."},
+    {c:"crypto key generate rsa modulus 1024",short:"crypto key generate rsa",from:["global"],to:"global",note:"Generates the SSH keys themselves. The module mentions keys but never gives this command — without it SSH will not start."},
+    {c:"username admin privilege 15 secret AdminPass123",short:"username admin privilege 15 ...",from:["global"],to:"global",note:"Creates a local account with administrative privileges for SSH login."},
+    {c:"line vty 0 4",from:["global"],to:"line",note:"Enters configuration for the virtual terminal lines used by remote access."},
+    {c:"login local",from:["line"],to:"line",note:"Authenticates against the local username database rather than a line password."},
+    {c:"transport input ssh",from:["line"],to:"line",note:"Permits SSH only, which disables Telnet on these lines."},
+    {c:"line console 0",from:["global"],to:"line",note:"Enters configuration for the physical console port."},
+    {c:"password cisco",from:["line"],to:"line",note:"Sets a password on this line. Note: on a VTY line using login local this password is ignored."},
+    {c:"login",from:["line"],to:"line",note:"Tells the line to prompt for that password."},
+    {c:"interface GigabitEthernet0/0",short:"interface g0/0",from:["global"],to:"iface",note:"Enters interface configuration for the first Gigabit interface."},
+    {c:"interface GigabitEthernet0/1",short:"interface g0/1",from:["global"],to:"iface",note:"Enters interface configuration for the second Gigabit interface."},
+    {c:"description LAN Connection to Office Network",short:"description ...",from:["iface"],to:"iface",note:"A label for humans. Shows up in show running-config."},
+    {c:"ip address 192.168.1.1 255.255.255.0",from:["iface"],to:"iface",note:"Assigns the interface its address and mask."},
+    {c:"no shutdown",from:["iface"],to:"iface",note:"Brings the interface up. Router interfaces are administratively down by default, so this is not optional."},
+    {c:"service password-encryption",from:["global"],to:"global",note:"Encrypts the plaintext passwords stored in the configuration."},
+    {c:"exit",from:["line","iface"],to:"global",note:"Steps back one level, to global configuration."},
+    {c:"exit",from:["global"],to:"priv",note:"Steps back one level, to privileged EXEC."},
+    {c:"end",from:["global","line","iface"],to:"priv",note:"Jumps straight to privileged EXEC from any configuration mode."},
+    {c:"copy running-config startup-config",short:"copy run start",from:["priv"],to:"priv",note:"Saves RAM to NVRAM. Without this, a reload undoes everything above."}
+  ];
+  var term=document.getElementById("cliTerm"),btnBox=document.getElementById("cliBtns");
+  var chip=document.getElementById("cliMode"),outEl=document.getElementById("cliOut");
+  function render(){
+    var html=lines.join("\n");
+    term.innerHTML=html+(html?"\n":"")+esc(MODES[mode].p())+" _";
+    term.scrollTop=term.scrollHeight;
+    chip.textContent=MODES[mode].name;
+    btnBox.innerHTML="";
+    CMDS.forEach(function(cmd,idx){
+      if(cmd.from.indexOf(mode)<0)return;
+      var b=document.createElement("button");
+      b.className="ghost";
+      b.textContent=cmd.short||cmd.c;
+      b.addEventListener("click",function(){run(idx);});
+      btnBox.appendChild(b);
+    });
+  }
+  function run(idx){
+    var cmd=CMDS[idx];
+    lines.push('<span class="note">'+esc(MODES[mode].p())+'</span> <span class="cmd">'+esc(cmd.c)+'</span>');
+    if(cmd.act)cmd.act();
+    mode=cmd.to;
+    outEl.innerHTML=cmd.note;
+    render();
+  }
+  document.getElementById("cliReset").addEventListener("click",function(){
+    host="Router";mode="priv";lines=[];
+    outEl.textContent="Only the commands valid in this mode are shown.";
+    render();
+  });
+  render();
+})();
+
+/* 09 show commands */
+(function(){
+  var S={
+    brief:{t:"Router1# <span class=\"cmd\">show ip interface brief</span>\n\nInterface              IP-Address      OK? Method Status                Protocol\nGigabitEthernet0/0     192.168.1.1     YES manual up                    up\nGigabitEthernet0/1     10.0.0.1        YES manual up                    up\nGigabitEthernet0/2     unassigned      YES unset  <span class=\"fail\">administratively down</span> down\nVlan1                  unassigned      YES unset  <span class=\"fail\">administratively down</span> down",
+      o:"A concise summary of every IPv4 interface. <b>administratively down</b> means nobody ran <b>no shutdown</b> — that's the single most common reason a correctly addressed interface doesn't work."},
+    route:{t:"Router1# <span class=\"cmd\">show ip route</span>\n\nCodes: C - connected, S - static, * - candidate default\n\n      10.0.0.0/24 is subnetted, 1 subnets\n<span class=\"pass\">C</span>        10.0.0.0 is directly connected, GigabitEthernet0/1\n      192.168.1.0/24 is subnetted, 1 subnets\n<span class=\"pass\">C</span>        192.168.1.0 is directly connected, GigabitEthernet0/0",
+      o:"The IPv4 routing table. Both networks appear as <b>C — directly connected</b>, added automatically when each interface got an address and came up. This is what lets the router route between them."},
+    ver:{t:"Router1# <span class=\"cmd\">show version</span>\n\nCisco IOS Software, ISR Software\nROM: System Bootstrap, Version 15.4\n\nRouter1 uptime is 4 hours, 12 minutes\nSystem returned to ROM by power-on\n\nCisco ISR 4331 with 4194304K bytes of memory\n2 Gigabit Ethernet interfaces\n255K bytes of NVRAM",
+      o:"Hardware details, software version and uptime. Useful when you need to know what you're actually working on, or whether the device rebooted unexpectedly."},
+    run:{t:"Router1# <span class=\"cmd\">show running-config</span>\n\nhostname Router1\nenable secret 5 $1$mERr$Hx5...\n!\ninterface GigabitEthernet0/0\n description LAN Connection to Office Network\n ip address 192.168.1.1 255.255.255.0\n!\nline vty 0 4\n login local\n transport input ssh",
+      o:"The configuration currently active in <b>RAM</b>. Note the encrypted secret — that's <b>service password-encryption</b> and <b>enable secret</b> doing their job. Compare with <b>show startup-config</b>, which shows what's saved in NVRAM."}
+  };
+  function set(k){
+    document.getElementById("showTerm").innerHTML=S[k].t;
+    document.getElementById("showOut").innerHTML=S[k].o;
+  }
+  document.getElementById("showPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-c]");if(!b)return;pressed(this,b);set(b.dataset.c);
+  });
+  set("brief");
+})();
+
+/* 10 default gateway */
+(function(){
+  var STEPS=[
+    {c:"Switch(config)# interface vlan 1",n:"Enter the <b>SVI</b>. A Layer 2 switch has no routable physical ports, so this virtual interface is where its management address lives."},
+    {c:"Switch(config-if)# ip address 192.168.1.2 255.255.255.0",n:"Give the SVI an address <b>in the same subnet as the router</b>. The router's interface is 192.168.1.1, so the switch sits alongside it."},
+    {c:"Switch(config-if)# no shutdown",n:"Bring the SVI up. Same rule as any interface."},
+    {c:"Switch(config-if)# exit",n:"Step back to global configuration. The gateway command does not belong in interface mode — the module's example skips this line and jumps prompts."},
+    {c:"Switch(config)# ip default-gateway 192.168.1.1",n:"Point the switch at the router. <b>Now remote management works</b> — an administrator on another subnet can SSH in and the replies can find their way back out."}
+  ];
+  var dots=document.getElementById("gwDots");
+  for(var i=0;i<STEPS.length;i++){var d=document.createElement("div");d.className="stepdot";dots.appendChild(d);}
+  var at=-1,term=document.getElementById("gwTerm");
+  function draw(){
+    [].forEach.call(dots.children,function(d,i){d.classList.toggle("on",i<=at);});
+    var out="";
+    for(var i=0;i<=at;i++){
+      var p=STEPS[i].c.split("# ");
+      out+='<span class="note">'+p[0]+'# </span><span class="cmd">'+p[1]+'</span>\n';
+    }
+    term.innerHTML=out+(at>=STEPS.length-1?'\n<span class="pass">Switch is reachable from other subnets.</span>':"Switch(config)# _");
+    document.getElementById("gwOut").innerHTML=at<0
+      ? "The switch forwards local traffic fine already. This is only about reaching it from another network."
+      : STEPS[at].n;
+    document.getElementById("gwNext").disabled=at>=STEPS.length-1;
+  }
+  document.getElementById("gwNext").addEventListener("click",function(){if(at<STEPS.length-1){at++;draw();}});
+  document.getElementById("gwReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+go(0);
+})();
+</script>
+</body>
+</html>
