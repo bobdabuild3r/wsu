@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.1 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pills .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);align-self:center;font-weight:700}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:#fff;font-weight:700}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.8}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+/* 32-bit strip */
+.strip{display:flex;gap:2px;margin:6px 0 4px}
+.sbit{flex:1;height:34px;border-radius:3px;background:var(--teal);transition:.2s;position:relative}
+.sbit.host{background:#dfe7e8}
+.sbit.edge{box-shadow:0 0 0 2px var(--orange)}
+.striplbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-bottom:12px}
+.dotted{font-family:var(--mono);font-size:clamp(16px,3.6vw,25px);font-weight:700;text-align:center;margin:12px 0 2px;color:var(--teal)}
+.dotted em{font-style:normal;color:var(--orange)}
+.subline{font-family:var(--mono);font-size:12.5px;text-align:center;color:var(--muted)}
+
+/* AND calculator */
+.androw{display:grid;grid-template-columns:104px 1fr;gap:10px;align-items:center;margin-bottom:7px}
+.androw .lb{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;text-align:right}
+.androw .bn{font-family:var(--mono);font-size:clamp(10px,2.3vw,14px);letter-spacing:.05em;padding:7px 8px;border-radius:6px;background:#eef4f4;white-space:nowrap;overflow-x:auto}
+.androw.res .bn{background:var(--green);color:#fff;font-weight:700}
+.androw.mask .bn{background:#f3ece1}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
+.tbl th{background:var(--teal);color:#fff;text-align:left;padding:6px 8px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.tbl td{border-bottom:1px solid var(--line);padding:6px 8px}
+.tbl tr:nth-child(even) td{background:#f7fafa}
+.tbl tr.hl td{background:#ffe6c2;font-weight:700}
+
+/* quiz */
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:16.5px;line-height:1.45;color:var(--teal-dark);font-family:var(--mono);font-weight:700}
+.qcard .qs{margin:8px 0 0;font-size:13.5px;color:var(--muted);font-family:var(--sans)}
+.opts{display:grid;gap:8px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opts.c3{grid-template-columns:repeat(3,1fr)}
+.opts.c4{grid-template-columns:repeat(2,1fr)}
+@media(max-width:520px){.opts.c2,.opts.c3,.opts.c4{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+/* address space bar */
+.spacebar{display:flex;height:52px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#eef4f4}
+.blk{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;font-weight:700;color:#fff;text-align:center;line-height:1.2;padding:2px;animation:grow .35s ease-out;overflow:hidden}
+@keyframes grow{from{flex-basis:0;opacity:0}to{opacity:1}}
+.blk.z0{background:var(--teal)}
+.blk.z1{background:var(--green)}
+.blk.z2{background:var(--teal-mid)}
+.blk.z3{background:var(--orange)}
+.blk.z4{background:#7c4a63}
+.blk.free{background:#dfe7e8;color:var(--muted)}
+.axis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px}
+
+/* class table */
+.clsgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.clsgrid button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 4px;text-align:center;transition:.15s;color:var(--teal)}
+.clsgrid button .cl{font-size:20px;font-weight:800;line-height:1}
+.clsgrid button .cb{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:5px}
+.clsgrid button:hover{border-color:var(--teal)}
+.clsgrid button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.clsgrid button[aria-pressed="true"] .cb{color:#9fc2c9}
+
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.65;white-space:pre-wrap}
+.term .pass{color:#8fe3c7}
+.term .fail{color:#ff9aa8}
+.term .cmd{color:#f7b955}
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 2.1 Recap</div>
+    <div class="clock">
+      <output id="clock">25:00</output>
+      <button id="clockBtn">Start</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — Address structure</p>
+    <h1>Every IPv4 address is two things wearing one coat.</h1>
+    <p class="lede">Part of it names the network. The rest names the device on it. Nothing in the address itself tells you where the line falls — the subnet mask does that.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">The network portion says which network. The host portion says which device. The mask decides where one ends and the other begins.</p>
+      <p>An IPv4 address is a 32-bit identifier, written as four 8-bit <strong>octets</strong> in dotted decimal — <code>192.168.1.1</code>.</p>
+      <p>Those 32 bits split into a <strong>network portion</strong> and a <strong>host portion</strong>. The same address can mean different things depending on where that split sits.</p>
+      <p>A <strong>subnet mask</strong> is what defines the split. It's always a run of consecutive 1s followed by a run of consecutive 0s — never mixed. The 1s mark network bits, the 0s mark host bits.</p>
+      <p>Drag the boundary on the right and watch the same address get carved up differently.</p>
+    </div>
+    <div class="stage">
+      <h3>Move the boundary</h3>
+      <div class="strip" id="splitStrip"></div>
+      <div class="striplbl"><span>bit 1</span><span>bit 32</span></div>
+      <div class="pills" id="splitPills">
+        <span class="lbl">Prefix</span>
+        <button data-p="8" aria-pressed="false">/8</button>
+        <button data-p="16" aria-pressed="false">/16</button>
+        <button data-p="24" aria-pressed="true">/24</button>
+        <button data-p="26" aria-pressed="false">/26</button>
+        <button data-p="30" aria-pressed="false">/30</button>
+      </div>
+      <p class="dotted">192.168.1.1</p>
+      <p class="subline" id="splitSub"></p>
+      <p class="readout" id="splitOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Masks and CIDR</p>
+    <h1>Three ways to write the same thing.</h1>
+    <p class="lede">Binary, dotted decimal, and slash notation all describe one boundary. Being able to move between them on sight is most of what subnetting asks of you.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">/24 and 255.255.255.0 and 11111111.11111111.11111111.00000000 are the same statement.</p>
+      <p><strong>CIDR</strong> — Classless Inter-Domain Routing — is the compact form. Also called prefix length or slash notation. The number after the slash is how many bits belong to the network.</p>
+      <p><code>192.168.1.0/24</code> means the first 24 bits are the network and the remaining 8 are for hosts. That's the same as the mask <code>255.255.255.0</code>.</p>
+      <p>The octet values a mask can take are fixed, because the 1s must be consecutive: 0, 128, 192, 224, 240, 248, 252, 254, 255. Anything else is not a valid mask.</p>
+      <p>Network bits plus host bits always equals 32. If you know one, you know the other.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a prefix</h3>
+      <div class="pills" id="cidrPills">
+        <button data-p="8" aria-pressed="false">/8</button>
+        <button data-p="12" aria-pressed="false">/12</button>
+        <button data-p="16" aria-pressed="false">/16</button>
+        <button data-p="20" aria-pressed="false">/20</button>
+        <button data-p="24" aria-pressed="true">/24</button>
+        <button data-p="26" aria-pressed="false">/26</button>
+        <button data-p="28" aria-pressed="false">/28</button>
+        <button data-p="30" aria-pressed="false">/30</button>
+      </div>
+      <div class="androw mask"><span class="lb">binary</span><span class="bn" id="cidrBin"></span></div>
+      <div class="androw"><span class="lb">dotted decimal</span><span class="bn" id="cidrDec"></span></div>
+      <p class="dotted" id="cidrBig"></p>
+      <p class="readout" id="cidrOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — Finding the network address</p>
+    <h1>AND the address with the mask. That's the whole trick.</h1>
+    <p class="lede">A bitwise AND keeps a bit only where both inputs are 1. Run it across an address and its mask and the host bits vanish, leaving the network address behind.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">1 AND 1 gives 1. Everything else gives 0.</p>
+      <p>The network address is the bitwise AND of the IP address and the subnet mask. It identifies the starting address of the subnet the host belongs to.</p>
+      <p>It works because the mask is 1s over the network bits and 0s over the host bits. ANDing keeps every network bit exactly as it was and forces every host bit to zero.</p>
+      <p>Take the module's own example. <code>192.168.5.130</code> with mask <code>255.255.255.192</code>. Only the last octet does anything interesting: <code>10000010</code> AND <code>11000000</code> gives <code>10000000</code>, which is 128.</p>
+      <p>Network address: <strong>192.168.5.128</strong>. The host was .130, but the subnet starts at .128.</p>
+    </div>
+    <div class="stage">
+      <h3>Work the AND</h3>
+      <div class="pills" id="andPills">
+        <span class="lbl">Example</span>
+        <button data-i="0" aria-pressed="true">192.168.5.130 /26</button>
+        <button data-i="1" aria-pressed="false">10.20.30.200 /24</button>
+        <button data-i="2" aria-pressed="false">172.16.9.77 /20</button>
+      </div>
+      <div class="androw"><span class="lb">IP address</span><span class="bn" id="andIp"></span></div>
+      <div class="androw mask"><span class="lb">subnet mask</span><span class="bn" id="andMk"></span></div>
+      <div class="androw res"><span class="lb">AND result</span><span class="bn" id="andRs"></span></div>
+      <p class="dotted" id="andBig"></p>
+      <p class="readout" id="andOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — Local or remote</p>
+    <h1>Same network address means talk directly. Different means find a router.</h1>
+    <p class="lede">Before sending anything, a device ANDs its own address and the destination with the same mask, then compares. That single comparison decides whether a router is involved at all.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">AND both addresses with the same mask. Compare the results.</p>
+      <p>The source device ANDs its own IP with its subnet mask, then ANDs the destination IP with that same mask.</p>
+      <p>If the two network portions <strong>match</strong>, the destination is on the same subnet. The device communicates directly at Layer 2, sending Ethernet frames to the destination's MAC address.</p>
+      <p>If they <strong>don't match</strong>, the destination is on a different network. The traffic goes to the configured default gateway, which forwards it onward.</p>
+      <p>Your host on the right is <code>192.168.5.130</code> with mask <code>255.255.255.192</code> — so your network is 192.168.5.128, and it only runs to .191.</p>
+    </div>
+    <div class="stage">
+      <h3>Your host: 192.168.5.130 / 255.255.255.192</h3>
+      <div class="qcard">
+        <p class="qn" id="locN">Destination 1 of 5</p>
+        <p class="qt" id="locQ"></p>
+        <p class="qs">Direct delivery, or via the default gateway?</p>
+      </div>
+      <div class="opts c2" id="locBtns">
+        <button data-a="S">Same subnet</button>
+        <button data-a="D">Different subnet</button>
+      </div>
+      <p class="readout" id="locOut">Your subnet runs 192.168.5.128 to 192.168.5.191.</p>
+      <div class="controls">
+        <button id="locNext" class="ghost" disabled>Next destination</button>
+        <button id="locReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="locScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — Unicast, broadcast, multicast</p>
+    <h1>One device, every device, or a group that opted in.</h1>
+    <p class="lede">Three delivery models, and broadcast splits into two kinds that behave very differently at a router.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Limited broadcast stops at the router. Directed broadcast can arrive from outside.</p>
+      <p><strong>Unicast</strong> identifies a single device, routable across the whole internet. Standard one-to-one traffic.</p>
+      <p><strong>Limited broadcast</strong> is <code>255.255.255.255</code> — all hosts on the sender's own subnet. Used when the sender doesn't yet know the network configuration, like at boot-up or during a DHCP request. Routers never forward it.</p>
+      <p><strong>Directed broadcast</strong> is the highest address in a specific subnet — in <code>192.168.100.0/24</code> that's <code>192.168.100.255</code>. It reaches every device in that subnet, and the sender can be outside it. Useful for pushing updates, but often disabled because it can be exploited in denial-of-service attacks.</p>
+      <p><strong>Multicast</strong> reaches a group of devices that joined it, conserving bandwidth. The IPv4 multicast range is <code>224.0.0.0</code> to <code>239.255.255.255</code>.</p>
+    </div>
+    <div class="stage">
+      <h3>What kind of address is this?</h3>
+      <div class="qcard">
+        <p class="qn" id="typN">Address 1 of 5</p>
+        <p class="qt" id="typQ"></p>
+      </div>
+      <div class="opts c4" id="typBtns">
+        <button data-a="U">Unicast</button>
+        <button data-a="L">Limited broadcast</button>
+        <button data-a="D">Directed broadcast</button>
+        <button data-a="M">Multicast</button>
+      </div>
+      <p class="readout" id="typOut">Check the range before you answer.</p>
+      <div class="controls">
+        <button id="typNext" class="ghost" disabled>Next address</button>
+        <button id="typReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="typScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — Public, private, special</p>
+    <h1>Some addresses can cross the internet. Most of yours can't.</h1>
+    <p class="lede">Public addresses are globally unique and managed by IANA. Private ranges are reserved for internal use and stop at the edge. Two more ranges never go anywhere at all.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">10, 172.16–172.31, and 192.168. Learn those three and you can spot a private address instantly.</p>
+      <p><strong>Public</strong> addresses are globally unique, allocated by IANA through regional registries. <code>8.8.8.8</code> is one. Reachable from anywhere, firewalls permitting.</p>
+      <p><strong>Private</strong> addresses, defined by RFC 1918, are not routable on the public internet. Three ranges: <code>10.0.0.0</code>–<code>10.255.255.255</code> (a /8), <code>172.16.0.0</code>–<code>172.31.255.255</code> (a /12), and <code>192.168.0.0</code>–<code>192.168.255.255</code> (a /16). They reach the internet through NAT.</p>
+      <p><strong>Loopback</strong> is the <code>127.0.0.0/8</code> block, usually <code>127.0.0.1</code>. Traffic never leaves the device — it tests the local TCP/IP stack.</p>
+      <p><strong>APIPA</strong>, also called link-local, is <code>169.254.0.1</code>–<code>169.254.255.254</code> with mask <code>255.255.0.0</code>. A device assigns itself one when it can't reach a DHCP server. Seeing 169.254 on a machine tells you DHCP failed.</p>
+    </div>
+    <div class="stage">
+      <h3>Classify the address</h3>
+      <div class="qcard">
+        <p class="qn" id="pubN">Address 1 of 6</p>
+        <p class="qt" id="pubQ"></p>
+      </div>
+      <div class="opts c4" id="pubBtns">
+        <button data-a="P">Public</button>
+        <button data-a="R">Private</button>
+        <button data-a="L">Loopback</button>
+        <button data-a="A">APIPA</button>
+      </div>
+      <p class="readout" id="pubOut">Look at the first one or two octets.</p>
+      <div class="controls">
+        <button id="pubNext" class="ghost" disabled>Next address</button>
+        <button id="pubReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="pubScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — Legacy classful addressing</p>
+    <h1>The old system that wasted most of the internet.</h1>
+    <p class="lede">Before CIDR, address blocks came in three fixed sizes. You took whichever fit worst. Classful addressing is obsolete now, but it still shows up in exam questions.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">A, B and C for hosts. D for multicast. E for experiments.</p>
+      <p>Classful addressing divided the space into five classes based on the leading bits of the first octet.</p>
+      <p><strong>Class A</strong> for very large networks — ISPs and major corporations. <strong>Class B</strong> for medium ones like universities. <strong>Class C</strong> for small businesses and home networks. <strong>Class D</strong> is reserved for multicast, not device addressing. <strong>Class E</strong> is reserved for experimental use.</p>
+      <p>The problem was waste. An organisation needing 300 addresses had to take a Class B with 65,534, while others couldn't get enough. Fixed sizes fit almost nobody.</p>
+      <p><strong>CIDR</strong> arrived in the 1990s and let the boundary sit anywhere. Classful addressing is obsolete, replaced by classless routing and subnetting.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a class</h3>
+      <div class="clsgrid" id="clsGrid">
+        <button data-c="A" aria-pressed="true"><div class="cl">A</div><div class="cb">0xxxxxxx</div></button>
+        <button data-c="B" aria-pressed="false"><div class="cl">B</div><div class="cb">10xxxxxx</div></button>
+        <button data-c="C" aria-pressed="false"><div class="cl">C</div><div class="cb">110xxxxx</div></button>
+        <button data-c="D" aria-pressed="false"><div class="cl">D</div><div class="cb">1110xxxx</div></button>
+        <button data-c="E" aria-pressed="false"><div class="cl">E</div><div class="cb">1111xxxx</div></button>
+      </div>
+      <table class="tbl"><tbody id="clsBody"></tbody></table>
+      <p class="readout" id="clsOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — Broadcast domains</p>
+    <h1>A broadcast domain ends at a router. Never at a switch.</h1>
+    <p class="lede">Every device in a broadcast domain has to process every broadcast, whether it cares or not. Grow the domain and that cost grows with it. Segmentation is the fix.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Switches extend a broadcast domain. Routers break it up.</p>
+      <p>A broadcast domain is a logical area where all devices receive each other's broadcasts at Layer 2. It covers everything on the same switched segment — and stops dead at a router, because routers don't forward broadcast traffic.</p>
+      <p>Large domains cause real problems. <strong>Excessive broadcast traffic</strong> — ARP requests and DHCP discoveries pile up, and every device burns CPU processing them. Enough of it is a <strong>broadcast storm</strong>. <strong>Congestion</strong>, <strong>security risk</strong> since ARP spoofing and malware spread more easily when everything can see everything, <strong>troubleshooting difficulty</strong>, and <strong>poor scalability</strong>.</p>
+      <p>Segmentation solves all of it at once. Three ways to divide: by <strong>location</strong> — floors, buildings, branches. By <strong>function</strong> — accounting, sales, guests. By <strong>device type</strong> — servers, printers, IoT. IoT is the classic case, since weak security belongs on its own segment.</p>
+    </div>
+    <div class="stage">
+      <h3>Add a router and watch it split</h3>
+      <svg class="viz" id="bdViz" viewBox="0 0 470 210" role="img" aria-label="Broadcast domain"></svg>
+      <div class="controls">
+        <button id="bdSend">Send a broadcast</button>
+        <button id="bdToggle" class="ghost">Insert a router</button>
+      </div>
+      <p class="readout" id="bdOut">One switch, one broadcast domain. Every device hears everything.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — Subnetting a /24</p>
+    <h1>Borrow bits from the hosts. Pay for it in host count.</h1>
+    <p class="lede">Every bit you take from the host portion doubles your subnet count and halves your hosts per subnet. Two powers of two, moving in opposite directions.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Subnets = 2 to the power of borrowed bits. Usable hosts = 2 to the power of remaining host bits, minus 2.</p>
+      <p>A /24 has 8 host bits: 2⁸ = 256 total addresses, 254 usable. You always subtract two — the <strong>network address</strong> at the bottom and the <strong>broadcast address</strong> at the top can't be assigned to a device.</p>
+      <p>Borrow 2 bits and the mask becomes <code>255.255.255.192</code>, a /26. That's 2² = 4 subnets, each with 6 host bits left: 2⁶ − 2 = 62 usable hosts.</p>
+      <p>The trade never changes. More subnets always means fewer hosts in each.</p>
+      <p>Move the slider on the right and read off the whole table. The blocks below show exactly where each subnet starts and stops.</p>
+    </div>
+    <div class="stage">
+      <h3>Subnet 192.168.1.0/24</h3>
+      <div class="pills" id="subPills">
+        <span class="lbl">Borrow</span>
+        <button data-b="1" aria-pressed="false">1 bit</button>
+        <button data-b="2" aria-pressed="true">2 bits</button>
+        <button data-b="3" aria-pressed="false">3 bits</button>
+        <button data-b="4" aria-pressed="false">4 bits</button>
+        <button data-b="5" aria-pressed="false">5 bits</button>
+        <button data-b="6" aria-pressed="false">6 bits</button>
+      </div>
+      <p class="dotted" id="subBig"></p>
+      <p class="subline" id="subSub"></p>
+      <div class="spacebar" id="subBar" style="margin-top:14px"></div>
+      <div class="axis"><span>.0</span><span>.255</span></div>
+      <table class="tbl"><thead><tr><th>Network</th><th>Host range</th><th>Broadcast</th></tr></thead><tbody id="subBody"></tbody></table>
+      <p class="readout" id="subOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — VLSM</p>
+    <h1>Fixed-size subnets waste addresses. VLSM stops that.</h1>
+    <p class="lede">Give a ten-device office a /26 and you've thrown away fifty addresses. Variable Length Subnet Masking sizes each subnet to what it actually needs — allocated largest first.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Always allocate largest to smallest. Choose the smallest subnet that still meets the requirement.</p>
+      <p>Using one size everywhere causes four problems: <strong>wasted addresses</strong> — a /26 for a department of ten wastes over 80% of it; <strong>scalability issues</strong> when a subnet outgrows its block; <strong>inflexibility</strong>; and <strong>management overhead</strong> from constant reorganising.</p>
+      <p><strong>VLSM</strong> uses different subnet masks within the same network, so each subnet borrows however many bits it actually needs.</p>
+      <p>The method: start with the whole block, work from the <strong>largest requirement down to the smallest</strong>, and for each one pick the smallest subnet size that still meets or slightly exceeds the host count.</p>
+      <p>Order matters. Allocate a small block first and you fragment the space so the big ones no longer fit.</p>
+      <p>The total of all subnets can never exceed the original block.</p>
+    </div>
+    <div class="stage">
+      <h3>Allocate 192.168.10.0/24</h3>
+      <div class="spacebar" id="vlBar"></div>
+      <div class="axis"><span>.0</span><span>.255</span></div>
+      <table class="tbl"><thead><tr><th>Zone</th><th>Need</th><th>Prefix</th><th>Range</th></tr></thead><tbody id="vlBody"></tbody></table>
+      <div class="controls">
+        <button id="vlNext">Allocate next zone</button>
+        <button id="vlAll" class="ghost">Allocate all</button>
+        <button id="vlReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="vlOut"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">Use ← → or the buttons to move</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+/* ip helpers */
+function toInt(ip){var v=0;ip.split(".").forEach(function(o){v=(v*256)+(+o);});return v;}
+function toDot(v){return [Math.floor(v/16777216)%256,Math.floor(v/65536)%256,Math.floor(v/256)%256,v%256].join(".");}
+function maskInt(p){return p===0?0:(4294967296-Math.pow(2,32-p));}
+function toBin(v){
+  var s="";
+  [Math.floor(v/16777216)%256,Math.floor(v/65536)%256,Math.floor(v/256)%256,v%256].forEach(function(o,i){
+    var b=o.toString(2);while(b.length<8)b="0"+b;
+    s+=(i?".":"")+b;
+  });
+  return s;
+}
+
+/* shell */
+var LABELS=["Structure","Masks / CIDR","The AND","Local / remote","Address types","Public / private","Classful","Broadcast domains","Subnetting","VLSM"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+});
+
+/* clock */
+var total=25*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* quiz builder */
+function quiz(Q,pfx,word,hint){
+  var i=0,score=0,ans=0;
+  var qEl=document.getElementById(pfx+"Q"),nEl=document.getElementById(pfx+"N"),oEl=document.getElementById(pfx+"Out");
+  var btns=document.getElementById(pfx+"Btns"),nextB=document.getElementById(pfx+"Next"),sc=document.getElementById(pfx+"Score");
+  function show(){
+    nEl.textContent=word+" "+(i+1)+" of "+Q.length;
+    qEl.textContent=Q[i].q;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    oEl.textContent=hint;
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    var right=Q[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    sc.textContent="Score "+score+" / "+ans;
+    oEl.innerHTML=(b.dataset.a===right?"<b>Correct.</b> ":"<b>Not quite.</b> ")+Q[i].why;
+    nextB.disabled=i>=Q.length-1;
+  });
+  nextB.addEventListener("click",function(){if(i<Q.length-1){i++;show();}});
+  document.getElementById(pfx+"Reset").addEventListener("click",function(){i=0;score=0;ans=0;sc.textContent="Score 0 / 0";show();});
+  show();
+}
+
+/* 01 split */
+(function(){
+  var strip=document.getElementById("splitStrip");
+  for(var i=0;i<32;i++){var d=document.createElement("div");d.className="sbit";strip.appendChild(d);}
+  function set(p){
+    for(var i=0;i<32;i++){
+      var b=strip.children[i];
+      b.className="sbit"+(i>=p?" host":"")+(i===p-1?" edge":"");
+    }
+    document.getElementById("splitSub").innerHTML="mask "+toDot(maskInt(p))+" &nbsp;·&nbsp; "+p+" network bits &nbsp;·&nbsp; "+(32-p)+" host bits";
+    var hosts=Math.pow(2,32-p)-2;
+    document.getElementById("splitOut").innerHTML="With a <b>/"+p+"</b>, the network is <b>"+toDot(toInt("192.168.1.1")&maskInt(p))+"</b> and there is room for <b>"+hosts.toLocaleString()+"</b> usable hosts in it.";
+  }
+  document.getElementById("splitPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;pressed(this,b);set(+b.dataset.p);
+  });
+  set(24);
+})();
+
+/* 02 CIDR */
+(function(){
+  function set(p){
+    document.getElementById("cidrBin").textContent=toBin(maskInt(p));
+    document.getElementById("cidrDec").textContent=toDot(maskInt(p));
+    document.getElementById("cidrBig").innerHTML="/"+p+" &nbsp;=&nbsp; <em>"+toDot(maskInt(p))+"</em>";
+    var hosts=Math.pow(2,32-p)-2;
+    document.getElementById("cidrOut").innerHTML="<b>"+p+" network bits</b> and <b>"+(32-p)+" host bits</b>. That's "+Math.pow(2,32-p).toLocaleString()+" total addresses, "+hosts.toLocaleString()+" usable after removing the network and broadcast addresses.";
+  }
+  document.getElementById("cidrPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;pressed(this,b);set(+b.dataset.p);
+  });
+  set(24);
+})();
+
+/* 03 AND */
+(function(){
+  var EX=[
+    {ip:"192.168.5.130",p:26},
+    {ip:"10.20.30.200",p:24},
+    {ip:"172.16.9.77",p:20}
+  ];
+  function set(i){
+    var e=EX[i],ipv=toInt(e.ip),mk=maskInt(e.p),rs=ipv&mk;
+    if(rs<0)rs=rs>>>0;
+    document.getElementById("andIp").textContent=toBin(ipv);
+    document.getElementById("andMk").textContent=toBin(mk);
+    document.getElementById("andRs").textContent=toBin(rs);
+    document.getElementById("andBig").innerHTML="network address &nbsp;<em>"+toDot(rs)+"</em>";
+    var size=Math.pow(2,32-e.p);
+    document.getElementById("andOut").innerHTML="Host <b>"+e.ip+"</b> with a /"+e.p+" sits in the subnet starting at <b>"+toDot(rs)+"</b>, which runs up to "+toDot(rs+size-1)+". The broadcast address is that last one, and usable hosts are everything between.";
+  }
+  document.getElementById("andPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-i]");if(!b)return;pressed(this,b);set(+b.dataset.i);
+  });
+  set(0);
+})();
+
+/* 04 local/remote */
+quiz([
+  {q:"192.168.5.140",a:"S",why:"Same subnet. 140 is between 128 and 191, so it ANDs to 192.168.5.128 as well. Delivered directly at Layer 2."},
+  {q:"192.168.5.200",a:"D",why:"Different subnet. 200 is past 191, so it ANDs to 192.168.5.192. Same first three octets, but a different network — this one catches people out."},
+  {q:"192.168.5.129",a:"S",why:"Same subnet. The first usable address in your own block."},
+  {q:"10.0.0.5",a:"D",why:"Different subnet, and obviously so. Goes to the default gateway."},
+  {q:"192.168.5.100",a:"D",why:"Different subnet. 100 is below 128, so it ANDs to 192.168.5.64 — a separate /26 entirely."}
+],"loc","Destination","Your subnet runs 192.168.5.128 to 192.168.5.191.");
+
+/* 05 address types */
+quiz([
+  {q:"255.255.255.255",a:"L",why:"Limited broadcast. Reaches every host on the sender's own subnet, and no router forwards it."},
+  {q:"224.0.0.9",a:"M",why:"Multicast. It falls inside 224.0.0.0 to 239.255.255.255."},
+  {q:"192.168.100.255  (subnet 192.168.100.0/24)",a:"D",why:"Directed broadcast — the highest address in that specific subnet. A sender outside the subnet can target it, which is why routers often block it."},
+  {q:"192.168.1.250",a:"U",why:"Unicast. One specific device, standard one-to-one traffic."},
+  {q:"239.255.255.250",a:"M",why:"Multicast. Right at the top of the multicast range."}
+],"typ","Address","Check the range before you answer.");
+
+/* 06 public/private */
+quiz([
+  {q:"10.14.200.3",a:"R",why:"Private. The whole 10.0.0.0/8 block is RFC 1918."},
+  {q:"8.8.8.8",a:"P",why:"Public. A well-known public DNS server, globally unique and reachable."},
+  {q:"169.254.12.7",a:"A",why:"APIPA. The device could not reach a DHCP server and assigned itself a link-local address."},
+  {q:"172.20.5.1",a:"R",why:"Private. The 172 range is 172.16 to 172.31 — 20 is inside it. Watch out: 172.32.x.x would be public."},
+  {q:"127.0.0.1",a:"L",why:"Loopback. Part of 127.0.0.0/8. Traffic never leaves the machine."},
+  {q:"192.168.0.14",a:"R",why:"Private. 192.168.0.0/16 is the range most home routers hand out."}
+],"pub","Address","Look at the first one or two octets.");
+
+/* 07 classful */
+(function(){
+  var C={
+    A:{bits:"0xxxxxxx",cidr:"/8",nets:"128 (minus reserved)",hosts:"16,777,214",range:"1.0.0.1 – 126.255.255.254",
+       o:"<b>Class A</b> — built for very large networks like ISPs and major corporations. One network, sixteen million hosts."},
+    B:{bits:"10xxxxxx",cidr:"/16",nets:"16,384",hosts:"65,534",range:"128.0.0.1 – 191.255.255.254",
+       o:"<b>Class B</b> — medium networks like universities. Still far more hosts than most organisations ever needed."},
+    C:{bits:"110xxxxx",cidr:"/24",nets:"about 2 million",hosts:"254",range:"192.0.0.1 – 223.255.255.254",
+       o:"<b>Class C</b> — small businesses and home networks. 254 hosts, which is where the familiar /24 comes from."},
+    D:{bits:"1110xxxx",cidr:"N/A",nets:"N/A",hosts:"N/A",range:"224.0.0.0 – 239.255.255.255",
+       o:"<b>Class D</b> — reserved for multicast, not for addressing devices. This is the same range from concept 05."},
+    E:{bits:"1111xxxx",cidr:"N/A",nets:"N/A",hosts:"N/A",range:"240.0.0.0 – 255.255.255.254",
+       o:"<b>Class E</b> — reserved for experimental use. Never used in normal network communication."}
+  };
+  var body=document.getElementById("clsBody");
+  function set(k){
+    var c=C[k];
+    body.innerHTML=""
+      +"<tr><td>Starting bits</td><td>"+c.bits+"</td></tr>"
+      +"<tr><td>CIDR</td><td>"+c.cidr+"</td></tr>"
+      +"<tr><td>Networks</td><td>"+c.nets+"</td></tr>"
+      +"<tr><td>Hosts per network</td><td>"+c.hosts+"</td></tr>"
+      +"<tr class='hl'><td>Address range</td><td>"+c.range+"</td></tr>";
+    document.getElementById("clsOut").innerHTML=c.o;
+  }
+  document.getElementById("clsGrid").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-c]");if(!b)return;pressed(this,b);set(b.dataset.c);
+  });
+  set("A");
+})();
+
+/* 08 broadcast domains */
+(function(){
+  var svg=document.getElementById("bdViz");
+  var split=false;
+  var g=el("g",{});svg.appendChild(g);
+  function draw(flash){
+    g.innerHTML="";
+    var L=[[62,42],[62,168]],R=[[408,42],[408,168]];
+    if(!split){
+      g.appendChild(el("rect",{x:24,y:18,width:422,height:174,rx:10,fill:"#fff4e6",stroke:"#C9720C","stroke-width":1.6,"stroke-dasharray":"6 4"}));
+      g.appendChild(el("text",{x:235,y:36,"text-anchor":"middle",class:"cap"},"one broadcast domain"));
+      g.appendChild(el("rect",{x:200,y:88,width:70,height:34,rx:6,fill:"#1F4E5F"}));
+      g.appendChild(el("text",{x:235,y:109,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11",fill:"#fff"},"SWITCH"));
+      L.concat(R).forEach(function(p){
+        g.appendChild(el("path",{d:"M"+p[0]+" "+p[1]+" L 235 105",class:"wire"+(flash?" hi":"")}));
+      });
+    }else{
+      g.appendChild(el("rect",{x:18,y:18,width:200,height:174,rx:10,fill:"#fff4e6",stroke:"#C9720C","stroke-width":1.6,"stroke-dasharray":"6 4"}));
+      g.appendChild(el("rect",{x:252,y:18,width:200,height:174,rx:10,fill:"#eaf3f0",stroke:"#2E7D6E","stroke-width":1.6,"stroke-dasharray":"6 4"}));
+      g.appendChild(el("text",{x:118,y:36,"text-anchor":"middle",class:"cap"},"domain 1"));
+      g.appendChild(el("text",{x:352,y:36,"text-anchor":"middle",class:"cap"},"domain 2"));
+      g.appendChild(el("rect",{x:128,y:88,width:64,height:32,rx:6,fill:"#1F4E5F"}));
+      g.appendChild(el("text",{x:160,y:108,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"10",fill:"#fff"},"SW1"));
+      g.appendChild(el("rect",{x:278,y:88,width:64,height:32,rx:6,fill:"#1F4E5F"}));
+      g.appendChild(el("text",{x:310,y:108,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"10",fill:"#fff"},"SW2"));
+      g.appendChild(el("rect",{x:212,y:86,width:46,height:36,rx:18,fill:"#C9720C"}));
+      g.appendChild(el("text",{x:235,y:108,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"10",fill:"#fff","font-weight":"700"},"R1"));
+      L.forEach(function(p){g.appendChild(el("path",{d:"M"+p[0]+" "+p[1]+" L 160 104",class:"wire"+(flash?" hi":"")}));});
+      R.forEach(function(p){g.appendChild(el("path",{d:"M"+p[0]+" "+p[1]+" L 310 104",class:"wire"}));});
+      g.appendChild(el("path",{d:"M192 104 L212 104",class:"wire"}));
+      g.appendChild(el("path",{d:"M258 104 L278 104",class:"wire"}));
+    }
+    L.concat(R).forEach(function(p,i){
+      var lit=flash&&(!split||i<2);
+      var gg=el("g",{class:"dev"+(lit?" hi":"")});
+      gg.appendChild(el("rect",{x:p[0]-30,y:p[1]-15,width:60,height:30,rx:5}));
+      gg.appendChild(el("text",{x:p[0],y:p[1]+4,"text-anchor":"middle"},"PC"+(i+1)));
+      g.appendChild(gg);
+    });
+  }
+  document.getElementById("bdSend").addEventListener("click",function(){
+    draw(true);
+    document.getElementById("bdOut").innerHTML=split
+      ? "The broadcast reaches <b>PC1 and PC2 only</b>. R1 does not forward it, so domain 2 never sees it and those devices waste no CPU on it."
+      : "The broadcast reaches <b>all four devices</b>. Every one of them has to process it, relevant or not. Add a hundred devices and this is where broadcast storms come from.";
+    setTimeout(function(){draw(false);},1400);
+  });
+  document.getElementById("bdToggle").addEventListener("click",function(){
+    split=!split;
+    this.textContent=split?"Remove the router":"Insert a router";
+    draw(false);
+    document.getElementById("bdOut").innerHTML=split
+      ? "A router now sits between the two switches. That's <b>two broadcast domains</b> — a broadcast domain always ends at a router."
+      : "One switch, one broadcast domain. A switch <b>extends</b> a broadcast domain; it never breaks one.";
+  });
+  draw(false);
+})();
+
+/* 09 subnetting */
+(function(){
+  var base=toInt("192.168.1.0");
+  function set(b){
+    var p=24+b,size=Math.pow(2,32-p),n=Math.pow(2,b),usable=size-2;
+    document.getElementById("subBig").innerHTML="/"+p+" &nbsp;=&nbsp; <em>"+toDot(maskInt(p))+"</em>";
+    document.getElementById("subSub").innerHTML=n+" subnets &nbsp;·&nbsp; "+usable+" usable hosts each &nbsp;·&nbsp; "+(8-b)+" host bits left";
+    var bar=document.getElementById("subBar");
+    bar.innerHTML="";
+    for(var i=0;i<n;i++){
+      var d=document.createElement("div");
+      d.className="blk z"+(i%5);
+      d.style.flex="1";
+      d.textContent=n<=8?("."+(i*size)):"";
+      bar.appendChild(d);
+    }
+    var body=document.getElementById("subBody");
+    body.innerHTML="";
+    var show=Math.min(n,8);
+    for(var j=0;j<show;j++){
+      var net=base+j*size;
+      var tr=document.createElement("tr");
+      tr.innerHTML="<td>"+toDot(net)+"/"+p+"</td><td>"+toDot(net+1)+" – "+toDot(net+size-2)+"</td><td>"+toDot(net+size-1)+"</td>";
+      body.appendChild(tr);
+    }
+    if(n>show){
+      var tr2=document.createElement("tr");
+      tr2.innerHTML="<td colspan='3'>… and "+(n-show)+" more, each "+size+" addresses apart</td>";
+      body.appendChild(tr2);
+    }
+    document.getElementById("subOut").innerHTML="Borrowing <b>"+b+" bit"+(b>1?"s":"")+"</b> gives 2<sup>"+b+"</sup> = <b>"+n+" subnets</b>. "+(8-b)+" host bits remain, so 2<sup>"+(8-b)+"</sup> − 2 = <b>"+usable+" usable hosts</b> per subnet.";
+  }
+  document.getElementById("subPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-b]");if(!b)return;pressed(this,b);set(+b.dataset.b);
+  });
+  set(2);
+})();
+
+/* 10 VLSM */
+(function(){
+  var ZONES=[
+    {n:"Upper Dorms",need:100,p:25},
+    {n:"Lower Dorms",need:50,p:26},
+    {n:"Admin Offices",need:25,p:27},
+    {n:"IoT Devices",need:10,p:28},
+    {n:"Reserved",need:10,p:28}
+  ];
+  var base=toInt("192.168.10.0"),at=0,cursor=base;
+  var bar=document.getElementById("vlBar"),body=document.getElementById("vlBody"),outEl=document.getElementById("vlOut");
+  function draw(){
+    bar.innerHTML="";body.innerHTML="";
+    var used=0;
+    for(var i=0;i<at;i++){
+      var z=ZONES[i],size=Math.pow(2,32-z.p);
+      var d=document.createElement("div");
+      d.className="blk z"+i;
+      d.style.flex=size;
+      d.textContent="/"+z.p;
+      bar.appendChild(d);
+      used+=size;
+    }
+    if(used<256){
+      var f=document.createElement("div");
+      f.className="blk free";f.style.flex=(256-used);
+      f.textContent=(256-used)+" free";
+      bar.appendChild(f);
+    }
+    var c=base;
+    for(var j=0;j<at;j++){
+      var zz=ZONES[j],sz=Math.pow(2,32-zz.p);
+      var tr=document.createElement("tr");
+      tr.innerHTML="<td>"+zz.n+"</td><td>"+zz.need+"</td><td>/"+zz.p+"</td><td>"+toDot(c+1)+" – "+toDot(c+sz-2)+"</td>";
+      body.appendChild(tr);
+      c+=sz;
+    }
+    document.getElementById("vlNext").disabled=at>=ZONES.length;
+    if(at===0){outEl.innerHTML="256 addresses, nothing allocated. Start with the <b>largest</b> requirement.";return;}
+    var z=ZONES[at-1],size=Math.pow(2,32-z.p);
+    outEl.innerHTML="<b>"+z.n+"</b> needs "+z.need+" hosts. A /"+z.p+" gives "+(size-2)+" usable — the smallest block that fits. "+(size-2-z.need)+" addresses spare."
+      +(at>=ZONES.length?" <b>All five allocated, and the /24 is exactly full.</b> Every block landed on its own boundary because they went largest first.":"");
+  }
+  document.getElementById("vlNext").addEventListener("click",function(){if(at<ZONES.length){at++;draw();}});
+  document.getElementById("vlAll").addEventListener("click",function(){at=ZONES.length;draw();});
+  document.getElementById("vlReset").addEventListener("click",function(){at=0;draw();});
+  draw();
+})();
+
+go(0);
+})();
+</script>
+</body>
+</html>
