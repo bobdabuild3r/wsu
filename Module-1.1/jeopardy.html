@@ -31,6 +31,21 @@
     font-size: 30px;
     letter-spacing: 0.5px;
     color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .version-tag {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #9fc2c9;
+    background: var(--card-done);
+    border: 1px solid #3d6a78;
+    border-radius: 4px;
+    padding: 3px 8px;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
   }
   header p {
     margin: 4px 0 0;
@@ -123,7 +138,7 @@
   }
   .cell.done:hover { transform: none; background: var(--card-done); }
 
-  #resetRow { text-align: center; padding: 14px; }
+  #resetRow { text-align: center; padding: 14px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   #resetRow button {
     background: #333;
     color: #ddd;
@@ -133,6 +148,13 @@
     cursor: pointer;
     font-size: 13px;
   }
+  #resetRow button.results-btn {
+    background: linear-gradient(90deg,#7a5a12,#8a6a1a);
+    color: #fff;
+    border: 1px solid #c9a227;
+    font-weight: 700;
+  }
+  #resetRow button:hover { filter: brightness(1.15); }
 
   /* Modal */
   #overlay {
@@ -196,99 +218,212 @@
   }
   #modal button.close { background: #555; }
   #modal button:hover { filter: brightness(1.12); }
+  #modalAssign {
+    display: none;
+    margin-bottom: 18px;
+    padding-top: 4px;
+  }
+  #modalAssign .assignLabel {
+    color: #9fc2c9;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  #modalAssign .assignRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  #modalAssign button {
+    background: var(--teal);
+    border: 1px solid #3d6a78;
+    color: #fff;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  #modalAssign button:hover { filter: brightness(1.2); background: var(--green); }
 
-  /* ---- password gate ---- */
-  #gate {
+  /* Final results modal */
+  #resultsOverlay {
+    display: none;
     position: fixed;
     inset: 0;
-    background: var(--bg);
-    z-index: 100;
-    display: flex;
+    background: rgba(0,0,0,0.86);
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    z-index: 20;
+    padding: 20px;
   }
-  #gate.unlocked { display: none; }
-  #gateBox {
-    background: var(--card);
-    border: 1px solid #2c5d70;
+  #resultsModal {
+    background: linear-gradient(180deg, #1c4356, #122c38);
     border-radius: 16px;
-    padding: 40px 38px;
-    max-width: 420px;
+    max-width: 560px;
     width: 100%;
+    padding: 36px 40px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid #2c5d70;
   }
-  #gateBox h2 {
+  #resultsModal h2 {
     margin: 0 0 6px;
-    font-size: 22px;
     color: #fff;
+    font-size: 26px;
+    letter-spacing: 0.5px;
   }
-  #gateBox p {
-    margin: 0 0 22px;
+  #resultsModal .subtitle {
     color: #9fc2c9;
+    font-size: 13px;
+    margin: 0 0 22px;
+  }
+  .tie-note {
+    color: #ffd45e;
     font-size: 14px;
-    line-height: 1.5;
+    font-weight: 700;
+    margin: 0 0 16px;
   }
-  #gateInput {
-    width: 100%;
-    background: #0f2530;
-    border: 1px solid #3d6a78;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 17px;
-    font-family: inherit;
-    padding: 12px 14px;
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .rank-row.first {
+    background: linear-gradient(90deg,#4a3a12,#5c4713);
+    border: 1px solid #c9a227;
+  }
+  .rank-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--orange);
+    min-width: 30px;
     text-align: center;
-    letter-spacing: 1px;
   }
-  #gateInput:focus {
-    outline: none;
-    border-color: var(--orange);
+  .rank-row.first .rank-num { color: #ffd45e; }
+  .rank-name {
+    flex: 1;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    word-break: break-word;
   }
-  #gateBtn {
-    margin-top: 14px;
-    width: 100%;
-    background: var(--green);
+  .rank-score {
+    font-size: 18px;
+    font-weight: 800;
+    color: #9fc2c9;
+    white-space: nowrap;
+  }
+  .rank-medal { font-size: 20px; width: 24px; text-align: center; }
+  #resultsModal button.close {
+    background: #555;
     color: #fff;
     border: none;
+    padding: 12px 26px;
     border-radius: 8px;
-    padding: 12px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    margin-top: 14px;
   }
-  #gateBtn:hover { filter: brightness(1.15); }
-  #gateError {
-    margin-top: 12px;
-    min-height: 20px;
-    color: #ff9aa8;
+  #resultsModal button.close:hover { filter: brightness(1.15); }
+
+  /* Access gate */
+  #gateOverlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 20px;
+  }
+  #gateBox {
+    background: linear-gradient(180deg, #1c4356, #122c38);
+    border-radius: 16px;
+    max-width: 420px;
+    width: 100%;
+    padding: 36px 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid #2c5d70;
+  }
+  #gateBox h2 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: 22px;
+  }
+  #gateBox p {
+    color: #9fc2c9;
     font-size: 14px;
+    margin: 0 0 20px;
   }
+  #gateInput {
+    width: 100%;
+    background: var(--card-done);
+    border: 1px solid #3d6a78;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+  }
+  #gateInput:focus { outline: none; border-color: var(--orange); }
+  #gateBox button {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 14px;
+  }
+  #gateBox button:hover { filter: brightness(1.12); }
+  #gateError {
+    display: none;
+    color: #e08787;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+  body.locked > *:not(#gateOverlay) { display: none; }
 </style>
 </head>
-<body>
+<body class="locked">
 
-<div id="gate">
+<div id="gateOverlay">
   <div id="gateBox">
-    <h2>Module 1.1 Jeopardy</h2>
+    <h2>Module 1.1 — Final Review</h2>
     <p>Enter the access code your lecturer gives you at the end of the session.</p>
-    <input id="gateInput" type="password" autocomplete="off" placeholder="Access code">
-    <button id="gateBtn">Unlock the board</button>
-    <div id="gateError"></div>
+    <input type="password" id="gateInput" placeholder="Access code" autocomplete="off">
+    <div id="gateError">That code isn't right — try again.</div>
+    <div><button id="gateSubmit">Enter</button></div>
   </div>
 </div>
 
 <header>
-  <h1>Module 1.1 — Final Review</h1>
-  <p>Pick a category and a point value. Teams answer out loud; you decide who scores.</p>
+  <h1>Module 1.1 — Final Review <span class="version-tag">Version 2.0</span></h1>
+  <p>Pick a category and a point value. Teams answer out loud; you decide who scores. Click a team's name to rename it.</p>
 </header>
 
 <div id="scoreboard"></div>
 
 <div id="board"></div>
 
-<div id="resetRow"><button onclick="resetBoard()">Reset board (new class / re-run)</button></div>
+<div id="resetRow">
+  <button class="results-btn" onclick="openResults()">🏆 Final results</button>
+  <button onclick="resetBoard()">Reset board (new class / re-run)</button>
+</div>
 
 <div id="overlay">
   <div id="modal">
@@ -296,6 +431,10 @@
     <div id="modalPoints"></div>
     <div id="modalQuestion"></div>
     <div id="modalAnswer"></div>
+    <div id="modalAssign">
+      <div class="assignLabel">Who got it right? Click a team to award the points.</div>
+      <div class="assignRow" id="assignRow"></div>
+    </div>
     <div>
       <button id="showAnswerBtn" onclick="showAnswer()">Show answer</button>
       <button class="close" onclick="closeModal()">Close</button>
@@ -303,60 +442,46 @@
   </div>
 </div>
 
+<div id="resultsOverlay">
+  <div id="resultsModal">
+    <h2>Final Results</h2>
+    <p class="subtitle">Ranked by score — highest first</p>
+    <div id="resultsList"></div>
+    <button class="close" onclick="closeResults()">Close</button>
+  </div>
+</div>
+
 <script>
-// ==========================================================
-//  ACCESS CODE — change the line below to set a new one.
-//  This is a simple classroom gate, not real security:
-//  anyone who views the page source can read this value.
-// ==========================================================
-const ACCESS_CODE = "osi7";
-
-function tryUnlock() {
-  const entered = document.getElementById("gateInput").value.trim();
-  if (entered.toLowerCase() === ACCESS_CODE.toLowerCase()) {
-    document.getElementById("gate").classList.add("unlocked");
-  } else {
-    document.getElementById("gateError").textContent = "That code isn't right. Try again.";
-    document.getElementById("gateInput").value = "";
-    document.getElementById("gateInput").focus();
-  }
-}
-document.getElementById("gateBtn").addEventListener("click", tryUnlock);
-document.getElementById("gateInput").addEventListener("keydown", function (e) {
-  if (e.key === "Enter") tryUnlock();
-});
-document.getElementById("gateInput").focus();
-
 const DATA = {
   "Devices + Basics": {
-    100: { q: "What do we call any device that sends or receives data on a network, like a laptop or a phone?", a: "A host — also called an end device" },
-    200: { q: "What does NIC stand for?", a: "Network Interface Card" },
-    300: { q: "What's the difference between a client and a server?", a: "A client requests services; a server provides them" },
-    400: { q: "Name three of the five jobs an intermediary device does.", a: "Routes data, regenerates signals, prioritises traffic, detects errors, enforces security (any three)" },
+    100: { q: "What do we call any device that sends or receives data on a network (e.g. a laptop or phone)?", a: "A host" },
+    200: { q: "What's the difference between a client and a server?", a: "A client requests services; a server provides them" },
+    300: { q: "What does NIC stand for?", a: "Network Interface Card" },
+    400: { q: "Name one thing an intermediary device like a router or switch does.", a: "Routes data / regenerates signals / prioritises traffic / detects errors / enforces security (any one)" },
   },
   "Network Design + Types": {
     100: { q: "What does LAN stand for?", a: "Local Area Network" },
     200: { q: "What does WAN stand for, and what's the largest example of one?", a: "Wide Area Network — the internet" },
-    300: { q: "What does QoS prioritise, and why?", a: "Time-sensitive traffic like voice or video, so it isn't delayed" },
-    400: { q: "What makes a network scalable, and why does peer-to-peer struggle with it?", a: "Scalable means it grows without losing performance. P2P has no central management, so bottlenecks build as devices are added" },
+    300: { q: "What makes a network 'scalable'?", a: "It can grow (more users/services) without losing performance" },
+    400: { q: "What does QoS prioritise, and why?", a: "Time-sensitive traffic like voice or video, so it isn't delayed" },
   },
   "Security": {
     100: { q: "Name the three parts of the CIA triad.", a: "Confidentiality, Integrity, Availability" },
-    200: { q: "What does a Denial of Service attack do, and which CIA principle does it break?", a: "Overloads a system so real users can't reach it — that's availability" },
+    200: { q: "What does a Denial of Service (DoS) attack do?", a: "Overloads a system so real users can't access it" },
     300: { q: "What's the difference between a virus and spyware?", a: "A virus infects and spreads, causing damage; spyware secretly collects data" },
-    400: { q: "Name two corporate security tools beyond antivirus and a basic firewall.", a: "ACLs, IPS, VPNs, dedicated firewall systems (any two)" },
+    400: { q: "Name one advanced corporate security tool beyond antivirus and a basic firewall.", a: "ACLs / IPS / VPN / dedicated firewall systems (any one)" },
   },
   "Protocols + OSI Layers": {
-    100: { q: "Which transmission type is aimed at a specific group of devices, rather than one device or all of them?", a: "Multicast" },
-    200: { q: "What are the PDU names at the transport layer and the network layer?", a: "A segment at transport; a packet at network" },
-    300: { q: "What's the difference between encapsulation and de-encapsulation?", a: "Encapsulation adds headers going down the stack when sending; de-encapsulation strips them going back up when receiving" },
-    400: { q: "Name the 7 OSI layers top to bottom, then say which three collapse into TCP/IP's application layer.", a: "Application, Presentation, Session, Transport, Network, Data Link, Physical — the top three (Application, Presentation, Session) become TCP/IP's application layer" },
+    100: { q: "Name the 7 layers of the OSI model, top to bottom.", a: "Application, Presentation, Session, Transport, Network, Data Link, Physical" },
+    200: { q: "What's the PDU (data unit name) at the Transport layer?", a: "A segment" },
+    300: { q: "What's the PDU at the Network layer?", a: "A packet" },
+    400: { q: "What's the difference between encapsulation and de-encapsulation?", a: "Encapsulation adds headers going down the stack when sending; de-encapsulation strips them going back up when receiving" },
   },
   "Cisco + Commands": {
     100: { q: "What symbol marks Privileged EXEC mode in Cisco IOS?", a: "#" },
-    200: { q: "Where does running-config live, and what happens to it on reboot if you don't save?", a: "RAM — it's lost. startup-config in NVRAM is what survives" },
-    300: { q: "You're in line configuration mode. What's the difference between typing exit and typing end?", a: "exit steps back one level to global config; end jumps straight to privileged EXEC" },
-    400: { q: "A Layer 2 switch's ports can't hold an IP address. So what do you configure to manage it remotely, and which one is the default?", a: "A Switch Virtual Interface (SVI) — interface VLAN 1 is the default" },
+    200: { q: "Where does running-config live, and what happens to it on reboot if you don't save?", a: "RAM — it's lost" },
+    300: { q: "Where is startup-config stored?", a: "NVRAM" },
+    400: { q: "What command tests connectivity between two devices?", a: "ping" },
   },
 };
 
@@ -370,6 +495,10 @@ let teams = [
 ];
 let current = null;
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 function renderScoreboard() {
   const el = document.getElementById("scoreboard");
   el.innerHTML = "";
@@ -377,7 +506,7 @@ function renderScoreboard() {
     const div = document.createElement("div");
     div.className = "team";
     div.innerHTML = `
-      <input class="teamname" value="${t.name}" onchange="renameTeam(${i}, this.value)">
+      <input class="teamname" value="${escapeHtml(t.name)}" onchange="renameTeam(${i}, this.value)">
       <div class="score">${t.score}</div>
       <div class="buttons">
         <button onclick="adjustScore(${i}, 100)">+100</button>
@@ -420,11 +549,31 @@ function openQuestion(cat, pts) {
   ansEl.style.display = "none";
   ansEl.textContent = "Answer: " + DATA[cat][pts].a;
   document.getElementById("showAnswerBtn").style.display = "inline-block";
+  document.getElementById("modalAssign").style.display = "none";
+  document.getElementById("assignRow").innerHTML = "";
   document.getElementById("overlay").style.display = "flex";
 }
 function showAnswer() {
   document.getElementById("modalAnswer").style.display = "block";
   document.getElementById("showAnswerBtn").style.display = "none";
+  renderAssignRow();
+  document.getElementById("modalAssign").style.display = "block";
+}
+function renderAssignRow() {
+  const row = document.getElementById("assignRow");
+  row.innerHTML = "";
+  const pts = current ? current.pts : 0;
+  teams.forEach((t, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = `${t.name} (+${pts})`;
+    btn.onclick = () => assignPoints(i);
+    row.appendChild(btn);
+  });
+}
+function assignPoints(i) {
+  if (!current) return;
+  adjustScore(i, current.pts);
+  closeModal();
 }
 function closeModal() {
   if (current) {
@@ -447,8 +596,76 @@ function resetBoard() {
   renderBoard();
 }
 
+/* ---------- Final results (ranked, ties share a rank) ---------- */
+function computeRanking() {
+  const sorted = [...teams].sort((a, b) => b.score - a.score);
+  let rank = 0, lastScore = null;
+  return sorted.map((t, i) => {
+    if (lastScore === null || t.score !== lastScore) {
+      rank = i + 1;
+      lastScore = t.score;
+    }
+    return { name: t.name, score: t.score, rank };
+  });
+}
+
+function openResults() {
+  const ranked = computeRanking();
+  const topRank = ranked.length ? ranked[0].rank : 1;
+  const winners = ranked.filter(r => r.rank === topRank);
+  const list = document.getElementById("resultsList");
+  list.innerHTML = "";
+
+  if (winners.length > 1) {
+    const note = document.createElement("p");
+    note.className = "tie-note";
+    note.textContent = `It's a tie for 1st: ${winners.map(w => w.name).join(" & ")}!`;
+    list.appendChild(note);
+  }
+
+  ranked.forEach(r => {
+    const row = document.createElement("div");
+    row.className = "rank-row" + (r.rank === 1 ? " first" : "");
+    const medal = r.rank === 1 ? "🏆" : r.rank === 2 ? "🥈" : r.rank === 3 ? "🥉" : "";
+    row.innerHTML = `<div class="rank-num">${r.rank}</div><div class="rank-name">${escapeHtml(r.name)}</div><div class="rank-score">${r.score} pts</div><div class="rank-medal">${medal}</div>`;
+    list.appendChild(row);
+  });
+
+  document.getElementById("resultsOverlay").style.display = "flex";
+}
+function closeResults() {
+  document.getElementById("resultsOverlay").style.display = "none";
+}
+
 renderScoreboard();
 renderBoard();
+
+/* ---------- Access gate ---------- */
+(function () {
+  var ACCESS_CODE = "osi7";
+  var input = document.getElementById("gateInput");
+  var submitBtn = document.getElementById("gateSubmit");
+  var errorEl = document.getElementById("gateError");
+  var overlay = document.getElementById("gateOverlay");
+
+  function tryUnlock() {
+    var val = (input.value || "").trim().toLowerCase();
+    if (val === ACCESS_CODE) {
+      document.body.classList.remove("locked");
+      overlay.style.display = "none";
+    } else {
+      errorEl.style.display = "block";
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  submitBtn.addEventListener("click", tryUnlock);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") tryUnlock();
+  });
+  input.focus();
+})();
 </script>
 </body>
 </html>
