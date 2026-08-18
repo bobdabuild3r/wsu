@@ -4,18 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Module 1.1 — Recap before the game</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#16181d; --ink-soft:#4a5058;
-  --paper:#ecebe5; --card:#f7f6f2;
-  --crimson:#a6093d; --steel:#33596b;
-  --rule:#cbc8bd; --ok:#2f7a4f; --warn:#b4611a;
-  --display:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
-  --body:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --ink:#1a1a1a; --ink-soft:#5b6a6d;
+  --paper:#f5f8f8; --card:#fff;
+  --crimson:#C9720C; --steel:#1F4E5F;
+  --rule:#dde6e6; --ok:#2E7D6E; --warn:#C9720C;
+  --display:'Segoe UI',Calibri,Arial,sans-serif;
+  --body:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -23,23 +22,23 @@ body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:
 button{font-family:inherit;font-size:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--steel);outline-offset:2px}
 
-header.top{position:sticky;top:0;z-index:40;background:var(--ink);color:var(--paper);border-bottom:3px solid var(--crimson)}
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff;}
 .bar{max-width:1240px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .brand{font-family:var(--display);font-weight:700;font-size:15px;white-space:nowrap;letter-spacing:-.01em}
 .brand span{color:var(--crimson)}
-.version-tag{font-family:var(--mono);font-size:10px;font-weight:600;color:#7d838c;background:#242830;border:1px solid #3a3f47;border-radius:2px;padding:2px 6px;white-space:nowrap;letter-spacing:.02em}
+.version-tag{font-family:var(--mono);font-size:10px;font-weight:600;color:#9fc2c9;background:rgba(255,255,255,.12);border:1px solid #3d6a78;border-radius:2px;padding:2px 6px;white-space:nowrap;letter-spacing:.02em}
 nav.steps{display:flex;gap:3px;flex:1 1 100%;order:3;flex-wrap:wrap}
 @media(min-width:1100px){nav.steps{flex:1 1 auto;order:0}}
-nav.steps button{background:transparent;border:1px solid #3a3f47;color:#b9bcc2;border-radius:2px;padding:4px 8px;font-size:12px;display:flex;align-items:baseline;gap:6px;transition:.15s}
-nav.steps button b{font-family:var(--mono);font-size:10px;color:#7d838c}
+nav.steps button{background:transparent;border:1px solid #3d6a78;color:#cfe3e6;border-radius:2px;padding:4px 8px;font-size:12px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:10px;color:#9fc2c9}
 nav.steps button:hover{color:#fff;border-color:#6d737c}
 nav.steps button[aria-current="true"]{background:var(--crimson);border-color:var(--crimson);color:#fff}
-nav.steps button[aria-current="true"] b{color:#f0b3c6}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
 .clock{display:flex;align-items:center;gap:7px;white-space:nowrap;margin-left:auto}
 .clock output{font-family:var(--mono);font-size:18px;font-weight:600;min-width:60px;text-align:right}
-.clock output.low{color:#ff8f9f}
-.clock button{background:#242830;border:1px solid #3a3f47;color:#d7d9dd;border-radius:2px;padding:4px 9px;font-size:12px}
-.clock button:hover{background:#2f343d}
+.clock output.low{color:#ffb36b}
+.clock button{background:rgba(255,255,255,.12);border:1px solid #3d6a78;color:#d7d9dd;border-radius:2px;padding:4px 9px;font-size:12px}
+.clock button:hover{background:#2c6478}
 .progress{height:3px;background:var(--rule)}
 .progress i{display:block;height:100%;background:var(--crimson);transition:width .3s}
 
@@ -59,10 +58,10 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(27px,4.2vw,42px);l
 .stage{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:20px}
 .stage h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 15px;font-weight:600}
 .controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}
-.controls button{background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:2px;padding:7px 13px;font-size:13.5px;font-weight:500;transition:.15s}
+.controls button{background:var(--teal);color:#fff;border:1px solid var(--ink);border-radius:2px;padding:7px 13px;font-size:13.5px;font-weight:500;transition:.15s}
 .controls button:hover:not(:disabled){background:var(--crimson);border-color:var(--crimson)}
 .controls button.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
-.controls button.ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.controls button.ghost:hover{background:var(--teal);color:#fff;border-color:var(--ink)}
 .controls button:disabled{opacity:.34;cursor:not-allowed}
 .readout{font-family:var(--mono);font-size:13px;color:var(--ink-soft);margin-top:13px;min-height:20px;line-height:1.6}
 .readout b{color:var(--crimson);font-weight:600}
@@ -93,10 +92,10 @@ svg.viz{width:100%;height:auto;display:block}
 .blocks{display:flex;gap:3px;min-height:36px}
 .blk{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;border-radius:2px;padding:0 6px;white-space:nowrap;animation:pop .3s ease-out}
 @keyframes pop{from{transform:scaleX(.2);opacity:0}to{transform:none;opacity:1}}
-.blk.data{background:var(--ink);color:var(--paper);flex:1;min-width:72px}
-.blk.h4{background:#3f7186;color:#fff}
+.blk.data{background:var(--teal);color:#fff;flex:1;min-width:72px}
+.blk.h4{background:#2E7D6E;color:#fff}
 .blk.h3{background:var(--steel);color:#fff}
-.blk.h2{background:#7c4a63;color:#fff}
+.blk.h2{background:#C9720C;color:#fff}
 .blk.bits{background:transparent;border:1px dashed var(--rule);color:var(--ink-soft);flex:1;letter-spacing:.22em}
 
 /* model map */
@@ -106,11 +105,11 @@ svg.viz{width:100%;height:auto;display:block}
 .lyr i{font-family:var(--mono);font-style:normal;font-size:10.5px;color:var(--ink-soft);min-width:12px}
 .lyr.dim{opacity:.28}
 .lyr.match{background:var(--crimson);border-color:var(--crimson);color:#fff}
-.lyr.match i{color:#f0b3c6}
+.lyr.match i{color:#ffe0bd}
 .mapcol.tcp .lyr{cursor:pointer}
 .mapcol.tcp .lyr:hover{border-color:var(--steel)}
 .mapcol.tcp .lyr.sel{background:var(--ink);border-color:var(--ink);color:#fff}
-.mapcol.tcp .lyr.sel i{color:#9aa1ab}
+.mapcol.tcp .lyr.sel i{color:#9fc2c9}
 
 /* CIA quiz */
 .qcard{background:#fff;border:1px solid var(--rule);border-radius:3px;padding:15px;margin-bottom:13px}
@@ -140,12 +139,12 @@ svg.viz{width:100%;height:auto;display:block}
 @media(max-width:520px){.mem{grid-template-columns:1fr}}
 .memcard{border:1px solid var(--rule);border-radius:3px;background:#fff;overflow:hidden}
 .memhead{padding:7px 10px;border-bottom:1px solid var(--rule)}
-.memcard.ram .memhead{background:#dfe7ea}
-.memcard.nvram .memhead{background:#e7e2d4}
+.memcard.ram .memhead{background:#e3eef0}
+.memcard.nvram .memhead{background:#f3ece1}
 .memhead .t{font-family:var(--mono);font-size:11.5px;font-weight:600}
 .memhead .s{font-size:10.5px;color:var(--ink-soft);display:block;margin-top:1px}
 .memcard pre{margin:0;padding:10px;font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre-wrap;min-height:100px}
-.memcard pre .chg{background:#ffe9c9;padding:0 3px;border-radius:2px}
+.memcard pre .chg{background:#ffe6c2;padding:0 3px;border-radius:2px}
 .flag{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 5px;border-radius:2px;margin-left:6px}
 .flag.unsaved{background:var(--warn);color:#fff}
 .flag.saved{background:var(--ok);color:#fff}
@@ -155,7 +154,7 @@ svg.viz{width:100%;height:auto;display:block}
 .term .fail{color:#ff9aa8}
 .term .pass{color:#7fd8a0}
 .term .cmd{color:#ffd082}
-.term .note{color:#8a9098}
+.term .note{color:#8fb0b8}
 #cliTerm{min-height:210px;max-height:260px}
 .modechip{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:2px;background:var(--crimson);color:#fff;margin-bottom:12px;letter-spacing:.04em}
 
@@ -185,22 +184,14 @@ svg.viz{width:100%;height:auto;display:block}
 .physgallery figcaption b{color:var(--ink);font-weight:600}
 
 /* notes */
-#notes{position:fixed;right:0;bottom:0;top:0;width:min(410px,93vw);z-index:60;background:var(--ink);color:#d9dbdf;padding:22px;overflow-y:auto;transform:translateX(101%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-14px 0 40px rgba(0,0,0,.22)}
-#notes.open{transform:none}
-#notes h2{font-family:var(--display);font-size:18px;margin:0 0 4px;color:#fff}
-#notes .sub{font-size:12.5px;color:#8a9098;margin:0 0 18px}
-#notes h3{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ff8fa8;margin:20px 0 7px;font-weight:600}
-#notes p{font-size:13.5px;line-height:1.55;margin:0 0 9px}
-#notes code{font-family:var(--mono);font-size:12px;background:#262a31;padding:1px 5px;border-radius:2px}
-#notes .close{position:absolute;top:16px;right:18px;background:transparent;border:1px solid #3a3f47;color:#b9bcc2;border-radius:2px;padding:3px 9px;font-size:12px}
 
 .footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(236,235,229,.94);backdrop-filter:blur(8px);border-top:1px solid var(--rule)}
 .footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
-.footnav button{background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:2px;padding:8px 15px;font-size:14px;font-weight:500}
+.footnav button{background:var(--teal);color:#fff;border:1px solid var(--ink);border-radius:2px;padding:8px 15px;font-size:14px;font-weight:500}
 .footnav button:hover:not(:disabled){background:var(--crimson);border-color:var(--crimson)}
 .footnav button:disabled{opacity:.3;cursor:not-allowed}
 .footnav button.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
-.footnav button.ghost:hover{background:var(--ink);color:var(--paper)}
+.footnav button.ghost:hover{background:var(--teal);color:#fff}
 .footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);text-align:center}
 @media(max-width:700px){.footnav .hint{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -215,7 +206,6 @@ svg.viz{width:100%;height:auto;display:block}
     <div class="clock">
       <output id="clock">30:00</output>
       <button id="clockBtn">Start</button>
-      <button id="notesBtn">Notes</button>
     </div>
     <nav class="steps" id="steps" aria-label="Concepts"></nav>
   </div>
@@ -314,7 +304,7 @@ svg.viz{width:100%;height:auto;display:block}
   <div class="head">
     <p class="eyebrow">Concept 04 — Network security</p>
     <h1>Confidentiality. Integrity. Availability.</h1>
-    <p class="lede">Three principles, and every security control in the module serves one of them. If a student can sort a scenario into the right bucket, they understand it.</p>
+    <p class="lede">Three principles, and every security control in this module serves one of them. If you can sort a scenario into the right bucket, you understand it.</p>
   </div>
   <div class="split">
     <div class="prose">
@@ -432,8 +422,8 @@ svg.viz{width:100%;height:auto;display:block}
       <p class="keyline">Segment → packet → frame → bits. Four names, one piece of data.</p>
       <p>Going down the stack on the sending device, every protocol layer wraps the data in its own header. That's <strong>encapsulation</strong>.</p>
       <p>At the far end the process runs backwards, header by header, until the original data comes back out. That's <strong>de-encapsulation</strong>.</p>
-      <p>The form the data takes at each layer is the <strong>Protocol Data Unit</strong>, or PDU. Students lose marks here by mixing up packet and frame, so drill the order.</p>
-      <p>Ask the room before you click: <em>what is it called at the network layer?</em></p>
+      <p>The form the data takes at each layer is the <strong>Protocol Data Unit</strong>, or PDU. Packet and frame are the two that get mixed up most often, so learn the order.</p>
+      <p>Before you click, answer this: <em>what is it called at the network layer?</em></p>
     </div>
     <div class="stage">
       <h3>Push the data down the stack</h3>
@@ -521,7 +511,7 @@ svg.viz{width:100%;height:auto;display:block}
   <div class="head">
     <p class="eyebrow">Concept 10 — Config files</p>
     <h1>RAM forgets. NVRAM remembers.</h1>
-    <p class="lede">running-config is live and volatile. startup-config survives a reboot. Every student who loses a lab config has lost this distinction, not the commands.</p>
+    <p class="lede">running-config is live and volatile. startup-config survives a reboot. Losing an hour of lab work almost always comes down to this distinction, not the commands.</p>
   </div>
   <div class="split">
     <div class="prose">
@@ -586,48 +576,11 @@ svg.viz{width:100%;height:auto;display:block}
 <div class="footnav">
   <div class="in">
     <button id="prev" class="ghost">← Back</button>
-    <span class="hint">← → to move · N for instructor notes</span>
+    <span class="hint">Use ← → or the buttons to move</span>
     <button id="next">Next →</button>
   </div>
 </div>
 
-<aside id="notes" aria-label="Instructor notes" aria-hidden="true">
-  <button class="close" id="notesClose">Close</button>
-  <h2>Instructor notes</h2>
-  <p class="sub">Hidden from students unless you open this panel.</p>
-
-  <h3>Four errors in the module</h3>
-  <p><b>1. The save command is missing.</b> Page 40 says config changes must be "saved to NVRAM using the appropriate command" — that command never appears in the 17-command list on pages 42–48. Give them <code>copy running-config startup-config</code> explicitly.</p>
-  <p><b>2. reload is shown in the wrong mode.</b> Page 46 prints <code>Switch(config)# reload</code>. On real IOS, reload is a privileged EXEC command — <code>Switch# reload</code>. The simulator on concept 08 uses the correct mode. Decide whether to correct it in class.</p>
-  <p><b>3. Banner text typo.</b> Page 46 reads "Do not access device with authorisation!" — should be "without".</p>
-  <p><b>4. Prompt typo.</b> Page 44 prints <code>Switch)# exit</code> — missing the hash placement, should be <code>Switch#</code>.</p>
-
-  <h3>Not in the module at all</h3>
-  <p><b>MAC addresses.</b> I searched all 56 pages. Zero hits. The module covers logical addressing (IP) but never introduces physical addressing at the data link layer. If your Jeopardy board has a MAC clue, it came from outside this module.</p>
-
-  <h3>What I added beyond the source</h3>
-  <p>The OSI-to-TCP/IP mapping on concept 06 is the standard mapping. The module describes both models separately and never lines them up.</p>
-  <p>Concept 07 shows headers only, no data link trailer. The module never names a trailer or FCS, so I left it out rather than teach past the source.</p>
-  <p>The six CIA scenarios on concept 04 are mine, built from the threat list on page 15. The principles and controls are verbatim from pages 14–16.</p>
-  <p>The "trade the security budget" pie on concept 04 is also mine, not from the module — it's a simplified, illustrative model (spend more on one principle, the sliders take it from the other two) to make the tension between C/I/A concrete. It isn't a claim that the three are always strictly zero-sum in a real system; say that out loud if a sharp student pushes back.</p>
-  <p>Concept 08 (physical setup — console cable, rollover cable, 9600 8N1, switch vs router hardware) is entirely mine too. I searched the 56-page source specifically for console-cable or physical-connection content and found none — the module goes straight into CLI commands without ever describing how you physically reach that first prompt. Everything in concept 08 is standard Cisco/CCNA practice, not verified against this module's own pages.</p>
-
-  <h3>Timing</h3>
-  <p>Ten concepts on a 25-minute clock is roughly 2:30 each. If the Jeopardy game follows in the same 30-minute block, this recap will eat it. See the note I sent with the file.</p>
-
-  <h3>Questions for the room</h3>
-  <p>01 — "Is a router an end device or an intermediary device?"</p>
-  <p>02 — "The internet is a LAN or a WAN?"</p>
-  <p>03 — "Why doesn't a hospital run peer-to-peer?"</p>
-  <p>04 — Ask them to call the letter before anyone clicks. Then: "if you max out confidentiality, what happens to availability, and is that always true in the real world?"</p>
-  <p>05 — "Which one saves bandwidth, and why?"</p>
-  <p>06 — "Which OSI layers disappear into TCP/IP's application layer?"</p>
-  <p>07 — "What's it called at the network layer?"</p>
-  <p>08 — "Why can't you just SSH into a brand new switch straight out of the box?"</p>
-  <p>09 — "What's the difference between exit and end?"</p>
-  <p>10 — "Power dropped after an hour of config. What survived?"</p>
-  <p>11 — "Why can't I ping port Fa0/1?"</p>
-</aside>
 
 <script>
 (function(){
@@ -659,16 +612,10 @@ function go(i){
 document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
 document.getElementById("next").addEventListener("click",function(){go(cur+1);});
 
-var notes=document.getElementById("notes");
-function toggleNotes(o){notes.classList.toggle("open",o);notes.setAttribute("aria-hidden",o?"false":"true");}
-document.getElementById("notesBtn").addEventListener("click",function(){toggleNotes(!notes.classList.contains("open"));});
-document.getElementById("notesClose").addEventListener("click",function(){toggleNotes(false);});
 document.addEventListener("keydown",function(e){
   var t=e.target.tagName; if(t==="INPUT"||t==="TEXTAREA")return;
   if(e.key==="ArrowRight")go(cur+1);
   else if(e.key==="ArrowLeft")go(cur-1);
-  else if(e.key==="n"||e.key==="N")toggleNotes(!notes.classList.contains("open"));
-  else if(e.key==="Escape")toggleNotes(false);
 });
 
 /* ---------- clock ---------- */
@@ -741,10 +688,10 @@ paint();
   var groups={};
   function box(x,y,w,h,label){
     var g=el("g",{});
-    g.appendChild(el("rect",{x:x,y:y,width:w,height:h,rx:3,fill:"#fff",stroke:"#16181d","stroke-width":1.8}));
+    g.appendChild(el("rect",{x:x,y:y,width:w,height:h,rx:3,fill:"#fff",stroke:"#1a1a1a","stroke-width":1.8}));
     g.appendChild(el("text",{x:x+w/2,y:y+h+15,"text-anchor":"middle",class:"cap"},label));
     for(var i=0;i<3;i++){
-      g.appendChild(el("circle",{cx:x+14+i*(w-28)/2,cy:y+h/2,r:5,fill:"#a6093d"}));
+      g.appendChild(el("circle",{cx:x+14+i*(w-28)/2,cy:y+h/2,r:5,fill:"#C9720C"}));
     }
     return g;
   }
@@ -752,7 +699,7 @@ paint();
   groups.b2=box(180,70,110,54,"LAN 2");
   groups.b3=box(330,70,110,54,"LAN 3");
   var cloud=el("g",{});
-  cloud.appendChild(el("ellipse",{cx:235,cy:180,rx:96,ry:26,fill:"#e4e2da",stroke:"#33596b","stroke-width":1.8}));
+  cloud.appendChild(el("ellipse",{cx:235,cy:180,rx:96,ry:26,fill:"#e3eef0",stroke:"#1F4E5F","stroke-width":1.8}));
   cloud.appendChild(el("text",{x:235,y:184,"text-anchor":"middle",class:"cap"},"WAN / internet"));
   var links=el("g",{});
   [85,235,385].forEach(function(x){
@@ -875,7 +822,7 @@ paint();
   var vals={C:document.getElementById("ciaCVal"),I:document.getElementById("ciaIVal"),A:document.getElementById("ciaAVal")};
   var out=document.getElementById("ciaTriOut");
   var state={C:34,I:33,A:33};
-  var COLORS={C:"#a6093d",I:"#33596b",A:"#2f7a4f"};
+  var COLORS={C:"#C9720C",I:"#1F4E5F",A:"#2E7D6E"};
   var NAMES={C:"Confidentiality",I:"Integrity",A:"Availability"};
 
   function paintPie(){
@@ -1031,15 +978,15 @@ paint();
     pc.appendChild(el("text",{x:70,y:98,"text-anchor":"middle"},"PC"));
     pc.appendChild(el("text",{x:70,y:112,"text-anchor":"middle"},"terminal emulator"));
     svg.appendChild(pc);
-    svg.appendChild(el("rect",{x:chassisX,y:70,width:chassisW,height:56,rx:4,fill:"#f0eee8",stroke:"#16181d","stroke-width":2}));
-    svg.appendChild(el("text",{x:chassisX+14,y:64,"font-family":"IBM Plex Mono, monospace","font-size":"11",fill:"#4a5058"},d.label));
+    svg.appendChild(el("rect",{x:chassisX,y:70,width:chassisW,height:56,rx:4,fill:"#eef4f4",stroke:"#1a1a1a","stroke-width":2}));
+    svg.appendChild(el("text",{x:chassisX+14,y:64,"font-family":"Consolas, monospace","font-size":"11",fill:"#5b6a6d"},d.label));
     d.ports.forEach(function(p,i){
       var g=el("g",{class:"dport"});
       g.appendChild(el("rect",{x:chassisX+pad+i*pitch,y:88,width:portW,height:24,rx:2}));
       g.appendChild(el("text",{x:chassisX+pad+i*pitch+portW/2,y:126,"text-anchor":"middle"},p));
       svg.appendChild(g);
     });
-    svg.appendChild(el("text",{x:chassisX+14,y:144,"font-family":"IBM Plex Mono, monospace","font-size":"9.5",fill:"#4a5058"},d.note));
+    svg.appendChild(el("text",{x:chassisX+14,y:144,"font-family":"Consolas, monospace","font-size":"9.5",fill:"#5b6a6d"},d.note));
     var cpX=chassisX+chassisW-pad-52,cpY=32;
     consolePort=el("g",{class:"consoleport"});
     consolePort.appendChild(el("rect",{x:cpX,y:cpY,width:52,height:24,rx:2}));
@@ -1200,15 +1147,15 @@ paint();
 /* ================= 11 SVI ================= */
 (function(){
   var sw=document.getElementById("sviViz");
-  sw.appendChild(el("rect",{x:40,y:50,width:390,height:96,rx:4,fill:"#f0eee8",stroke:"#16181d","stroke-width":2}));
-  sw.appendChild(el("text",{x:56,y:72,"font-family":"IBM Plex Mono, monospace","font-size":"11",fill:"#4a5058"},"Layer 2 switch"));
+  sw.appendChild(el("rect",{x:40,y:50,width:390,height:96,rx:4,fill:"#eef4f4",stroke:"#1a1a1a","stroke-width":2}));
+  sw.appendChild(el("text",{x:56,y:72,"font-family":"Consolas, monospace","font-size":"11",fill:"#5b6a6d"},"Layer 2 switch"));
   ["Fa0/1","Fa0/2","Fa0/3","Fa0/4"].forEach(function(p,i){
     var g=el("g",{class:"port"});
     g.appendChild(el("rect",{x:56+i*54,y:90,width:42,height:26,rx:2}));
     g.appendChild(el("text",{x:77+i*54,y:130,"text-anchor":"middle"},p));
     sw.appendChild(g);
   });
-  sw.appendChild(el("text",{x:56,y:168,"font-family":"IBM Plex Mono, monospace","font-size":"10",fill:"#a6093d"},"physical ports — Layer 2 only, no IP addressing"));
+  sw.appendChild(el("text",{x:56,y:168,"font-family":"Consolas, monospace","font-size":"10",fill:"#C9720C"},"physical ports — Layer 2 only, no IP addressing"));
   var box=el("g",{class:"svibox"});
   box.appendChild(el("rect",{x:292,y:86,width:124,height:34,rx:2}));
   box.appendChild(el("text",{x:354,y:100,"text-anchor":"middle"},"interface vlan 1"));
