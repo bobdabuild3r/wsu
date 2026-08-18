@@ -23,6 +23,7 @@ header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
 .bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .brand{font-weight:700;font-size:16px;white-space:nowrap}
 .brand span{color:var(--orange)}
+.brand .ver{font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.16);color:#fff;border-radius:5px;padding:2px 7px;margin-left:4px;letter-spacing:.04em}
 nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
 @media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
 nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
@@ -45,7 +46,7 @@ main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
 .head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
 .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
 h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
-.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.lede{margin:0;max-width:none;color:var(--muted);font-size:17.5px}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
 @media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
 .prose p{margin:0 0 13px;max-width:52ch}
@@ -77,12 +78,141 @@ svg.viz{width:100%;height:auto;display:block}
 .wire.hi{stroke:var(--orange);stroke-width:2.8}
 .cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
 
-/* 32-bit strip */
-.strip{display:flex;gap:2px;margin:6px 0 4px}
-.sbit{flex:1;height:34px;border-radius:3px;background:var(--teal);transition:.2s;position:relative}
-.sbit.host{background:#dfe7e8}
-.sbit.edge{box-shadow:0 0 0 2px var(--orange)}
-.striplbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-bottom:12px}
+
+
+/* ---- stacked layout: full-width prose above a full-width interactive ---- */
+.stacked{display:block}
+.stacked .prose{margin-bottom:20px}
+.stacked .prose p{max-width:none}
+.stacked .prose .keyline{font-size:19px}
+.stacked .stage{padding:24px 26px}
+.stacked .stage h3{font-size:13px}
+.stacked .dotted{font-size:clamp(19px,3.4vw,30px)}
+.stacked .subline{font-size:14.5px}
+.stacked .spacebar{height:64px}
+.stacked .blk{font-size:12px}
+.stacked .tbl{font-size:13.5px}
+.stacked .tbl th{font-size:11px;padding:8px 10px}
+.stacked .tbl td{padding:8px 10px}
+.stacked .readout{font-size:15.5px}
+.stacked .pills button{font-size:15px;padding:8px 15px}
+
+/* ---- numbered step ladder ---- */
+.ladder{margin:14px 0 4px;padding:0;list-style:none;counter-reset:none}
+.ladder li{display:flex;align-items:center;gap:12px;padding:10px 13px;border-radius:9px;margin-bottom:6px;background:#eef4f4;font-size:15px;line-height:1.35;transition:.2s}
+.ladder li .n{font-family:var(--mono);font-size:13px;font-weight:700;background:var(--teal);color:#fff;border-radius:6px;padding:3px 10px;flex:none;min-width:28px;text-align:center}
+.ladder li.ok{background:#e4f2ea}
+.ladder li.ok .n{background:var(--green)}
+
+/* ---- concept 04: binary AND comparison ---- */
+.andwrap{margin-top:14px}
+.bside{border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;background:#fff;margin-bottom:12px}
+.bside.mine{border-left:5px solid var(--teal)}
+.bside.dest{border-left:5px solid var(--orange)}
+.bside .sh{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:10px}
+.brow{display:grid;grid-template-columns:112px 1fr 132px;gap:10px;align-items:center;padding:5px 0;transition:.25s}
+.brow.hide{opacity:.16}
+.brow .bl{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;font-weight:700;line-height:1.25}
+.brow .bd{font-family:var(--mono);font-size:clamp(12px,2.1vw,16px);font-weight:700;text-align:right;color:var(--text)}
+.brow .bd.pend{color:#b9cbcd}
+.bbits{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto}
+.boct{display:flex;gap:2px}
+.bb{width:clamp(11px,1.75vw,19px);text-align:center;font-family:var(--mono);font-size:clamp(9px,1.5vw,13px);font-weight:700;padding:5px 0;border-radius:3px;transition:.2s}
+.bb.n{background:#dce8ea;color:var(--teal)}
+.bb.h{background:#f4eee6;color:#8a7a66}
+.bb.m1{background:var(--teal);color:#fff}
+.bb.m0{background:#f7e6d2;color:#8a4d05}
+.bb.r{background:var(--green);color:#fff}
+.bb.blank{background:#eef4f4;color:transparent}
+.bb.dim{opacity:.3}
+.andline{border-top:2px solid var(--line);margin:6px 0 2px}
+.truth{display:inline-flex;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;padding:8px 10px;background:#eef4f4;border-radius:8px}
+.truth b{color:var(--teal)}
+.verdict{border-radius:12px;padding:16px 18px;margin-top:14px;display:none}
+.verdict.on{display:block}
+.verdict.same{background:#e4f2ea;border:2px solid var(--green)}
+.verdict.diff{background:#fff4e6;border:2px solid var(--orange)}
+.verdict .vh{font-size:19px;font-weight:700;margin-bottom:6px}
+.verdict.same .vh{color:#1f5c48}
+.verdict.diff .vh{color:#8a4d05}
+.verdict p{margin:0;font-size:15px;line-height:1.5;max-width:78ch}
+.verdict .cmp{font-family:var(--mono);font-size:clamp(13px,2.3vw,18px);font-weight:700;margin-bottom:10px}
+.verdict.same .cmp{color:#1f5c48}
+.verdict.diff .cmp{color:#8a4d05}
+
+/* ---- concept 01: full-width solo layout ---- */
+.solo{display:block}
+.solo .stage{padding:24px 26px}
+.solo .octrow{margin:16px 0 6px}
+.solo .oct{padding:12px 10px 10px}
+.solo .oct .oh{font-size:11px;margin-bottom:8px}
+.solo .obit,.solo .mbit{padding:12px 0;font-size:15px;border-radius:5px}
+.solo .octbits{gap:4px;margin-bottom:10px}
+.solo .pv8{font-size:11px}
+.solo .octval{font-size:clamp(20px,3.2vw,30px)}
+.solo .octmax{font-size:11.5px}
+.solo .octsplit,.solo .maskall{font-size:11px;padding-top:6px;margin-top:6px}
+.solo .octgap{font-size:30px;padding:0 8px}
+.solo .pairitem .pv{font-size:clamp(19px,3.4vw,30px)}
+.solo .pairitem .pl{font-size:12px}
+.solo .pairnote{font-size:15px;max-width:70ch;margin-left:auto;margin-right:auto}
+.solo .rowlbl{font-size:12px;margin:20px 0 4px}
+.solo .legend{font-size:12.5px}
+.solo .readout{font-size:15.5px;max-width:none}
+.solo .subline{font-size:14px}
+.solo .stage h3{font-size:13px}
+@media(max-width:700px){
+  .solo .obit,.solo .mbit{padding:8px 0;font-size:11px}
+  .solo .octbits{gap:2px}
+  .solo .oct{padding:7px 5px 6px}
+  .solo .octgap{font-size:20px;padding:0 3px}
+}
+
+/* ---- concept 01: address + mask pairing ---- */
+.pairbox{background:#fff7ed;border:2px solid var(--orange);border-radius:12px;padding:14px 12px;margin-bottom:6px}
+.pairrow{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.pairitem{text-align:center}
+.pairitem .pl{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px}
+.pairitem .pv{display:block;font-family:var(--mono);font-size:clamp(15px,3.2vw,22px);font-weight:700;color:var(--teal)}
+.pairitem .pv.mk{color:var(--orange)}
+.pairplus{font-size:26px;font-weight:700;color:var(--orange);line-height:1}
+.pairnote{margin:10px 0 0;text-align:center;font-size:13.5px;color:#8a4d05;line-height:1.4}
+.pairnote b{color:#6d3a04}
+
+/* ---- concept 01: four octets ---- */
+.rowlbl{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;margin:14px 0 2px}
+.rowlbl .tag{padding:2px 8px;border-radius:5px;color:#fff}
+.rowlbl .tag.ip{background:var(--teal)}
+.rowlbl .tag.mk{background:var(--orange)}
+.rowlbl .hint{color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none;font-size:11.5px}
+.oct.ro{background:#fbfcfc}
+.mbit{flex:1;min-width:0;border:none;border-radius:3px;padding:7px 0;font-family:var(--mono);font-size:11px;font-weight:700;transition:.15s;line-height:1;text-align:center;cursor:default}
+.mbit.one{background:var(--teal);color:#fff}
+.mbit.zero{background:#f7e6d2;color:#8a4d05}
+.maskall{text-align:center;font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:4px;padding-top:4px;border-top:1px solid var(--line)}
+
+.octrow{display:flex;align-items:stretch;gap:0;margin:14px 0 4px}
+.octgap{display:flex;align-items:center;font-family:var(--mono);font-size:22px;font-weight:700;color:var(--teal);padding:0 5px;align-self:center}
+.oct{flex:1;border:2px solid var(--line);border-radius:10px;padding:8px 6px 7px;background:#fff;min-width:0}
+.oct .oh{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;font-weight:700;margin-bottom:6px}
+.octbits{display:flex;gap:2px;margin-bottom:7px}
+.obit{flex:1;min-width:0;border:none;border-radius:3px;padding:7px 0;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;transition:.15s;line-height:1}
+.obit.net{background:#dce8ea;color:var(--teal)}
+.obit.net.on{background:var(--teal);color:#fff}
+.obit.host{background:#f7e6d2;color:#8a4d05}
+.obit.host.on{background:var(--orange);color:#fff}
+.obit:hover{filter:brightness(.94)}
+.octval{text-align:center;font-family:var(--mono);font-weight:700;font-size:clamp(15px,3vw,21px);color:var(--text);line-height:1.1}
+.octmax{text-align:center;font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:2px}
+.octsplit{text-align:center;font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:4px;padding-top:4px;border-top:1px solid var(--line)}
+.pvline{display:flex;gap:2px;margin-bottom:4px}
+.pv8{flex:1;min-width:0;text-align:center;font-family:var(--mono);font-size:8.5px;color:var(--muted)}
+.legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:13px;height:13px;border-radius:3px;display:inline-block}
+.legend i.n{background:var(--teal)}
+.legend i.h{background:var(--orange)}
+
 .dotted{font-family:var(--mono);font-size:clamp(16px,3.6vw,25px);font-weight:700;text-align:center;margin:12px 0 2px;color:var(--teal)}
 .dotted em{font-style:normal;color:var(--orange)}
 .subline{font-family:var(--mono);font-size:12.5px;text-align:center;color:var(--muted)}
@@ -159,9 +289,9 @@ svg.viz{width:100%;height:auto;display:block}
 
 <header class="top">
   <div class="bar">
-    <div class="brand">COMP1016 <span>/</span> Module 2.1 Recap</div>
+    <div class="brand">COMP1016 <span>/</span> Module 2.1 Recap <span class="ver">v2.0</span></div>
     <div class="clock">
-      <output id="clock">25:00</output>
+      <output id="clock">30:00</output>
       <button id="clockBtn">Start</button>
     </div>
     <nav class="steps" id="steps" aria-label="Concepts"></nav>
@@ -178,19 +308,32 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>Every IPv4 address is two things wearing one coat.</h1>
     <p class="lede">Part of it names the network. The rest names the device on it. Nothing in the address itself tells you where the line falls — the subnet mask does that.</p>
   </div>
-  <div class="split">
-    <div class="prose">
-      <p class="keyline">The network portion says which network. The host portion says which device. The mask decides where one ends and the other begins.</p>
-      <p>An IPv4 address is a 32-bit identifier, written as four 8-bit <strong>octets</strong> in dotted decimal — <code>192.168.1.1</code>.</p>
-      <p>Those 32 bits split into a <strong>network portion</strong> and a <strong>host portion</strong>. The same address can mean different things depending on where that split sits.</p>
-      <p>A <strong>subnet mask</strong> is what defines the split. It's always a run of consecutive 1s followed by a run of consecutive 0s — never mixed. The 1s mark network bits, the 0s mark host bits.</p>
-      <p>Drag the boundary on the right and watch the same address get carved up differently.</p>
-    </div>
+  <div class="solo">
     <div class="stage">
-      <h3>Move the boundary</h3>
-      <div class="strip" id="splitStrip"></div>
-      <div class="striplbl"><span>bit 1</span><span>bit 32</span></div>
-      <div class="pills" id="splitPills">
+      <h3>Click any bit — watch the octet change</h3>
+
+      <div class="pairbox">
+        <div class="pairrow">
+          <div class="pairitem"><span class="pl">IP address</span><span class="pv" id="pairIp">192.168.1.1</span></div>
+          <div class="pairplus">+</div>
+          <div class="pairitem"><span class="pl">Subnet mask</span><span class="pv mk" id="pairMask">255.255.255.0</span></div>
+        </div>
+        <p class="pairnote"><b>An IP address never travels alone.</b> Without a mask it is just 32 bits — nothing in it says where the network ends and the host begins.</p>
+      </div>
+
+      <div class="rowlbl"><span class="tag ip">IP address</span><span class="hint">click any bit to flip it</span></div>
+      <div class="octrow" id="octRow"></div>
+
+      <div class="rowlbl"><span class="tag mk">Subnet mask</span><span class="hint">set by the prefix — all 1s, then all 0s, never mixed</span></div>
+      <div class="octrow" id="maskRow"></div>
+
+      <div class="legend">
+        <span><i class="n"></i> network bit</span>
+        <span><i class="h"></i> host bit</span>
+        <span>solid = 1 &nbsp;·&nbsp; pale = 0</span>
+      </div>
+
+      <div class="pills" id="splitPills" style="margin-top:16px">
         <span class="lbl">Prefix</span>
         <button data-p="8" aria-pressed="false">/8</button>
         <button data-p="16" aria-pressed="false">/16</button>
@@ -198,8 +341,12 @@ svg.viz{width:100%;height:auto;display:block}
         <button data-p="26" aria-pressed="false">/26</button>
         <button data-p="30" aria-pressed="false">/30</button>
       </div>
-      <p class="dotted">192.168.1.1</p>
       <p class="subline" id="splitSub"></p>
+      <div class="controls">
+        <button id="octMax" class="ghost">Turn every bit on</button>
+        <button id="octMin" class="ghost">Turn every bit off</button>
+        <button id="octReset" class="ghost">Back to 192.168.1.1</button>
+      </div>
       <p class="readout" id="splitOut"></p>
     </div>
   </div>
@@ -279,34 +426,53 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>Same network address means talk directly. Different means find a router.</h1>
     <p class="lede">Before sending anything, a device ANDs its own address and the destination with the same mask, then compares. That single comparison decides whether a router is involved at all.</p>
   </div>
-  <div class="split">
-    <div class="prose">
-      <p class="keyline">AND both addresses with the same mask. Compare the results.</p>
-      <p>The source device ANDs its own IP with its subnet mask, then ANDs the destination IP with that same mask.</p>
-      <p>If the two network portions <strong>match</strong>, the destination is on the same subnet. The device communicates directly at Layer 2, sending Ethernet frames to the destination's MAC address.</p>
-      <p>If they <strong>don't match</strong>, the destination is on a different network. The traffic goes to the configured default gateway, which forwards it onward.</p>
-      <p>Your host on the right is <code>192.168.5.130</code> with mask <code>255.255.255.192</code> — so your network is 192.168.5.128, and it only runs to .191.</p>
-    </div>
+  <div class="solo">
     <div class="stage">
-      <h3>Your host: 192.168.5.130 / 255.255.255.192</h3>
-      <div class="qcard">
-        <p class="qn" id="locN">Destination 1 of 5</p>
-        <p class="qt" id="locQ"></p>
-        <p class="qs">Direct delivery, or via the default gateway?</p>
+      <h3>Your host: 192.168.5.130 &nbsp;/&nbsp; 255.255.255.192</h3>
+
+      <div class="pills" id="dstPills">
+        <span class="lbl">Destination</span>
+        <button data-d="192.168.5.140" aria-pressed="true">192.168.5.140</button>
+        <button data-d="192.168.5.200" aria-pressed="false">192.168.5.200</button>
+        <button data-d="192.168.5.100" aria-pressed="false">192.168.5.100</button>
+        <button data-d="10.0.0.5" aria-pressed="false">10.0.0.5</button>
       </div>
-      <div class="opts c2" id="locBtns">
-        <button data-a="S">Same subnet</button>
-        <button data-a="D">Different subnet</button>
+
+      <ul class="ladder" id="cmpSteps"></ul>
+
+      <div class="andwrap">
+        <div class="bside mine">
+          <div class="sh">My address</div>
+          <div id="rowsMine"></div>
+        </div>
+        <div class="bside dest">
+          <div class="sh">Destination address</div>
+          <div id="rowsDest"></div>
+        </div>
       </div>
-      <p class="readout" id="locOut">Your subnet runs 192.168.5.128 to 192.168.5.191.</p>
+
+      <div class="truth" id="truthBox" style="display:none">
+        <span><b>1 AND 1 = 1</b></span>
+        <span>1 AND 0 = 0</span>
+        <span>0 AND 1 = 0</span>
+        <span>0 AND 0 = 0</span>
+        <span>— a bit survives only if both bits are 1</span>
+      </div>
+
+      <div class="verdict" id="verdict">
+        <div class="cmp" id="verdictCmp"></div>
+        <div class="vh" id="verdictHead"></div>
+        <p id="verdictBody"></p>
+      </div>
+
       <div class="controls">
-        <button id="locNext" class="ghost" disabled>Next destination</button>
-        <button id="locReset" class="ghost">Restart</button>
+        <button id="cmpNext">Next step →</button>
+        <button id="cmpReset" class="ghost">Reset</button>
       </div>
-      <p class="score" id="locScore">Score 0 / 0</p>
+      <p class="readout" id="cmpOut"></p>
     </div>
   </div>
-</section>
+  </section>
 
 <!-- 05 -->
 <section class="concept">
@@ -352,7 +518,7 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>Some addresses can cross the internet. Most of yours can't.</h1>
     <p class="lede">Public addresses are globally unique and managed by IANA. Private ranges are reserved for internal use and stop at the edge. Two more ranges never go anywhere at all.</p>
   </div>
-  <div class="split">
+  <div class="stacked">
     <div class="prose">
       <p class="keyline">10, 172.16–172.31, and 192.168. Learn those three and you can spot a private address instantly.</p>
       <p><strong>Public</strong> addresses are globally unique, allocated by IANA through regional registries. <code>8.8.8.8</code> is one. Reachable from anywhere, firewalls permitting.</p>
@@ -445,13 +611,12 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>Borrow bits from the hosts. Pay for it in host count.</h1>
     <p class="lede">Every bit you take from the host portion doubles your subnet count and halves your hosts per subnet. Two powers of two, moving in opposite directions.</p>
   </div>
-  <div class="split">
+  <div class="stacked">
     <div class="prose">
       <p class="keyline">Subnets = 2 to the power of borrowed bits. Usable hosts = 2 to the power of remaining host bits, minus 2.</p>
       <p>A /24 has 8 host bits: 2⁸ = 256 total addresses, 254 usable. You always subtract two — the <strong>network address</strong> at the bottom and the <strong>broadcast address</strong> at the top can't be assigned to a device.</p>
       <p>Borrow 2 bits and the mask becomes <code>255.255.255.192</code>, a /26. That's 2² = 4 subnets, each with 6 host bits left: 2⁶ − 2 = 62 usable hosts.</p>
       <p>The trade never changes. More subnets always means fewer hosts in each.</p>
-      <p>Move the slider on the right and read off the whole table. The blocks below show exactly where each subnet starts and stops.</p>
     </div>
     <div class="stage">
       <h3>Subnet 192.168.1.0/24</h3>
@@ -481,14 +646,11 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>Fixed-size subnets waste addresses. VLSM stops that.</h1>
     <p class="lede">Give a ten-device office a /26 and you've thrown away fifty addresses. Variable Length Subnet Masking sizes each subnet to what it actually needs — allocated largest first.</p>
   </div>
-  <div class="split">
+  <div class="stacked">
     <div class="prose">
       <p class="keyline">Always allocate largest to smallest. Choose the smallest subnet that still meets the requirement.</p>
       <p>Using one size everywhere causes four problems: <strong>wasted addresses</strong> — a /26 for a department of ten wastes over 80% of it; <strong>scalability issues</strong> when a subnet outgrows its block; <strong>inflexibility</strong>; and <strong>management overhead</strong> from constant reorganising.</p>
       <p><strong>VLSM</strong> uses different subnet masks within the same network, so each subnet borrows however many bits it actually needs.</p>
-      <p>The method: start with the whole block, work from the <strong>largest requirement down to the smallest</strong>, and for each one pick the smallest subnet size that still meets or slightly exceeds the host count.</p>
-      <p>Order matters. Allocate a small block first and you fragment the space so the big ones no longer fit.</p>
-      <p>The total of all subnets can never exceed the original block.</p>
     </div>
     <div class="stage">
       <h3>Allocate 192.168.10.0/24</h3>
@@ -564,7 +726,7 @@ document.addEventListener("keydown",function(e){
 });
 
 /* clock */
-var total=25*60,left=total,timer=null;
+var total=30*60,left=total,timer=null;
 var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
 function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
 cbtn.addEventListener("click",function(){
@@ -605,23 +767,148 @@ function quiz(Q,pfx,word,hint){
   show();
 }
 
-/* 01 split */
+/* 01 octets + mask */
 (function(){
-  var strip=document.getElementById("splitStrip");
-  for(var i=0;i<32;i++){var d=document.createElement("div");d.className="sbit";strip.appendChild(d);}
-  function set(p){
-    for(var i=0;i<32;i++){
-      var b=strip.children[i];
-      b.className="sbit"+(i>=p?" host":"")+(i===p-1?" edge":"");
-    }
-    document.getElementById("splitSub").innerHTML="mask "+toDot(maskInt(p))+" &nbsp;·&nbsp; "+p+" network bits &nbsp;·&nbsp; "+(32-p)+" host bits";
-    var hosts=Math.pow(2,32-p)-2;
-    document.getElementById("splitOut").innerHTML="With a <b>/"+p+"</b>, the network is <b>"+toDot(toInt("192.168.1.1")&maskInt(p))+"</b> and there is room for <b>"+hosts.toLocaleString()+"</b> usable hosts in it.";
+  var PV=[128,64,32,16,8,4,2,1];
+  var DEFAULT=[192,168,1,1];
+  var bits=[],p=24;
+  function loadFrom(oct){
+    bits=[];
+    oct.forEach(function(v){for(var i=0;i<8;i++)bits.push((v>>(7-i))&1);});
   }
-  document.getElementById("splitPills").addEventListener("click",function(e){
-    var b=e.target.closest("button[data-p]");if(!b)return;pressed(this,b);set(+b.dataset.p);
+  loadFrom(DEFAULT);
+
+  /* build one row of four octet boxes; interactive rows get clickable bits */
+  function buildRow(container,interactive,onClick){
+    var cells=[],vals=[],notes=[];
+    for(var o=0;o<4;o++){
+      if(o>0){
+        var g=document.createElement("div");
+        g.className="octgap";g.textContent=".";
+        container.appendChild(g);
+      }
+      var box=document.createElement("div");
+      box.className="oct"+(interactive?"":" ro");
+      var h=document.createElement("div");
+      h.className="oh";h.textContent="octet "+(o+1);
+      box.appendChild(h);
+      if(interactive){
+        var pl=document.createElement("div");
+        pl.className="pvline";
+        PV.forEach(function(v){
+          var t=document.createElement("div");
+          t.className="pv8";t.textContent=v;
+          pl.appendChild(t);
+        });
+        box.appendChild(pl);
+      }
+      var br=document.createElement("div");
+      br.className="octbits";
+      for(var i=0;i<8;i++){
+        (function(idx){
+          var b;
+          if(interactive){
+            b=document.createElement("button");
+            b.className="obit";
+            b.addEventListener("click",function(){onClick(idx);});
+          }else{
+            b=document.createElement("div");
+            b.className="mbit";
+          }
+          br.appendChild(b);cells.push(b);
+        })(o*8+i);
+      }
+      box.appendChild(br);
+      var v=document.createElement("div");
+      v.className="octval";box.appendChild(v);vals.push(v);
+      var mx=document.createElement("div");
+      mx.className="octmax";mx.textContent="of 255";box.appendChild(mx);
+      var sp=document.createElement("div");
+      sp.className=interactive?"octsplit":"maskall";box.appendChild(sp);notes.push(sp);
+      container.appendChild(box);
+    }
+    return {cells:cells,vals:vals,notes:notes};
+  }
+
+  var ip=buildRow(document.getElementById("octRow"),true,function(idx){
+    bits[idx]=bits[idx]?0:1;
+    draw(PV[idx%8],idx);
   });
-  set(24);
+  var mk=buildRow(document.getElementById("maskRow"),false);
+
+  function octVal(o){
+    var t=0;
+    for(var i=0;i<8;i++)if(bits[o*8+i])t+=PV[i];
+    return t;
+  }
+  function maskOctVal(o){
+    var t=0;
+    for(var i=0;i<8;i++)if(o*8+i<p)t+=PV[i];
+    return t;
+  }
+  function dotted(){
+    return [octVal(0),octVal(1),octVal(2),octVal(3)].join(".");
+  }
+
+  function draw(worth,clicked){
+    /* IP row */
+    for(var i=0;i<32;i++){
+      ip.cells[i].className="obit "+(i<p?"net":"host")+(bits[i]?" on":"");
+      ip.cells[i].textContent=bits[i];
+    }
+    /* mask row — 1 for every network bit, 0 for every host bit */
+    for(var j=0;j<32;j++){
+      var one=j<p;
+      mk.cells[j].className="mbit "+(one?"one":"zero");
+      mk.cells[j].textContent=one?"1":"0";
+    }
+    for(var o=0;o<4;o++){
+      ip.vals[o].textContent=octVal(o);
+      var nb=Math.max(0,Math.min(8,p-o*8));
+      ip.notes[o].textContent=nb===8?"all network":(nb===0?"all host":nb+" net / "+(8-nb)+" host");
+      mk.vals[o].textContent=maskOctVal(o);
+      mk.notes[o].textContent=nb===8?"eight 1s = 255":(nb===0?"eight 0s = 0":nb+" ones, "+(8-nb)+" zeros");
+    }
+    var ipStr=dotted(), mkStr=toDot(maskInt(p));
+    document.getElementById("pairIp").textContent=ipStr;
+    document.getElementById("pairMask").textContent=mkStr;
+    document.getElementById("splitSub").innerHTML=
+      "/"+p+" &nbsp;·&nbsp; "+p+" network bits &nbsp;·&nbsp; "+(32-p)+" host bits";
+    var net=toInt(ipStr)&maskInt(p);
+    if(net<0)net=net>>>0;
+    var hosts=Math.pow(2,32-p)-2;
+    var msg="";
+    if(clicked!=null){
+      msg="That bit is worth <b>"+worth+"</b> in octet "+(Math.floor(clicked/8)+1)
+        +", now <b>"+octVal(Math.floor(clicked/8))+"</b>. ";
+    }
+    msg+="Address <b>"+ipStr+"</b> with mask <b>"+mkStr+"</b> sits on network <b>"
+      +toDot(net)+"</b>, with room for <b>"+hosts.toLocaleString()+"</b> usable hosts.";
+    if(p%8===0){
+      msg+=" Every mask octet here is <b>eight 1s (255)</b> or <b>eight 0s (0)</b>, because the prefix landed exactly on an octet boundary.";
+    }else{
+      var brk=Math.floor(p/8);
+      msg+=" Octet "+(brk+1)+" of the mask is <b>part 1s, part 0s</b> — that is the octet the prefix cuts through, and it is why the mask reads "+maskOctVal(brk)+" there.";
+    }
+    if(ipStr==="255.255.255.255")msg+=" <b>Every address bit on gives 255 in all four octets</b> — the highest an IPv4 address can go.";
+    if(ipStr==="0.0.0.0")msg+=" <b>Every address bit off gives 0 in all four octets.</b>";
+    document.getElementById("splitOut").innerHTML=msg;
+  }
+
+  document.getElementById("splitPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;
+    pressed(this,b);p=+b.dataset.p;draw();
+  });
+  document.getElementById("octMax").addEventListener("click",function(){
+    bits=bits.map(function(){return 1;});draw();
+  });
+  document.getElementById("octMin").addEventListener("click",function(){
+    bits=bits.map(function(){return 0;});draw();
+  });
+  document.getElementById("octReset").addEventListener("click",function(){
+    loadFrom(DEFAULT);draw();
+  });
+  draw();
 })();
 
 /* 02 CIDR */
@@ -662,14 +949,113 @@ function quiz(Q,pfx,word,hint){
   set(0);
 })();
 
-/* 04 local/remote */
-quiz([
-  {q:"192.168.5.140",a:"S",why:"Same subnet. 140 is between 128 and 191, so it ANDs to 192.168.5.128 as well. Delivered directly at Layer 2."},
-  {q:"192.168.5.200",a:"D",why:"Different subnet. 200 is past 191, so it ANDs to 192.168.5.192. Same first three octets, but a different network — this one catches people out."},
-  {q:"192.168.5.129",a:"S",why:"Same subnet. The first usable address in your own block."},
-  {q:"10.0.0.5",a:"D",why:"Different subnet, and obviously so. Goes to the default gateway."},
-  {q:"192.168.5.100",a:"D",why:"Different subnet. 100 is below 128, so it ANDs to 192.168.5.64 — a separate /26 entirely."}
-],"loc","Destination","Your subnet runs 192.168.5.128 to 192.168.5.191.");
+/* 04 local/remote — binary AND comparison */
+(function(){
+  var MYIP="192.168.5.130", MASK="255.255.255.192", PFX=26;
+  var dest="192.168.5.140", step=-1;
+
+  function octs(ip){return ip.split(".").map(Number);}
+  function b8(n){var s=n.toString(2);while(s.length<8)s="0"+s;return s;}
+  function andOf(ip){
+    var r=toInt(ip)&toInt(MASK);
+    if(r<0)r=r>>>0;
+    return toDot(r);
+  }
+  function bitRow(ip,kind,visible){
+    var o=octs(ip),html="";
+    o.forEach(function(v,oi){
+      var bits=b8(v),cell="";
+      for(var i=0;i<8;i++){
+        var idx=oi*8+i, cls;
+        if(!visible)cls="blank";
+        else if(kind==="mask")cls=(idx<PFX?"m1":"m0");
+        else if(kind==="res")cls=(idx<PFX?"r":"h dim");
+        else cls=(idx<PFX?"n":"h");
+        cell+='<span class="bb '+cls+'">'+(visible?bits[i]:"0")+"</span>";
+      }
+      html+='<div class="boct">'+cell+"</div>";
+    });
+    return html;
+  }
+  function row(label,ip,kind,visible,showDec,pend){
+    return '<div class="brow'+(visible?"":" hide")+'">'
+      +'<div class="bl">'+label+"</div>"
+      +'<div class="bbits">'+bitRow(ip,kind,visible)+"</div>"
+      +'<div class="bd'+(showDec?"":" pend")+'">'+(showDec?ip:"&nbsp;")+"</div></div>";
+  }
+
+  var STEPS=[
+    {n:"Convert both addresses and the mask to binary"},
+    {n:"Bitwise AND each address with the mask"},
+    {n:"Convert the two results back to decimal"},
+    {n:"Compare the network portions"}
+  ];
+
+  function draw(){
+    var lad=document.getElementById("cmpSteps");
+    lad.innerHTML="";
+    STEPS.forEach(function(st,i){
+      var li=document.createElement("li");
+      if(i<=step)li.className="ok";
+      li.innerHTML='<span class="n">'+(i+1)+"</span>"+st.n;
+      lad.appendChild(li);
+    });
+
+    var showBin=step>=0, showRes=step>=1, showDec=step>=2;
+    var myNet=andOf(MYIP), dNet=andOf(dest);
+
+    document.getElementById("rowsMine").innerHTML=
+       row("IP address",MYIP,"ip",showBin,showBin)
+      +row("subnet mask",MASK,"mask",showBin,showBin)
+      +'<div class="andline"></div>'
+      +row("= network",myNet,"res",showRes,showDec);
+
+    document.getElementById("rowsDest").innerHTML=
+       row("IP address",dest,"ip",showBin,showBin)
+      +row("subnet mask",MASK,"mask",showBin,showBin)
+      +'<div class="andline"></div>'
+      +row("= network",dNet,"res",showRes,showDec);
+
+    document.getElementById("truthBox").style.display=(step>=1?"inline-flex":"none");
+
+    var v=document.getElementById("verdict");
+    v.className="verdict";
+    if(step>=3){
+      var same=(myNet===dNet);
+      v.classList.add("on",same?"same":"diff");
+      document.getElementById("verdictCmp").innerHTML=
+        myNet+"  "+(same?"=":"\u2260")+"  "+dNet;
+      document.getElementById("verdictHead").textContent=
+        same?"Same subnet — deliver directly":"Different subnet — send to the default gateway";
+      document.getElementById("verdictBody").innerHTML=same
+        ? "The network portions match, so the destination is on this subnet. The device communicates <b>directly at Layer 2</b>, sending Ethernet frames straight to the destination's MAC address. No router is involved at any point."
+        : "The network portions do not match, so the destination is on a different network. The device sends the traffic to its <b>configured default gateway</b> — usually a router — which forwards it on toward the destination network.";
+    }
+
+    var out="";
+    if(step<0)out="Both addresses get ANDed with the <b>same mask</b>. Press next step to start.";
+    else if(step===0)out="Each octet becomes 8 bits. My address is <b>"+octs(MYIP).map(b8).join(".")+"</b> and the mask is <b>"+octs(MASK).map(b8).join(".")+"</b> — 26 ones then 6 zeros.";
+    else if(step===1)out="A bit survives the AND <b>only where both bits are 1</b>. The mask's 26 leading ones keep the network bits; its 6 trailing zeros wipe the host bits to zero.";
+    else if(step===2)out="Converted back: my network is <b>"+myNet+"</b>, the destination's is <b>"+dNet+"</b>. Note my host address was ."+octs(MYIP)[3]+" but my <b>network</b> starts at ."+octs(myNet)[3]+".";
+    else{
+      out=(myNet===dNet)
+        ? "Both sides landed on <b>"+myNet+"</b>. My subnet runs from "+myNet+" to 192.168.5.191, so ."+octs(dest)[3]+" falls inside it."
+        : "The results differ, so this destination is outside my subnet. My subnet stops at 192.168.5.191 — anything past that is somebody else's network, even when the first three octets look identical.";
+    }
+    document.getElementById("cmpOut").innerHTML=out;
+    document.getElementById("cmpNext").disabled=step>=STEPS.length-1;
+  }
+
+  document.getElementById("cmpNext").addEventListener("click",function(){
+    if(step<STEPS.length-1){step++;draw();}
+  });
+  document.getElementById("cmpReset").addEventListener("click",function(){step=-1;draw();});
+  document.getElementById("dstPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-d]");if(!b)return;
+    pressed(this,b);dest=b.dataset.d;step=-1;draw();
+  });
+  draw();
+})();
 
 /* 05 address types */
 quiz([
