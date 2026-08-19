@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Module 3.2 Jeopardy — Final Review</title>
+<style>
+  :root {
+    --teal: #1F4E5F;
+    --teal-dark: #163a47;
+    --green: #2E7D6E;
+    --orange: #C9720C;
+    --bg: #0f2530;
+    --card: #17384a;
+    --card-done: #0a1b23;
+    --text: #f4f7f8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  header { padding: 18px 28px 10px; text-align: center; }
+  header h1 { margin: 0; font-size: 30px; letter-spacing: 0.5px; color: #fff; }
+  header p { margin: 4px 0 0; color: #9fc2c9; font-size: 14px; }
+
+  #scoreboard {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 20px 6px;
+  }
+  .team {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 10px 16px;
+    min-width: 150px;
+    text-align: center;
+    border: 2px solid transparent;
+  }
+  .team input.teamname {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px dashed #3d6a78;
+    padding-bottom: 3px;
+  }
+  .team .score { font-size: 30px; font-weight: 800; color: var(--orange); margin: 6px 0; }
+  .team .buttons { display: flex; gap: 6px; justify-content: center; }
+  .team button {
+    background: var(--green);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .team button.minus { background: #7a3b3b; }
+  .team button:hover { filter: brightness(1.15); }
+
+  #board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 16px 24px 8px;
+    max-width: 1250px;
+    margin: 0 auto;
+  }
+  .cat-header {
+    background: var(--teal-dark);
+    color: #fff;
+    text-align: center;
+    padding: 12px 6px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.25;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cell {
+    background: var(--card);
+    border: none;
+    color: var(--orange);
+    font-size: 26px;
+    font-weight: 800;
+    border-radius: 8px;
+    padding: 20px 0;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.2s ease;
+  }
+  .cell:hover { transform: scale(1.04); background: var(--teal); }
+  .cell.done { background: var(--card-done); color: #33484f; cursor: default; }
+  .cell.done:hover { transform: none; background: var(--card-done); }
+
+  #resetRow { text-align: center; padding: 14px; }
+  #resetRow button {
+    background: #333;
+    color: #ddd;
+    border: 1px solid #555;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  #overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 20px;
+  }
+  #modal {
+    background: linear-gradient(180deg, #1c4356, #122c38);
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    padding: 40px 44px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid #2c5d70;
+  }
+  #modalCat {
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  #modalPoints { color: #9fc2c9; font-size: 14px; margin-bottom: 18px; }
+  #modalQuestion { font-size: 25px; font-weight: 600; line-height: 1.4; margin-bottom: 22px; }
+  #modalAnswer {
+    display: none;
+    font-size: 21px;
+    color: #8fe3c7;
+    font-weight: 700;
+    margin-bottom: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #2c5d70;
+  }
+  #modal button {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 4px;
+  }
+  #modal button.close { background: #555; }
+  #modal button:hover { filter: brightness(1.12); }
+
+  /* ---- password gate ---- */
+  #gate {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #gate.unlocked { display: none; }
+  #gateBox {
+    background: var(--card);
+    border: 1px solid #2c5d70;
+    border-radius: 16px;
+    padding: 40px 38px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  }
+  #gateBox h2 { margin: 0 0 6px; font-size: 22px; color: #fff; }
+  #gateBox p { margin: 0 0 22px; color: #9fc2c9; font-size: 14px; line-height: 1.5; }
+  #gateInput {
+    width: 100%;
+    background: #0f2530;
+    border: 1px solid #3d6a78;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 17px;
+    font-family: inherit;
+    padding: 12px 14px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  #gateInput:focus { outline: none; border-color: var(--orange); }
+  #gateBtn {
+    margin-top: 14px;
+    width: 100%;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #gateBtn:hover { filter: brightness(1.15); }
+  #gateError { margin-top: 12px; min-height: 20px; color: #ff9aa8; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div id="gateBox">
+    <h2>Module 3.2 Jeopardy</h2>
+    <p>Enter the access code your lecturer gives you at the end of the session.</p>
+    <input id="gateInput" type="password" autocomplete="off" placeholder="Access code">
+    <button id="gateBtn">Unlock the board</button>
+    <div id="gateError"></div>
+  </div>
+</div>
+
+<header>
+  <h1>Module 3.2 — Final Review</h1>
+  <p>Pick a category and a point value. Teams answer out loud; you decide who scores.</p>
+</header>
+
+<div id="scoreboard"></div>
+
+<div id="board"></div>
+
+<div id="resetRow"><button onclick="resetBoard()">Reset board (new class / re-run)</button></div>
+
+<div id="overlay">
+  <div id="modal">
+    <div id="modalCat"></div>
+    <div id="modalPoints"></div>
+    <div id="modalQuestion"></div>
+    <div id="modalAnswer"></div>
+    <div>
+      <button id="showAnswerBtn" onclick="showAnswer()">Show answer</button>
+      <button class="close" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================================
+//  ACCESS CODE — change the line below to set a new one.
+//  This is a simple classroom gate, not real security:
+//  anyone who views the page source can read this value.
+// ==========================================================
+const ACCESS_CODE = "portscan";
+
+function tryUnlock() {
+  const entered = document.getElementById("gateInput").value.trim();
+  if (entered.toLowerCase() === ACCESS_CODE.toLowerCase()) {
+    document.getElementById("gate").classList.add("unlocked");
+  } else {
+    document.getElementById("gateError").textContent = "That code isn't right. Try again.";
+    document.getElementById("gateInput").value = "";
+    document.getElementById("gateInput").focus();
+  }
+}
+document.getElementById("gateBtn").addEventListener("click", tryUnlock);
+document.getElementById("gateInput").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") tryUnlock();
+});
+document.getElementById("gateInput").focus();
+
+const DATA = {
+  "Malware": {
+    100: { q: "Which type of malware disguises itself as legitimate software?", a: "A Trojan horse" },
+    200: { q: "What makes a worm different from a virus?", a: "A worm self-replicates and spreads across networks independently; a virus needs a host file to be run by a user" },
+    300: { q: "Name the three defences the module gives against all malware.", a: "Run antivirus scans, don't open suspicious email attachments, and keep software updated to patch security holes" },
+    400: { q: "A user downloads what they think is a Wi-Fi booster tool and installs it. It opens a backdoor. What type of malware is this, precisely?", a: "A Trojan horse — it was disguised as legitimate software and the user installed it themselves. It is not a virus, which would have to attach to an existing file" },
+  },
+  "Vulnerability Types": {
+    100: { q: "What are the three categories of vulnerability the module identifies?", a: "Technological, configuration, and policy vulnerabilities" },
+    200: { q: "Leaving a device on its factory username and password is which category of vulnerability?", a: "Configuration — specifically unsecured default settings and an unsecured user account" },
+    300: { q: "Name three technological vulnerabilities.", a: "TCP/IP protocol weaknesses, operating system weaknesses, and network equipment weaknesses" },
+    400: { q: "Nobody at a company can locate the written security policy. Name the vulnerability category, and one other policy failure that usually comes with it.", a: "Policy vulnerability — no written security policy, and typically no disaster recovery plan either" },
+  },
+  "Physical Threats": {
+    100: { q: "Name the four categories of physical threat.", a: "Hardware, environmental, electrical, and maintenance threats" },
+    200: { q: "A power surge reboots a switch. Which physical threat category, and what equipment prevents it?", a: "Electrical — a UPS (uninterruptible power supply) and power conditioners" },
+    300: { q: "What are maintenance threats, and give two examples.", a: "Damage from careless handling rather than attack — electrostatic discharge, poor labelling, sloppy cabling" },
+    400: { q: "Server room logs show no authorised entry, yet a router has been unplugged. What does that tell you, and name two controls that would have caught it?", a: "Absence of a log entry is not absence of an intruder — the logging itself is inadequate. Security cameras and electronic entry logs on all physical access points" },
+  },
+  "Attack Types": {
+    100: { q: "What is the goal of a DoS attack?", a: "To make services unavailable to legitimate users — not to steal anything" },
+    200: { q: "What is a botnet, and which attack uses one?", a: "A network of machines infected with malware and controlled remotely — used to launch a DDoS attack" },
+    300: { q: "Name the four access attacks from the module.", a: "Password attacks, trust exploitation, port redirection, and man-in-the-middle" },
+    400: { q: "Explain trust exploitation and give the one-line defence.", a: "One compromised system is used to reach others that trust it — lateral movement. Defence: audit trust relationships and limit access between systems" },
+  },
+  "Recon + Tools": {
+    100: { q: "What does the whois tool retrieve?", a: "Domain registration information — owner, contacts, and IP range" },
+    200: { q: "What is a ping sweep looking for?", a: "Which hosts on a range are alive and responding" },
+    300: { q: "What does a port scan reveal, and why does an attacker want it?", a: "Which ports are open on a host — each one indicates a running service that might be exploitable" },
+    400: { q: "Put the four reconnaissance steps in order, and say at which point the target could first detect it.", a: "whois, then nslookup, then ping sweep, then port scan. The first two are public queries that never touch the network — detection only becomes possible at the ping sweep" },
+  },
+};
+
+const CATS = Object.keys(DATA);
+const POINTS = [100, 200, 300, 400];
+let teams = [
+  { name: "Team 1", score: 0 },
+  { name: "Team 2", score: 0 },
+  { name: "Team 3", score: 0 },
+  { name: "Team 4", score: 0 },
+];
+let current = null;
+
+function renderScoreboard() {
+  const el = document.getElementById("scoreboard");
+  el.innerHTML = "";
+  teams.forEach((t, i) => {
+    const div = document.createElement("div");
+    div.className = "team";
+    div.innerHTML = `
+      <input class="teamname" value="${t.name}" onchange="renameTeam(${i}, this.value)">
+      <div class="score">${t.score}</div>
+      <div class="buttons">
+        <button onclick="adjustScore(${i}, 100)">+100</button>
+        <button onclick="adjustScore(${i}, -100)" class="minus">-100</button>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+function renameTeam(i, val) { teams[i].name = val || teams[i].name; }
+function adjustScore(i, amt) { teams[i].score += amt; renderScoreboard(); }
+
+function renderBoard() {
+  const board = document.getElementById("board");
+  board.innerHTML = "";
+  CATS.forEach(cat => {
+    const h = document.createElement("div");
+    h.className = "cat-header";
+    h.textContent = cat;
+    board.appendChild(h);
+  });
+  POINTS.forEach(pts => {
+    CATS.forEach(cat => {
+      const btn = document.createElement("button");
+      const done = DATA[cat][pts].done;
+      btn.className = "cell" + (done ? " done" : "");
+      btn.textContent = done ? "✓" : pts;
+      btn.onclick = () => openQuestion(cat, pts);
+      board.appendChild(btn);
+    });
+  });
+}
+
+function openQuestion(cat, pts) {
+  if (DATA[cat][pts].done) return;
+  current = { cat, pts };
+  document.getElementById("modalCat").textContent = cat;
+  document.getElementById("modalPoints").textContent = pts + " points";
+  document.getElementById("modalQuestion").textContent = DATA[cat][pts].q;
+  const ansEl = document.getElementById("modalAnswer");
+  ansEl.style.display = "none";
+  ansEl.textContent = "Answer: " + DATA[cat][pts].a;
+  document.getElementById("showAnswerBtn").style.display = "inline-block";
+  document.getElementById("overlay").style.display = "flex";
+}
+function showAnswer() {
+  document.getElementById("modalAnswer").style.display = "block";
+  document.getElementById("showAnswerBtn").style.display = "none";
+}
+function closeModal() {
+  if (current) {
+    DATA[current.cat][current.pts].done = true;
+    current = null;
+  }
+  document.getElementById("overlay").style.display = "none";
+  renderBoard();
+}
+function resetBoard() {
+  if (!confirm("Reset all questions and scores?")) return;
+  CATS.forEach(cat => POINTS.forEach(pts => { delete DATA[cat][pts].done; }));
+  teams = [
+    { name: "Team 1", score: 0 },
+    { name: "Team 2", score: 0 },
+    { name: "Team 3", score: 0 },
+    { name: "Team 4", score: 0 },
+  ];
+  renderScoreboard();
+  renderBoard();
+}
+
+renderScoreboard();
+renderBoard();
+</script>
+</body>
+</html>

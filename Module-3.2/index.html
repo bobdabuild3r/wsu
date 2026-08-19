@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3.2 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pills .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);align-self:center;font-weight:700}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:#fff;font-weight:700}
+.dev.bad rect,.dev.bad circle{fill:#7a3b3b;stroke:#7a3b3b}
+.dev.bad text{fill:#fff;font-weight:700}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.6}
+.wire.bad{stroke:#7a3b3b;stroke-width:2.4;stroke-dasharray:5 3}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+/* card grid */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.cards{grid-template-columns:1fr}}
+.cards button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px 11px;text-align:left;color:var(--teal);transition:.15s}
+.cards button .t{font-weight:700;font-size:14px;display:block}
+.cards button .s{font-size:11.5px;color:var(--muted);display:block;margin-top:3px;font-family:var(--mono)}
+.cards button:hover{border-color:var(--teal)}
+.cards button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.cards button[aria-pressed="true"] .s{color:#9fc2c9}
+
+/* config finder */
+.cfg{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.9}
+.cfg .line{display:block;padding:1px 5px;border-radius:4px;transition:.2s}
+.cfg .line.bad{cursor:pointer}
+.cfg .line.bad:hover{background:#2a4250}
+.cfg .line.found{background:#7a3b3b;color:#fff;font-weight:700}
+.cfg .ok{color:#7fa0a8}
+.finderbar{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:10px}
+.finderbar b{color:var(--orange)}
+
+/* checklist */
+.check{margin:0;padding:0;list-style:none}
+.check li{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;margin-bottom:5px;background:#f6e4e4;font-size:14px;transition:.2s;cursor:pointer}
+.check li .bx{font-family:var(--mono);font-size:13px;font-weight:700;background:var(--red);color:#fff;border-radius:5px;padding:2px 8px;flex:none}
+.check li.done{background:#e4f2ea}
+.check li.done .bx{background:var(--green)}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
+.tbl th{background:var(--teal);color:#fff;text-align:left;padding:6px 8px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.tbl td{border-bottom:1px solid var(--line);padding:6px 8px}
+.tbl tr:nth-child(even) td{background:#f7fafa}
+.tbl tr.hl td{background:#ffe6c2;font-weight:700}
+
+/* quiz */
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:16px;line-height:1.45;color:var(--teal-dark)}
+.opts{display:grid;gap:8px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opts.c3{grid-template-columns:repeat(3,1fr)}
+.opts.c4{grid-template-columns:repeat(2,1fr)}
+@media(max-width:520px){.opts.c2,.opts.c3,.opts.c4{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+/* malware compare */
+.mal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:600px){.mal{grid-template-columns:1fr}}
+.malcard{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;cursor:pointer;transition:.15s}
+.malcard:hover{border-color:var(--teal)}
+.malcard h4{margin:0;padding:9px;text-align:center;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;background:#eef4f4;color:var(--teal)}
+.malcard.sel h4{background:var(--orange);color:#fff}
+.malcard p{margin:0;padding:10px;font-size:13px;line-height:1.45}
+
+/* ladder */
+.ladder{margin:0 0 12px;padding:0;list-style:none}
+.ladder li{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;margin-bottom:5px;background:#eef4f4;font-size:14px;transition:.2s}
+.ladder li .n{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:5px;padding:2px 7px;flex:none}
+.ladder li.ok{background:#f6e4e4}
+.ladder li.ok .n{background:var(--red)}
+
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.65;white-space:pre-wrap}
+.term .pass{color:#8fe3c7}
+.term .fail{color:#ff9aa8}
+.term .cmd{color:#f7b955}
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 3.2 Recap</div>
+    <div class="clock">
+      <output id="clock">25:00</output>
+      <button id="clockBtn">Start</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — Threats by impact</p>
+    <h1>Four things an attacker can actually do to you.</h1>
+    <p class="lede">Strip away the technique and every network attack ends in one of four outcomes. Naming the outcome is how you work out what it cost.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Steal it, break it, change it, or become you.</p>
+      <p><strong>Information theft</strong> — confidential data such as research or customer records is stolen and misused.</p>
+      <p><strong>Disruption of service</strong> — attacks crash services, hitting availability and productivity. Nothing is stolen; nobody can work.</p>
+      <p><strong>Data loss and manipulation</strong> — the attacker deletes or alters data. Manipulation is the nastier half, because you may not notice.</p>
+      <p><strong>Identity theft</strong> — personal information is used to commit fraud, take out loans or make purchases in someone else's name.</p>
+      <p>Notice these map onto the CIA triad from Module 1.1. Theft breaks confidentiality, manipulation breaks integrity, disruption breaks availability.</p>
+    </div>
+    <div class="stage">
+      <h3>Click an outcome</h3>
+      <div class="cards" id="impCards">
+        <button data-i="theft" aria-pressed="true"><span class="t">Information theft</span><span class="s">confidentiality</span></button>
+        <button data-i="dos" aria-pressed="false"><span class="t">Disruption of service</span><span class="s">availability</span></button>
+        <button data-i="loss" aria-pressed="false"><span class="t">Data loss &amp; manipulation</span><span class="s">integrity</span></button>
+        <button data-i="id" aria-pressed="false"><span class="t">Identity theft</span><span class="s">confidentiality</span></button>
+      </div>
+      <p class="readout" id="impOut" style="min-height:76px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Technological vulnerabilities</p>
+    <h1>Weaknesses built into the technology itself.</h1>
+    <p class="lede">Nobody misconfigured anything. These flaws come with the protocols, the operating systems and the hardware, and you patch or replace rather than reconfigure.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Three sources: the protocols, the operating system, the equipment.</p>
+      <p><strong>TCP/IP protocol weaknesses.</strong> Inherent issues in the core protocols, exploited through spoofing and session hijacking. TCP/IP was designed for a trusted research network, and it shows.</p>
+      <p><strong>Operating system weaknesses.</strong> Outdated or unpatched systems open the door to malware and known exploits. Akira's forgotten Windows Server 2008 with no antivirus and no updates is the textbook case.</p>
+      <p><strong>Network equipment weaknesses.</strong> Unsecured switches and routers become attack vectors themselves rather than just carrying traffic.</p>
+      <p>The fix is patching, upgrading, decommissioning — not tightening a setting.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a weakness</h3>
+      <div class="cards" id="techCards">
+        <button data-t="tcp" aria-pressed="true"><span class="t">TCP/IP protocol</span><span class="s">spoofing, session hijacking</span></button>
+        <button data-t="os" aria-pressed="false"><span class="t">Operating system</span><span class="s">unpatched, outdated</span></button>
+        <button data-t="eq" aria-pressed="false"><span class="t">Network equipment</span><span class="s">switches, routers</span></button>
+      </div>
+      <p class="readout" id="techOut" style="min-height:76px"></p>
+      <table class="tbl">
+        <thead><tr><th>Akira's incident</th><th>Which weakness</th></tr></thead>
+        <tbody>
+          <tr><td>Telnet enabled on the router</td><td>Protocol — insecure by design</td></tr>
+          <tr><td>Windows Server 2008, no patches</td><td>Operating system</td></tr>
+          <tr><td>Router reachable with defaults</td><td>Network equipment</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — Configuration vulnerabilities</p>
+    <h1>The technology was fine. Somebody set it up badly.</h1>
+    <p class="lede">Five configuration failures cover almost every breach in this module. Unlike technological flaws, every one of these is free to fix — it just needs somebody to do it.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Unsecured accounts, guessable passwords, misconfigured services, default settings, misconfigured equipment.</p>
+      <p><strong>Unsecured user accounts</strong> — default or weak passwords make access trivial.</p>
+      <p><strong>Easily guessed system passwords</strong> — predictable credentials are a disaster waiting to happen.</p>
+      <p><strong>Misconfigured internet services</strong> — exposed services and open ports are a common entry point.</p>
+      <p><strong>Unsecured default settings</strong> — leaving factory configuration in place hands attackers the manual.</p>
+      <p><strong>Misconfigured network equipment</strong> — errors that create holes, or block services that should work.</p>
+      <p>Akira found Telnet enabled with default admin credentials still intact. That single line is three of these at once.</p>
+      <p>Find the four problems in the configuration on the right.</p>
+    </div>
+    <div class="stage">
+      <h3>Click every line that's a problem</h3>
+      <div class="cfg" id="cfgBox"></div>
+      <p class="finderbar" id="cfgBar"></p>
+      <p class="readout" id="cfgOut">Four lines here are configuration vulnerabilities. Click the ones you spot.</p>
+      <div class="controls"><button id="cfgReset" class="ghost">Reset</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — Policy vulnerabilities</p>
+    <h1>Nothing is broken. Nothing is written down either.</h1>
+    <p class="lede">The hardest category to see, because there's no alert for it. Policy vulnerabilities only become visible after something has already gone wrong.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">If nobody can find the security policy, there isn't one.</p>
+      <p><strong>Lack of a written security policy</strong> — without formal rules, staff behaviour becomes inconsistent and risky.</p>
+      <p><strong>Lack of authentication continuity</strong> — users authenticated inconsistently across systems, leaving gaps.</p>
+      <p><strong>Logical access not enforced</strong> — if permissions aren't set properly, anyone can reach anything.</p>
+      <p><strong>Improper software or hardware changes</strong> — installing or modifying systems without approval bypasses protections. That's how the forgotten server got onto the network.</p>
+      <p><strong>No disaster recovery plan</strong> — without one, systems can't be restored quickly after an attack.</p>
+      <p>Click each item to fix Akira's company.</p>
+    </div>
+    <div class="stage">
+      <h3>Akira's company at 4:00 PM</h3>
+      <ul class="check" id="polList"></ul>
+      <p class="readout" id="polOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — Physical threats</p>
+    <h1>You can encrypt everything and still lose to a propped-open door.</h1>
+    <p class="lede">Four physical categories, none of which any firewall will help with. Akira hit three of them before lunch.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Hardware, environmental, electrical, maintenance.</p>
+      <p><strong>Hardware threats</strong> — theft or tampering. Unauthorised access to network rooms or equipment compromises the entire network. Secure doors, ceilings and vents, use cameras, and log entries electronically.</p>
+      <p><strong>Environmental threats</strong> — heat and humidity. Equipment fails when the environment isn't controlled. Monitor temperature and humidity continuously.</p>
+      <p><strong>Electrical threats</strong> — power loss, brownouts and voltage spikes corrupt data or take systems offline. Install a UPS, use power conditioners, and test the backup regularly.</p>
+      <p><strong>Maintenance threats</strong> — electrostatic discharge, poor labelling, sloppy cabling, careless handling. These cause accidental outages, not malicious ones, and they're the easiest to prevent.</p>
+      <p>Note the server room breach: the logs showed <em>no</em> authorised access, yet someone had clearly been in. Absence of a log entry is not absence of an intruder.</p>
+    </div>
+    <div class="stage">
+      <h3>Click a category</h3>
+      <svg class="viz" id="phyViz" viewBox="0 0 470 200" role="img" aria-label="Server room threats"></svg>
+      <div class="pills" id="phyPills" style="margin-top:12px">
+        <button data-p="hw" aria-pressed="true">Hardware</button>
+        <button data-p="env" aria-pressed="false">Environmental</button>
+        <button data-p="el" aria-pressed="false">Electrical</button>
+        <button data-p="mn" aria-pressed="false">Maintenance</button>
+      </div>
+      <p class="readout" id="phyOut" style="min-height:64px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — Malware</p>
+    <h1>The difference is how it moves, not what it damages.</h1>
+    <p class="lede">Virus, worm and Trojan are classified by their method of spreading. Get that straight and the exam question answers itself.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">A virus needs a host file. A worm needs nothing. A Trojan needs you to invite it in.</p>
+      <p>A <strong>virus</strong> attaches itself to a legitimate program and waits. It activates when someone runs the infected file, then duplicates itself, corrupts data or spies on the user.</p>
+      <p>A <strong>worm</strong> spreads on its own. It exploits vulnerabilities to move between systems with no user action at all, replicating until the network is saturated. One infected device becomes hundreds.</p>
+      <p>A <strong>Trojan horse</strong> is disguised as legitimate software — a free game, a useful tool, a fake update. It requires the user to install and run it. Once opened it creates backdoors, steals passwords, hijacks webcams, or recruits the machine into a botnet.</p>
+      <p>Defences are the same three either way: run antivirus, don't open suspicious attachments, and keep software patched so worms find no vulnerability to exploit.</p>
+    </div>
+    <div class="stage">
+      <h3>Compare the three</h3>
+      <div class="mal" id="malCards">
+        <div class="malcard sel" data-m="virus"><h4>Virus</h4><p>Attaches to a host file. Activates when that file is run.</p></div>
+        <div class="malcard" data-m="worm"><h4>Worm</h4><p>Self-replicates across networks with no user action.</p></div>
+        <div class="malcard" data-m="trojan"><h4>Trojan</h4><p>Disguised as legitimate software. You install it yourself.</p></div>
+      </div>
+      <svg class="viz" id="malViz" viewBox="0 0 470 160" role="img" aria-label="Malware spread"></svg>
+      <p class="readout" id="malOut"></p>
+      <table class="tbl">
+        <thead><tr><th>Type</th><th>Needs user action?</th><th>Spreads itself?</th></tr></thead>
+        <tbody id="malBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — Reconnaissance attacks</p>
+    <h1>Nobody has broken in yet. That's what makes it easy to ignore.</h1>
+    <p class="lede">Four steps, each noisier than the last, and all of them legal-looking. Reconnaissance is the prelude — footprints in the snow outside a locked cabin.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Public records, then live hosts, then open ports.</p>
+      <p>Attackers start with public tools. <code>whois</code> retrieves domain registration details — owner, contacts, IP ranges. <code>nslookup</code> queries DNS to map the address space and find exposed servers and nameservers.</p>
+      <p>Then come <strong>ping sweeps</strong>, sending ICMP echo requests across a range. Every system that replies reveals its position. <code>fping</code> does this far more efficiently than pinging one address at a time.</p>
+      <p>Finally <strong>port scans</strong>. Each live address is probed port by port — like walking a hallway testing every doorknob. An open 80 means a web server, 3389 means remote desktop, and a forgotten FTP server is a gift.</p>
+      <p>Every open port tells the attacker what software you run and what might be exploitable.</p>
+      <p>Response: monitor and document scanning, block suspicious IPs early, and harden the perimeter with firewalls.</p>
+    </div>
+    <div class="stage">
+      <h3>Follow the attacker</h3>
+      <ul class="ladder" id="recLadder"></ul>
+      <div class="term" id="recTerm"></div>
+      <div class="controls">
+        <button id="recNext">Next step →</button>
+        <button id="recReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="recOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — Access attacks</p>
+    <h1>Four ways in, and only one of them involves guessing.</h1>
+    <p class="lede">Password attacks are the obvious route. The other three exploit the relationships between systems rather than the systems themselves — which is why they're harder to spot.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Guess it, borrow trust, tunnel through, or sit in the middle.</p>
+      <p><strong>Password attacks.</strong> Brute force hammers the login with thousands of guesses per second. Or the attacker doesn't guess at all — a Trojan logs keystrokes, or a packet sniffer captures unencrypted credentials crossing the network.</p>
+      <p><strong>Trust exploitation.</strong> Systems inside a network are configured to trust each other. Compromise one and that trust becomes a weapon — the attacker moves sideways through the open gate instead of the front door.</p>
+      <p><strong>Port redirection.</strong> A compromised machine is used as a launchpad, re-routing attacks through it to reach systems behind the firewall. The traffic appears to come from a trusted host.</p>
+      <p><strong>Man-in-the-middle.</strong> The attacker sits between two parties, reading and even altering what passes, with neither side aware. Credentials intercepted, sessions injected — invisible unless the connection is properly encrypted.</p>
+    </div>
+    <div class="stage">
+      <h3>Click an attack</h3>
+      <div class="cards" id="accCards">
+        <button data-a="pwd" aria-pressed="true"><span class="t">Password attack</span><span class="s">brute force, sniffing, keylogger</span></button>
+        <button data-a="trust" aria-pressed="false"><span class="t">Trust exploitation</span><span class="s">lateral movement</span></button>
+        <button data-a="port" aria-pressed="false"><span class="t">Port redirection</span><span class="s">compromised host as launchpad</span></button>
+        <button data-a="mitm" aria-pressed="false"><span class="t">Man-in-the-middle</span><span class="s">intercept and alter</span></button>
+      </div>
+      <svg class="viz" id="accViz" viewBox="0 0 470 150" role="img" aria-label="Access attack"></svg>
+      <p class="readout" id="accOut" style="min-height:56px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — DoS and DDoS</p>
+    <h1>Not breaking in. Slamming the door shut for everyone else.</h1>
+    <p class="lede">A DoS attack comes from one place and can be blocked. A DDoS arrives from a hijacked army scattered across the world, and blocking them manually is whack-a-mole with no end.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">DoS is one source. DDoS is a botnet.</p>
+      <p><strong>DoS</strong> floods servers with fake requests — prank callers dialling repeatedly to keep the line busy. Legitimate users are locked out, sites go offline, systems buckle. Nothing is stolen; availability is the target.</p>
+      <p><strong>DDoS</strong> is the same attack from thousands of sources at once. A <strong>botnet</strong> of infected machines — laptops, routers, smart TVs, baby monitors — hijacked by malware long ago and activated on command.</p>
+      <p>Scale is what makes it dangerous. Traffic arrives from thousands or millions of geographically scattered addresses, so there's no single IP to block.</p>
+      <p>Response: activate traffic filtering and rate limiting, use DDoS mitigation services, keep systems patched so your machines don't join a botnet, and coordinate with ISPs to block malicious traffic upstream.</p>
+    </div>
+    <div class="stage">
+      <h3>Same target, two attacks</h3>
+      <div class="pills" id="dosPills">
+        <button data-d="dos" aria-pressed="true">DoS</button>
+        <button data-d="ddos" aria-pressed="false">DDoS</button>
+      </div>
+      <svg class="viz" id="dosViz" viewBox="0 0 470 210" role="img" aria-label="DoS versus DDoS"></svg>
+      <p class="readout" id="dosOut" style="min-height:56px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — Diagnose Akira's day</p>
+    <h1>Eight incidents. Name the category for each.</h1>
+    <p class="lede">This is the whole module in one exercise. Every incident Akira met belongs to one of the four categories you've just covered.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Technological, configuration, policy, or physical.</p>
+      <p><strong>Technological</strong> — the flaw is in the protocol, OS or hardware itself. You patch or replace it.</p>
+      <p><strong>Configuration</strong> — the technology is sound but was set up badly. You change a setting.</p>
+      <p><strong>Policy</strong> — nothing technical is wrong. There's no rule, or nobody follows it.</p>
+      <p><strong>Physical</strong> — hardware, environmental, electrical or maintenance. No firewall helps.</p>
+      <p>Some incidents genuinely belong to more than one category — Telnet with default credentials is both technological and configuration. Where that happens, pick the one the module leads with and be ready to argue the other.</p>
+      <p>Work through all eight on the right.</p>
+    </div>
+    <div class="stage">
+      <h3>Which category?</h3>
+      <div class="qcard">
+        <p class="qn" id="diagN">Incident 1 of 8</p>
+        <p class="qt" id="diagQ"></p>
+      </div>
+      <div class="opts c4" id="diagBtns">
+        <button data-a="T">Technological</button>
+        <button data-a="C">Configuration</button>
+        <button data-a="P">Policy</button>
+        <button data-a="H">Physical</button>
+      </div>
+      <p class="readout" id="diagOut">Ask what you would have to change to prevent it.</p>
+      <div class="controls">
+        <button id="diagNext" class="ghost" disabled>Next incident</button>
+        <button id="diagReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="diagScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">Use ← → or the buttons to move</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+/* shell */
+var LABELS=["Threat impact","Technological","Configuration","Policy","Physical","Malware","Recon","Access attacks","DoS / DDoS","Diagnose"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+});
+
+/* clock */
+var total=25*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* quiz builder */
+function quiz(Q,pfx,word,hint){
+  var i=0,score=0,ans=0;
+  var qEl=document.getElementById(pfx+"Q"),nEl=document.getElementById(pfx+"N"),oEl=document.getElementById(pfx+"Out");
+  var btns=document.getElementById(pfx+"Btns"),nextB=document.getElementById(pfx+"Next"),sc=document.getElementById(pfx+"Score");
+  function show(){
+    nEl.textContent=word+" "+(i+1)+" of "+Q.length;
+    qEl.textContent=Q[i].q;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    oEl.textContent=hint;
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    var right=Q[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    sc.textContent="Score "+score+" / "+ans;
+    oEl.innerHTML=(b.dataset.a===right?"<b>Correct.</b> ":"<b>Not quite.</b> ")+Q[i].why;
+    nextB.disabled=i>=Q.length-1;
+  });
+  nextB.addEventListener("click",function(){if(i<Q.length-1){i++;show();}});
+  document.getElementById(pfx+"Reset").addEventListener("click",function(){i=0;score=0;ans=0;sc.textContent="Score 0 / 0";show();});
+  show();
+}
+
+/* 01 impact */
+(function(){
+  var I={
+    theft:"<b>Information theft.</b> Confidential data — research, customer records, credentials — is stolen and misused. Breaks <b>confidentiality</b>. Akira's day opened with invoices being sent from the company's own domain, which means someone already had access.",
+    dos:"<b>Disruption of service.</b> Systems are crashed or flooded so nobody can use them. Breaks <b>availability</b>. Nothing is stolen and nothing is altered — the damage is entirely in the downtime.",
+    loss:"<b>Data loss and manipulation.</b> The attacker deletes or alters records. Breaks <b>integrity</b>. Manipulation is worse than deletion, because you may keep trusting data that is quietly wrong.",
+    id:"<b>Identity theft.</b> Personal information is used to commit fraud, obtain loans or make purchases in someone else's name. The victim is the person, not just the organisation."
+  };
+  document.getElementById("impCards").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-i]");if(!b)return;
+    pressed(this,b);
+    document.getElementById("impOut").innerHTML=I[b.dataset.i];
+  });
+  document.getElementById("impOut").innerHTML=I.theft;
+})();
+
+/* 02 technological */
+(function(){
+  var T={
+    tcp:"<b>TCP/IP protocol weaknesses.</b> The protocols were designed for a small, trusted research network and carry that assumption to this day. Spoofing and session hijacking exploit that inherent trust. You cannot patch the design — you layer encryption and authentication on top.",
+    os:"<b>Operating system weaknesses.</b> Unpatched and outdated systems have publicly documented exploits waiting for anyone who looks. Akira's forgotten Windows Server 2008 had no antivirus, no updates and guest access enabled.",
+    eq:"<b>Network equipment weaknesses.</b> Switches and routers are computers too. Left unsecured they stop being infrastructure and become the attack surface — or the launchpad for reaching everything else."
+  };
+  document.getElementById("techCards").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-t]");if(!b)return;
+    pressed(this,b);
+    document.getElementById("techOut").innerHTML=T[b.dataset.t];
+  });
+  document.getElementById("techOut").innerHTML=T.tcp;
+})();
+
+/* 03 config finder */
+(function(){
+  var LINES=[
+    {t:"hostname Router1",bad:false},
+    {t:"username admin password admin",bad:true,w:"<b>Unsecured user account.</b> Default username, default password, and stored as plaintext. This alone is enough."},
+    {t:" ip domain-name example.com",bad:false},
+    {t:"enable password cisco",bad:true,w:"<b>Easily guessed password</b>, and it uses <code>enable password</code> rather than <code>enable secret</code>, so it is weakly encrypted at best."},
+    {t:"line vty 0 4",bad:false},
+    {t:" transport input telnet",bad:true,w:"<b>Insecure default service.</b> Telnet sends everything in cleartext, credentials included. Should be <code>transport input ssh</code>."},
+    {t:" login",bad:false},
+    {t:"interface GigabitEthernet0/1",bad:false},
+    {t:" no shutdown",bad:false},
+    {t:"no service password-encryption",bad:true,w:"<b>Unsecured default setting.</b> Password encryption explicitly turned off, so every password in the config is readable to anyone who can run <code>show running-config</code>."},
+    {t:"end",bad:false}
+  ];
+  var box=document.getElementById("cfgBox"),found=0;
+  var total=LINES.filter(function(l){return l.bad;}).length;
+  function render(){
+    box.innerHTML="";
+    LINES.forEach(function(l,i){
+      var s=document.createElement("span");
+      s.className="line"+(l.bad?" bad":" ok")+(l.hit?" found":"");
+      s.textContent=l.t;
+      if(l.bad)s.addEventListener("click",function(){
+        if(l.hit)return;
+        l.hit=true;found++;
+        document.getElementById("cfgOut").innerHTML=l.w;
+        render();
+      });
+      box.appendChild(s);
+    });
+    document.getElementById("cfgBar").innerHTML="found <b>"+found+"</b> of "+total
+      +(found===total?" — that's all of them. Every one is free to fix; it just needed somebody to do it.":"");
+  }
+  document.getElementById("cfgReset").addEventListener("click",function(){
+    LINES.forEach(function(l){l.hit=false;});found=0;
+    document.getElementById("cfgOut").textContent="Four lines here are configuration vulnerabilities. Click the ones you spot.";
+    render();
+  });
+  render();
+})();
+
+/* 04 policy */
+(function(){
+  var P=[
+    {t:"Written security policy",w:"<b>Written security policy.</b> Without one, staff make it up as they go and every decision is inconsistent. Akira's company had one somewhere — nobody could find it, which is the same as not having it."},
+    {t:"Authentication continuity",w:"<b>Authentication continuity.</b> Users authenticated differently on different systems leaves gaps between them. One system trusting a login another system rejected is exactly where attackers live."},
+    {t:"Logical access controls enforced",w:"<b>Logical access enforced.</b> If permissions aren't set properly, anyone can reach anything. The intern who installed software should never have had the rights to."},
+    {t:"Approval for software/hardware changes",w:"<b>Change approval.</b> Installing or modifying systems without approval bypasses every protection you built. That's how a Windows Server 2008 box appeared on the network with nobody owning it."},
+    {t:"Disaster recovery plan, tested",w:"<b>Disaster recovery plan.</b> Untested plans are wishes. Without one, systems can't be restored quickly and an incident becomes an outage."}
+  ];
+  var list=document.getElementById("polList"),done=0;
+  function render(){
+    list.innerHTML="";
+    P.forEach(function(p){
+      var li=document.createElement("li");
+      li.className=p.done?"done":"";
+      li.innerHTML='<span class="bx">'+(p.done?"✓":"✗")+'</span>'+p.t;
+      li.addEventListener("click",function(){
+        p.done=!p.done;
+        done=P.filter(function(x){return x.done;}).length;
+        document.getElementById("polOut").innerHTML=p.done?p.w:"Removed again — back to a policy vulnerability.";
+        render();
+      });
+      list.appendChild(li);
+    });
+  }
+  document.getElementById("polOut").innerHTML="Every item is missing. Click each one to fix it and see why it matters.";
+  render();
+})();
+
+/* 05 physical */
+(function(){
+  var svg=document.getElementById("phyViz");
+  svg.appendChild(el("rect",{x:24,y:24,width:422,height:150,rx:10,fill:"#eef4f4",stroke:"#1F4E5F","stroke-width":1.8}));
+  svg.appendChild(el("text",{x:38,y:44,"font-family":"Consolas, monospace","font-size":"10",fill:"#5b6a6d"},"server room"));
+  var items={};
+  function mk(id,x,y,w,h,label){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:x,y:y,width:w,height:h,rx:6}));
+    g.appendChild(el("text",{x:x+w/2,y:y+h/2+4,"text-anchor":"middle"},label));
+    svg.appendChild(g);items[id]=g;
+  }
+  mk("hw",44,62,92,44,"racks");
+  mk("env",156,62,92,44,"HVAC");
+  mk("el",268,62,92,44,"UPS");
+  mk("mn",380,62,52,44,"cables");
+  svg.appendChild(el("text",{x:235,y:140,"text-anchor":"middle",class:"cap"},"no firewall protects any of this"));
+  var P={
+    hw:{o:"<b>Hardware threats</b> — theft or tampering. Unauthorised access to network rooms compromises the entire network. Akira found the backup router unplugged and a toolbox missing, with <b>no log entry at all</b>. Secure doors, ceilings and vents, add cameras, log entries electronically."},
+    env:{o:"<b>Environmental threats</b> — temperature and humidity. Water leaked into Akira's server closet because a ceiling tile was left open during maintenance. Monitor humidity and temperature, and enforce sealing and maintenance procedures."},
+    el:{o:"<b>Electrical threats</b> — power loss, brownouts, voltage spikes. A surge rebooted a switch mid-meeting. Install a UPS, use power conditioners, and actually test the backup systems rather than assuming they work."},
+    mn:{o:"<b>Maintenance threats</b> — electrostatic discharge, poor labelling, sloppy cabling. Nobody is attacking you; someone just pulled the wrong cable. Keep logs, label everything, train staff."}
+  };
+  document.getElementById("phyPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;
+    pressed(this,b);
+    for(var k in items)items[k].classList.toggle("hi",k===b.dataset.p);
+    document.getElementById("phyOut").innerHTML=P[b.dataset.p].o;
+  });
+  items.hw.classList.add("hi");
+  document.getElementById("phyOut").innerHTML=P.hw.o;
+})();
+
+/* 06 malware */
+(function(){
+  var svg=document.getElementById("malViz");
+  var pos=[{x:70,y:52},{x:200,y:52},{x:330,y:52},{x:70,y:118},{x:200,y:118},{x:330,y:118}];
+  var nodes=[];
+  pos.forEach(function(p,i){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-38,y:p.y-16,width:76,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:p.y+4,"text-anchor":"middle"},"PC"+(i+1)));
+    svg.appendChild(g);nodes.push(g);
+  });
+  var note=el("text",{x:400,y:90,"text-anchor":"middle",class:"cap"},"");
+  svg.appendChild(note);
+  var M={
+    virus:{hit:[0],o:"<b>Virus.</b> It sits inside a legitimate file on PC1 and does nothing at all until someone runs that file. Spread depends entirely on the infected file being shared and executed — which is slow, and stoppable.",
+      row:["Virus","Yes — must run the host file","Only via the infected file"]},
+    worm:{hit:[0,1,2,3,4,5],o:"<b>Worm.</b> No user action anywhere. It exploits a vulnerability, copies itself to the next machine, and repeats. Six machines in seconds; a network in minutes. <b>Patching is the defence</b>, because a worm needs an unpatched hole to move through.",
+      row:["Worm","No — spreads independently","Yes, automatically"]},
+    trojan:{hit:[4],o:"<b>Trojan horse.</b> It doesn't spread at all. The user on PC5 downloaded and installed it themselves, believing it was a free game or a needed update. Then it opens a backdoor, logs keystrokes, or enrols the machine in a botnet.",
+      row:["Trojan","Yes — user installs it","No — relies on disguise"]}
+  };
+  var cards=[].slice.call(document.querySelectorAll(".malcard"));
+  function set(k){
+    cards.forEach(function(c){c.classList.toggle("sel",c.dataset.m===k);});
+    nodes.forEach(function(g,i){g.classList.toggle("bad",M[k].hit.indexOf(i)>-1);});
+    note.textContent=M[k].hit.length===6?"whole network":(M[k].hit.length+" machine");
+    document.getElementById("malOut").innerHTML=M[k].o;
+    var b=document.getElementById("malBody");
+    b.innerHTML="";
+    ["virus","worm","trojan"].forEach(function(m){
+      var tr=document.createElement("tr");
+      if(m===k)tr.className="hl";
+      tr.innerHTML="<td>"+M[m].row[0]+"</td><td>"+M[m].row[1]+"</td><td>"+M[m].row[2]+"</td>";
+      b.appendChild(tr);
+    });
+  }
+  cards.forEach(function(c){c.addEventListener("click",function(){set(c.dataset.m);});});
+  set("virus");
+})();
+
+/* 07 recon */
+(function(){
+  var S=[
+    {n:"whois — who owns this?",t:"$ <span class='cmd'>whois example.edu.au</span>\n\nRegistrant:   Example University\nAdmin email:  netadmin@example.edu.au\nIP range:     203.0.113.0/24",
+     o:"<b>Public records, no contact with your network at all.</b> whois returns the owner, contacts and IP range. Nothing has been probed yet, and nothing appears in any log of yours."},
+    {n:"nslookup — what's exposed?",t:"$ <span class='cmd'>nslookup mail.example.edu.au</span>\n\nAddress: 203.0.113.25\n\n$ <span class='cmd'>nslookup -type=ns example.edu.au</span>\nns1.example.edu.au\nns2.example.edu.au",
+     o:"<b>DNS queries map the address space.</b> Which servers exist, what they're called, which nameservers serve the domain. Still entirely normal-looking traffic."},
+    {n:"ping sweep — who's alive?",t:"$ <span class='cmd'>fping -g 203.0.113.0/24</span>\n\n203.0.113.1   is alive\n203.0.113.25  is alive\n203.0.113.42  is alive\n<span class='fail'>...249 addresses unreachable</span>",
+     o:"<b>Now they're touching your network.</b> ICMP echo requests across the whole range — every reply is a machine giving away its position. fping does this far faster than pinging one at a time. <b>This is the first step that shows up in your logs.</b>"},
+    {n:"port scan — which doors are unlocked?",t:"$ <span class='cmd'>port scan 203.0.113.42</span>\n\n22/tcp    <span class='fail'>open</span>   ssh\n80/tcp    <span class='fail'>open</span>   http\n3389/tcp  <span class='fail'>open</span>   ms-wbt-server\n21/tcp    <span class='fail'>open</span>   ftp",
+     o:"<b>Every doorknob tested.</b> Open 3389 means remote desktop is reachable from outside. An open 21 means a forgotten FTP server. Each open port names software that might be exploitable. <b>Still not an attack</b> — but this is the last quiet moment you get."}
+  ];
+  var at=-1;
+  function draw(){
+    var lad=document.getElementById("recLadder");
+    lad.innerHTML="";
+    S.forEach(function(s,i){
+      var li=document.createElement("li");
+      if(i<=at)li.className="ok";
+      li.innerHTML='<span class="n">'+(i+1)+'</span>'+s.n;
+      lad.appendChild(li);
+    });
+    document.getElementById("recTerm").innerHTML=at<0?"$ _\n\nAn attacker knows only your organisation's name.":S[at].t;
+    document.getElementById("recOut").innerHTML=at<0
+      ? "Reconnaissance is legal-looking, quiet, and almost entirely invisible for the first two steps."
+      : S[at].o;
+    document.getElementById("recNext").disabled=at>=S.length-1;
+  }
+  document.getElementById("recNext").addEventListener("click",function(){if(at<S.length-1){at++;draw();}});
+  document.getElementById("recReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+/* 08 access attacks */
+(function(){
+  var svg=document.getElementById("accViz");
+  var g=el("g",{});svg.appendChild(g);
+  function node(x,y,w,l,cls){
+    var n=el("g",{class:"dev"+(cls?" "+cls:"")});
+    n.appendChild(el("rect",{x:x-w/2,y:y-16,width:w,height:32,rx:5}));
+    n.appendChild(el("text",{x:x,y:y+4,"text-anchor":"middle"},l));
+    g.appendChild(n);
+  }
+  function link(x1,y1,x2,y2,cls){
+    g.appendChild(el("path",{d:"M"+x1+" "+y1+" L"+x2+" "+y2,class:"wire "+(cls||"")}));
+  }
+  var A={
+    pwd:{d:function(){
+      link(112,75,224,75,"bad");
+      node(60,75,84,"attacker","bad");node(290,75,110,"login page");
+      g.appendChild(el("text",{x:168,y:62,"text-anchor":"middle",class:"cap"},"1000s of guesses/sec"));
+    },o:"<b>Password attack.</b> Brute force hammers the login. Or the attacker skips guessing entirely — a Trojan keylogger records what the user types, or a packet sniffer captures unencrypted credentials in transit. Defence: strong complex passwords and <b>multi-factor authentication</b>."},
+    trust:{d:function(){
+      link(112,75,196,75,"bad");link(272,75,356,75,"bad");
+      node(60,75,84,"attacker","bad");node(234,75,76,"web srv","bad");node(404,75,84,"database");
+      g.appendChild(el("text",{x:235,y:120,"text-anchor":"middle",class:"cap"},"the database trusts the web server"));
+    },o:"<b>Trust exploitation.</b> Systems inside a network trust each other so things run smoothly. Compromise one and that trust becomes the weapon — the attacker walks sideways through an open gate. This is <b>lateral movement</b>. Defence: audit trust relationships and limit access between systems."},
+    port:{d:function(){
+      link(112,75,196,75,"bad");link(272,75,356,75,"bad");
+      node(60,75,84,"attacker","bad");node(234,75,76,"pivot","bad");node(404,75,84,"internal");
+      g.appendChild(el("rect",{x:300,y:34,width:24,height:82,rx:4,fill:"none",stroke:"#7a3b3b","stroke-width":2,"stroke-dasharray":"4 3"}));
+      g.appendChild(el("text",{x:312,y:130,"text-anchor":"middle",class:"cap"},"firewall"));
+    },o:"<b>Port redirection.</b> A compromised machine becomes a launchpad, re-routing the attack through itself to reach systems behind the firewall. The traffic looks like it came from a trusted internal host, so it passes. Defence: network segmentation and monitoring for strange internal traffic."},
+    mitm:{d:function(){
+      link(102,75,196,75,"bad");link(272,75,366,75,"bad");
+      node(56,75,76,"user");node(234,75,84,"attacker","bad");node(412,75,76,"bank");
+      g.appendChild(el("text",{x:235,y:120,"text-anchor":"middle",class:"cap"},"neither end knows"));
+    },o:"<b>Man-in-the-middle.</b> The attacker sits between two parties, reading and altering what passes, invisible to both. Credentials intercepted, sessions injected. Defence: <b>encrypt data in transit</b> — this attack largely dies against properly implemented TLS."}
+  };
+  function set(k){
+    g.innerHTML="";A[k].d();
+    document.getElementById("accOut").innerHTML=A[k].o;
+  }
+  document.getElementById("accCards").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b)return;pressed(this,b);set(b.dataset.a);
+  });
+  set("pwd");
+})();
+
+/* 09 DoS */
+(function(){
+  var svg=document.getElementById("dosViz");
+  var g=el("g",{});svg.appendChild(g);
+  var target={x:400,y:105};
+  function draw(mode){
+    g.innerHTML="";
+    var srcs=mode==="dos"?[{x:52,y:105}]:[];
+    if(mode==="ddos"){
+      for(var r=0;r<5;r++)for(var c=0;c<3;c++)srcs.push({x:34+c*44,y:38+r*34});
+    }
+    srcs.forEach(function(s){
+      g.appendChild(el("path",{d:"M"+(s.x+20)+" "+s.y+" L"+(target.x-42)+" "+target.y,class:"wire bad"}));
+    });
+    srcs.forEach(function(s,i){
+      if(mode==="dos"){
+        var n=el("g",{class:"dev bad"});
+        n.appendChild(el("rect",{x:s.x-34,y:s.y-16,width:68,height:32,rx:5}));
+        n.appendChild(el("text",{x:s.x,y:s.y+4,"text-anchor":"middle"},"attacker"));
+        g.appendChild(n);
+      }else{
+        g.appendChild(el("circle",{cx:s.x,cy:s.y,r:9,fill:"#7a3b3b"}));
+      }
+    });
+    var t=el("g",{class:"dev bad"});
+    t.appendChild(el("rect",{x:target.x-42,y:target.y-22,width:84,height:44,rx:6}));
+    t.appendChild(el("text",{x:target.x,y:target.y+4,"text-anchor":"middle"},"server"));
+    g.appendChild(t);
+    if(mode==="ddos")g.appendChild(el("text",{x:100,y:196,"text-anchor":"middle",class:"cap"},"botnet — 15 shown, imagine millions"));
+    document.getElementById("dosOut").innerHTML=mode==="dos"
+      ? "<b>DoS.</b> One source flooding the server with fake requests. Legitimate users are locked out. The saving grace: there is <b>one IP address to block</b>, and blocking it ends the attack."
+      : "<b>DDoS.</b> A botnet of hijacked machines — laptops, routers, smart TVs, baby monitors — infected long ago and activated on command. Traffic arrives from thousands of scattered addresses, so there is <b>nothing single to block</b>. Defence has to move upstream: rate limiting, mitigation services, and coordination with your ISP.";
+  }
+  document.getElementById("dosPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-d]");if(!b)return;pressed(this,b);draw(b.dataset.d);
+  });
+  draw("dos");
+})();
+
+/* 10 diagnose */
+quiz([
+  {q:"Telnet is enabled on the router with default admin credentials still in place.",a:"C",why:"Configuration. The module lists it as both technological (insecure protocol) and configuration (default settings) — but the default credentials are the part somebody could have fixed in thirty seconds."},
+  {q:"A Windows Server 2008 machine appears on the network with no antivirus and no updates.",a:"T",why:"Technological — an operating system weakness. Note it's also a policy failure, because nobody approved or tracked the installation."},
+  {q:"Someone unplugged the backup router. A toolbox is missing. No log entry exists.",a:"H",why:"Physical — hardware tampering, with unlogged access as a maintenance vulnerability alongside it."},
+  {q:"A power surge reboots a switch mid-meeting.",a:"H",why:"Physical — an electrical threat. The fix is a UPS and power conditioners, not anything you configure."},
+  {q:"Water leaks into the server closet after a ceiling tile was left open.",a:"H",why:"Physical — environmental, with a maintenance failure that caused it."},
+  {q:"Nobody can find the company's written security policy.",a:"P",why:"Policy. Nothing technical is broken. If nobody can find it, there effectively isn't one — and there's no disaster recovery plan either."},
+  {q:"An intern installs software they downloaded, because no rule said they couldn't.",a:"P",why:"Policy — no rule governing software installation, and logical access controls not enforced. The malware is the symptom; the missing policy is the vulnerability."},
+  {q:"Rogue access points are broadcasting nearby and nobody audits the wireless setup.",a:"P",why:"Policy — no enforced rules for access point setup or auditing. The module also flags misconfigured wireless equipment, so configuration is defensible here."}
+],"diag","Incident","Ask what you would have to change to prevent it.");
+
+go(0);
+})();
+</script>
+</body>
+</html>
