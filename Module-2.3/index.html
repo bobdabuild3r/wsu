@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.3 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pills .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);align-self:center;font-weight:700}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:#fff;font-weight:700}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.8}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+/* address display */
+.addr{font-family:var(--mono);font-size:clamp(13px,2.9vw,20px);font-weight:700;text-align:center;letter-spacing:.01em;margin:10px 0;word-break:break-all;line-height:1.5}
+.addr .z{color:#b0bcbe}
+.addr .cut{background:#ffe6c2;color:#8a4d05;border-radius:4px;padding:1px 3px}
+.addr .kept{color:var(--teal)}
+.addr .dc{color:var(--orange);background:#fff7ed;border-radius:4px;padding:1px 4px}
+.stepnote{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;margin-top:2px}
+
+/* bit bar */
+.bitbar{display:flex;height:44px;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin-top:6px}
+.bseg{display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:10.5px;font-weight:700;text-align:center;line-height:1.2;padding:2px;transition:.2s}
+.bseg.s0{background:var(--orange)}
+.bseg.s1{background:var(--teal)}
+.bseg.s2{background:var(--teal-mid)}
+.bseg.s3{background:var(--green)}
+.bseg.dim{opacity:.3}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
+.tbl th{background:var(--teal);color:#fff;text-align:left;padding:6px 8px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.tbl td{border-bottom:1px solid var(--line);padding:6px 8px}
+.tbl tr:nth-child(even) td{background:#f7fafa}
+.tbl tr.hl td{background:#ffe6c2;font-weight:700}
+
+/* quiz */
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:clamp(14px,3vw,17px);line-height:1.45;color:var(--teal-dark);font-family:var(--mono);font-weight:700;word-break:break-all}
+.opts{display:grid;gap:8px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opts.c3{grid-template-columns:repeat(3,1fr)}
+.opts.c4{grid-template-columns:repeat(2,1fr)}
+@media(max-width:520px){.opts.c2,.opts.c3,.opts.c4{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+/* eui steps */
+.eui{display:flex;flex-direction:column;gap:8px}
+.eurow{display:grid;grid-template-columns:88px 1fr;gap:10px;align-items:center;opacity:.32;transition:.3s}
+.eurow.lit{opacity:1}
+.eurow .el{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;text-align:right}
+.eurow .ev{font-family:var(--mono);font-size:clamp(11px,2.5vw,15px);font-weight:700;background:#eef4f4;border-radius:6px;padding:8px 9px;letter-spacing:.04em;word-break:break-all}
+.eurow.res .ev{background:var(--green);color:#fff}
+.eurow .ev mark{background:#ffe6c2;color:#8a4d05;border-radius:3px;padding:0 3px}
+
+/* terminal */
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.65;white-space:pre-wrap}
+.term .pass{color:#8fe3c7}
+.term .fail{color:#ff9aa8}
+.term .cmd{color:#f7b955}
+.term .note{color:#7fa0a8}
+
+/* ladder */
+.ladder{margin:0 0 12px;padding:0;list-style:none}
+.ladder li{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;margin-bottom:5px;background:#eef4f4;font-size:14px;transition:.2s}
+.ladder li .n{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:5px;padding:2px 7px}
+.ladder li.ok{background:#e4f2ea}
+.ladder li.ok .n{background:var(--green)}
+.ladder li.fail{background:#f6e4e4}
+.ladder li.fail .n{background:var(--red)}
+
+/* cards */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+.grid2 button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 10px;text-align:left;color:var(--teal);font-weight:700;font-size:13.5px;transition:.15s}
+.grid2 button:hover{border-color:var(--teal)}
+.grid2 button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 2.3 Recap</div>
+    <div class="clock">
+      <output id="clock">25:00</output>
+      <button id="clockBtn">Start</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — Why IPv6 exists</p>
+    <h1>It was never only about running out of addresses.</h1>
+    <p class="lede">Exhaustion is the headline, but IPv6 also fixed configuration, routing, security and the end-to-end connectivity that NAT destroyed.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">4.3 billion addresses became 340 undecillion — that's 3.4 × 10³⁸.</p>
+      <p>IPv4's pool is exhausted. Every smart device, from fridges to doorbells, needs a unique address, and IPv6 makes that growth scalable.</p>
+      <p>But the other five reasons matter just as much. <strong>SLAAC</strong> lets devices generate their own addresses without a DHCP server. <strong>Hierarchical addressing and simplified headers</strong> improve routing performance and reduce load on network devices.</p>
+      <p><strong>IPsec</strong> was designed in as a fundamental feature rather than bolted on, supporting encryption and authentication by default.</p>
+      <p>And <strong>end-to-end connectivity</strong> comes back. NAT broke direct communication in IPv4; removing the need for it helps VoIP, peer-to-peer apps and real-time services.</p>
+      <p>Click any reason on the right.</p>
+    </div>
+    <div class="stage">
+      <h3>Six reasons</h3>
+      <div class="grid2" id="whyGrid">
+        <button data-w="ex" aria-pressed="true">Address exhaustion</button>
+        <button data-w="iot" aria-pressed="false">Growth of IoT</button>
+        <button data-w="cfg" aria-pressed="false">Simpler configuration</button>
+        <button data-w="rt" aria-pressed="false">Routing efficiency</button>
+        <button data-w="sec" aria-pressed="false">Built-in security</button>
+        <button data-w="e2e" aria-pressed="false">End-to-end connectivity</button>
+      </div>
+      <p class="readout" id="whyOut" style="min-height:62px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Living with both</p>
+    <h1>Three ways to run IPv4 and IPv6 at the same time.</h1>
+    <p class="lede">Nobody switched over in a weekend. Dual stack, tunnelling and translation each bridge the gap differently, and each costs you something.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Run both, wrap one inside the other, or convert between them.</p>
+      <p><strong>Dual stack</strong> runs both protocols simultaneously on the same devices. Smoothest path, because nothing needs translating or tunnelling — but it doubles the administrative workload, since two stacks must be configured, secured and managed.</p>
+      <p><strong>Tunnelling</strong> encapsulates IPv6 packets inside IPv4 packets so they can cross an IPv4-only network. Protocols include 6to4, Teredo and ISATAP. It avoids replacing infrastructure, at the cost of complexity, performance overhead and harder troubleshooting.</p>
+      <p><strong>Translation</strong> converts between the two. <strong>NAT64</strong> translates the addresses, <strong>DNS64</strong> synthesises IPv6 addresses from IPv4 DNS records. Useful for IPv6-only networks reaching legacy content, but it breaks applications that embed IP addresses.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a mechanism</h3>
+      <div class="pills" id="txPills">
+        <button data-t="dual" aria-pressed="true">Dual stack</button>
+        <button data-t="tun" aria-pressed="false">Tunnelling</button>
+        <button data-t="tr" aria-pressed="false">Translation</button>
+      </div>
+      <svg class="viz" id="txViz" viewBox="0 0 470 150" role="img" aria-label="Transition mechanism"></svg>
+      <p class="readout" id="txOut"></p>
+      <table class="tbl"><tbody id="txBody"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — Format and compression</p>
+    <h1>Two rules shrink an IPv6 address. The second one has a catch.</h1>
+    <p class="lede">Drop leading zeros in any segment. Replace consecutive all-zero segments with a double colon — but only once in the whole address, or it becomes ambiguous.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">128 bits. Eight 16-bit segments. Four hex digits each, separated by colons.</p>
+      <p>The <strong>preferred format</strong> writes all eight segments in full, four hex digits each, even where they start with zeros.</p>
+      <p><strong>Rule one:</strong> leading zeros within a segment can be omitted. <code>0db8</code> becomes <code>db8</code>.</p>
+      <p><strong>Rule two:</strong> one or more consecutive all-zero segments can be replaced by a double colon. <strong>This can only be used once per address.</strong> Twice and there's no way to work out how many zeros belong to each gap.</p>
+      <p>Prefix length works like CIDR — <code>2001:db8:abcd:12::/64</code> means the first 64 bits are the network prefix and the last 64 are the interface ID.</p>
+      <p>Step through the compression on the right.</p>
+    </div>
+    <div class="stage">
+      <h3>Compress it step by step</h3>
+      <p class="addr" id="cmpAddr"></p>
+      <p class="stepnote" id="cmpNote"></p>
+      <div class="controls">
+        <button id="cmpNext">Next rule →</button>
+        <button id="cmpReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="cmpOut"></p>
+      <div class="pills" id="cmpPills" style="margin-top:16px">
+        <span class="lbl">Try</span>
+        <button data-i="0" aria-pressed="true">2001:0db8:0000:...:0001</button>
+        <button data-i="1" aria-pressed="false">fe80:0000:...:0001</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — Address types</p>
+    <h1>Unicast, multicast, anycast. No broadcast at all.</h1>
+    <p class="lede">IPv6 deleted broadcast entirely and replaced it with multicast. Unicast then splits into five kinds you can identify by their opening characters.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Read the first characters and you know the type.</p>
+      <p><strong>Global Unicast (GUA)</strong> — publicly routable, like a public IPv4 address. Starts <code>2000::/3</code>.</p>
+      <p><strong>Unique Local (ULA)</strong> — private, not routable on the global internet. The <code>fc00::/7</code> block, so addresses beginning <code>fc</code> or <code>fd</code>.</p>
+      <p><strong>Link-Local</strong> — one network segment only, <code>fe80::/10</code>.</p>
+      <p><strong>Loopback</strong> is <code>::1</code>, the IPv6 equivalent of 127.0.0.1. <strong>Unspecified</strong> is <code>::</code>, meaning no address assigned yet.</p>
+      <p><strong>Multicast</strong> starts <code>ff00::/8</code> — one-to-many, and it replaces IPv4 broadcast. <strong>Anycast</strong> shares the unicast format and is delivered to the nearest device holding that address.</p>
+    </div>
+    <div class="stage">
+      <h3>Identify the address</h3>
+      <div class="qcard">
+        <p class="qn" id="typN">Address 1 of 6</p>
+        <p class="qt" id="typQ"></p>
+      </div>
+      <div class="opts c4" id="typBtns">
+        <button data-a="G">Global unicast</button>
+        <button data-a="U">Unique local</button>
+        <button data-a="L">Link-local</button>
+        <button data-a="M">Multicast</button>
+      </div>
+      <p class="readout" id="typOut">Look at the opening characters.</p>
+      <div class="controls">
+        <button id="typNext" class="ghost" disabled>Next address</button>
+        <button id="typReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="typScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — Global unicast structure</p>
+    <h1>Half the address is yours to design. The other half identifies the device.</h1>
+    <p class="lede">A GUA splits into a routing prefix assigned to your organisation, a subnet ID you control, and a 64-bit interface identifier. That last 64 is why /64 is the standard subnet.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">48 bits of global routing prefix, 16 bits of subnet ID, 64 bits of interface ID.</p>
+      <p>GUAs begin with <code>2000::/3</code> — the first three bits are <code>001</code>. They're globally unique, assigned by internet registries and ISPs, and routable worldwide.</p>
+      <p>The <strong>global routing prefix</strong> occupies the first 48 bits and is assigned to an organisation. It routes traffic to the right network globally.</p>
+      <p>The <strong>subnet ID</strong> is the next 16 bits, yours to segment however you like. 2¹⁶ = 65,536 subnets from a single /48.</p>
+      <p>The <strong>interface identifier</strong> is the final 64 bits, identifying one interface — derived from the MAC address or generated randomly.</p>
+      <p>Because that split lands on a /64, almost every IPv6 subnet is a /64. Many functions, SLAAC included, depend on it.</p>
+    </div>
+    <div class="stage">
+      <h3>2001:0db8:85a3 : 0000 : 0000:8a2e:0370:7334</h3>
+      <div class="bitbar" id="guaBar"></div>
+      <div class="pills" id="guaPills" style="margin-top:14px">
+        <button data-g="0" aria-pressed="true">Routing prefix</button>
+        <button data-g="1" aria-pressed="false">Subnet ID</button>
+        <button data-g="2" aria-pressed="false">Interface ID</button>
+      </div>
+      <p class="readout" id="guaOut"></p>
+      <table class="tbl">
+        <thead><tr><th>Block</th><th>Bits</th><th>Assigned by</th></tr></thead>
+        <tbody id="guaBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — Link-local addresses</p>
+    <h1>Every IPv6 interface gets one automatically, whether you want it or not.</h1>
+    <p class="lede">Link-local addresses exist before anything else is configured. Neighbour Discovery runs on them, routers talk to hosts over them, and nothing forwards them past the local link.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">fe80::/10 — the first 10 bits are fixed as 1111 1110 10.</p>
+      <p>Link-local addresses are automatically assigned to every IPv6-enabled interface, used for communication within a single link, and never routed beyond it.</p>
+      <p>They carry core IPv6 functions: <strong>Neighbour Discovery</strong>, <strong>router communication</strong> for advertisements and solicitations, and <strong>automatic configuration</strong> before any global address exists.</p>
+      <p>Routers do not forward packets with a link-local source or destination. Because they're only significant on their own link, the same link-local address can appear on different segments without conflict.</p>
+      <p>To configure one manually on a Cisco interface: <code>ipv6 address FE80::1 link-local</code>.</p>
+      <p>To verify: <code>show ipv6 interface brief</code>. When pinging a link-local address you must specify the outgoing interface, because the address isn't globally unique.</p>
+    </div>
+    <div class="stage">
+      <h3>Is this a valid link-local address?</h3>
+      <div class="qcard">
+        <p class="qn" id="llN">Address 1 of 5</p>
+        <p class="qt" id="llQ"></p>
+      </div>
+      <div class="opts c2" id="llBtns">
+        <button data-a="Y">Valid link-local</button>
+        <button data-a="N">No</button>
+      </div>
+      <p class="readout" id="llOut">Check the prefix — and check every character is hex.</p>
+      <div class="controls">
+        <button id="llNext" class="ghost" disabled>Next address</button>
+        <button id="llReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="llScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — RS, RA and SLAAC</p>
+    <h1>The host asks. The router answers. The host builds its own address.</h1>
+    <p class="lede">Two ICMPv6 messages start every IPv6 host's life on a network. What happens after the router replies depends on which of three modes the network runs.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">RS is ICMPv6 type 133 to ff02::2. RA is type 134 to ff02::1.</p>
+      <p>A new host sends a <strong>Router Solicitation</strong> to the all-routers multicast address <code>ff02::2</code>, asking whether any IPv6 routers are present.</p>
+      <p>A router replies with a <strong>Router Advertisement</strong> to the all-nodes address <code>ff02::1</code>, carrying the network prefix, the prefix length and the default gateway. Routers also send RAs unprompted, roughly every 200 seconds.</p>
+      <p>With <strong>SLAAC</strong>, the host takes that prefix, generates its own 64-bit interface ID, and combines them. Before using the address it runs <strong>Duplicate Address Detection</strong> — a Neighbour Solicitation to see if anyone answers. Silence means the address is free.</p>
+      <p>Three modes exist. <strong>SLAAC only</strong>: no server at all. <strong>SLAAC + stateless DHCPv6</strong>: host builds its own address, asks a server for DNS. <strong>SLAAC + stateful DHCPv6</strong>: the server assigns the address too.</p>
+      <p>The router must have <code>ipv6 unicast-routing</code> enabled to send RAs at all.</p>
+    </div>
+    <div class="stage">
+      <h3>Step the exchange</h3>
+      <div class="pills" id="modePills">
+        <span class="lbl">Mode</span>
+        <button data-m="0" aria-pressed="true">SLAAC only</button>
+        <button data-m="1" aria-pressed="false">+ stateless DHCPv6</button>
+        <button data-m="2" aria-pressed="false">+ stateful DHCPv6</button>
+      </div>
+      <svg class="viz" id="slViz" viewBox="0 0 470 130" role="img" aria-label="RS and RA exchange"></svg>
+      <ul class="ladder" id="slLadder"></ul>
+      <div class="controls">
+        <button id="slNext">Next message →</button>
+        <button id="slReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="slOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — Building the interface ID</p>
+    <h1>EUI-64 stretches a 48-bit MAC into 64 bits.</h1>
+    <p class="lede">Split the MAC in half, wedge FFFE into the middle, flip one bit. Predictable and consistent — which is exactly why privacy extensions exist as an alternative.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Split the MAC, insert FFFE, flip the 7th bit of the first byte.</p>
+      <p>A MAC address is 48 bits. The interface ID needs 64. <strong>EUI-64</strong> makes up the difference in three steps.</p>
+      <p>Split the MAC into two halves. Insert the fixed value <code>FFFE</code> between them. Then flip the 7th bit of the first byte — the Universal/Local bit.</p>
+      <p>For <code>00:1A:2B:3C:4D:5E</code>, the first byte <code>00000000</code> becomes <code>00000010</code>, which is hex <code>02</code>. The interface ID is <code>021A:2BFF:FE3C:4D5E</code>.</p>
+      <p>This is consistent and predictable, which suits servers and routers. But it <strong>exposes the MAC address</strong>, so a device can be tracked across different networks.</p>
+      <p><strong>Privacy extensions</strong>, RFC 4941, solve that by generating a pseudo-random 64-bit interface ID instead, changed periodically. Temporary addresses handle outgoing connections; a stable address handles incoming services.</p>
+    </div>
+    <div class="stage">
+      <h3>Convert a MAC to an interface ID</h3>
+      <div class="eui" id="euiBox"></div>
+      <div class="controls">
+        <button id="euiNext">Next step →</button>
+        <button id="euiReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="euiOut"></p>
+      <div class="pills" id="euiPills" style="margin-top:14px">
+        <span class="lbl">MAC</span>
+        <button data-m="00:1A:2B:3C:4D:5E" aria-pressed="true">00:1A:2B:3C:4D:5E</button>
+        <button data-m="B4:7C:9C:11:22:33" aria-pressed="false">B4:7C:9C:11:22:33</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — Multicast</p>
+    <h1>IPv6 has no broadcast. Multicast does that work, more precisely.</h1>
+    <p class="lede">Rather than disturbing every device on the link, IPv6 targets groups. The solicited-node address narrows it further — to the handful of devices that could possibly be the one you want.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">All multicast addresses start ff00::/8 — so they begin with ff.</p>
+      <p>Multicast delivers packets to several devices at once without sending a separate unicast copy to each. It's used for routing protocols, service discovery and neighbour discovery.</p>
+      <p><strong>Assigned</strong> multicast addresses are reserved by IANA for specific protocols. <strong>Well-known</strong> ones are a subset, universally recognised for common functions.</p>
+      <p>The three to memorise: <code>ff02::1</code> is all IPv6 nodes on the link, <code>ff02::2</code> is all routers on the link, and <code>ff01::1</code> is all nodes on the local host.</p>
+      <p>A <strong>solicited-node multicast address</strong> is generated automatically for every unicast or anycast address on an interface. It lets a device send a neighbour solicitation only to devices that might own the target address, instead of everyone. Far more efficient than IPv4's broadcast ARP.</p>
+      <p>It powers Duplicate Address Detection and Neighbour Solicitation.</p>
+    </div>
+    <div class="stage">
+      <h3>Who receives it?</h3>
+      <div class="pills" id="mcPills">
+        <button data-m="n1" aria-pressed="true">ff02::1</button>
+        <button data-m="r2" aria-pressed="false">ff02::2</button>
+        <button data-m="h1" aria-pressed="false">ff01::1</button>
+        <button data-m="sn" aria-pressed="false">Solicited-node</button>
+      </div>
+      <svg class="viz" id="mcViz" viewBox="0 0 470 190" role="img" aria-label="Multicast delivery"></svg>
+      <p class="readout" id="mcOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — ICMP and troubleshooting</p>
+    <h1>Work outwards. Loopback, gateway, internet, then trace.</h1>
+    <p class="lede">ICMP carries no user data — it only reports what went wrong. Four message types and a fixed order of tests will locate almost any connectivity fault.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Echo Request and Echo Reply are ping. Time Exceeded is what makes traceroute work.</p>
+      <p><strong>Echo Request / Echo Reply</strong> — ping sends one and waits for the other. Pinging the loopback, <code>127.0.0.1</code> or <code>::1</code>, tests only the local TCP/IP stack.</p>
+      <p><strong>Time Exceeded</strong> — the sender sets a TTL, called Hop Limit in IPv6. Each router decrements it, and when it hits zero the router drops the packet and returns Time Exceeded. Traceroute raises the TTL one step at a time and maps the path from the replies.</p>
+      <p><strong>Destination Unreachable</strong> — no route exists, or a firewall is blocking. ICMPv6 gives more detailed reasons, such as beyond scope of source or administratively prohibited.</p>
+      <p>ICMPv6 does far more than report errors — it carries Neighbour Discovery itself, including RS, RA, NS and NA. It is what makes IPv6 work, not just what reports when it doesn't.</p>
+      <p>Work the ladder on the right in order. Each rung rules out everything below it.</p>
+    </div>
+    <div class="stage">
+      <h3>Diagnose a broken connection</h3>
+      <ul class="ladder" id="tsLadder"></ul>
+      <div class="term" id="tsTerm"></div>
+      <div class="controls">
+        <button id="tsNext">Run next test</button>
+        <button id="tsReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="tsOut"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">Use ← → or the buttons to move</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+/* shell */
+var LABELS=["Why IPv6","Transition","Compression","Address types","GUA structure","Link-local","RS / RA / SLAAC","EUI-64","Multicast","ICMP"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+});
+
+/* clock */
+var total=25*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* quiz builder */
+function quiz(Q,pfx,word,hint){
+  var i=0,score=0,ans=0;
+  var qEl=document.getElementById(pfx+"Q"),nEl=document.getElementById(pfx+"N"),oEl=document.getElementById(pfx+"Out");
+  var btns=document.getElementById(pfx+"Btns"),nextB=document.getElementById(pfx+"Next"),sc=document.getElementById(pfx+"Score");
+  function show(){
+    nEl.textContent=word+" "+(i+1)+" of "+Q.length;
+    qEl.textContent=Q[i].q;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    oEl.textContent=hint;
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    var right=Q[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    sc.textContent="Score "+score+" / "+ans;
+    oEl.innerHTML=(b.dataset.a===right?"<b>Correct.</b> ":"<b>Not quite.</b> ")+Q[i].why;
+    nextB.disabled=i>=Q.length-1;
+  });
+  nextB.addEventListener("click",function(){if(i<Q.length-1){i++;show();}});
+  document.getElementById(pfx+"Reset").addEventListener("click",function(){i=0;score=0;ans=0;sc.textContent="Score 0 / 0";show();});
+  show();
+}
+
+/* 01 why */
+(function(){
+  var W={
+    ex:"<b>Address exhaustion.</b> IPv4 offers about 4.3 billion addresses and that pool is gone. IPv6 offers 340 undecillion — 3.4 × 10³⁸.",
+    iot:"<b>Growth of IoT.</b> Every smart device, from fridges to doorbells, needs its own address. IPv6 makes that scalable rather than a rationing problem.",
+    cfg:"<b>Simpler configuration.</b> SLAAC lets devices generate their own addresses with no DHCP server, which matters enormously on large networks.",
+    rt:"<b>Routing efficiency.</b> Hierarchical addressing and a simplified header improve routing performance and reduce load on network devices.",
+    sec:"<b>Built-in security.</b> IPsec was designed in as a fundamental feature, supporting encryption and authentication by default rather than as an add-on.",
+    e2e:"<b>End-to-end connectivity.</b> NAT broke direct host-to-host communication in IPv4. IPv6 restores it, which helps VoIP, peer-to-peer and real-time services."
+  };
+  document.getElementById("whyGrid").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-w]");if(!b)return;
+    pressed(this,b);
+    document.getElementById("whyOut").innerHTML=W[b.dataset.w];
+  });
+  document.getElementById("whyOut").innerHTML=W.ex;
+})();
+
+/* 02 transition */
+(function(){
+  var svg=document.getElementById("txViz");
+  var g=el("g",{});svg.appendChild(g);
+  function box(x,y,w,h,fill,stroke,label,sub){
+    g.appendChild(el("rect",{x:x,y:y,width:w,height:h,rx:8,fill:fill,stroke:stroke,"stroke-width":1.8}));
+    g.appendChild(el("text",{x:x+w/2,y:y+h/2+1,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11.5",fill:"#fff","font-weight":"700"},label));
+    if(sub)g.appendChild(el("text",{x:x+w/2,y:y+h+15,"text-anchor":"middle",class:"cap"},sub));
+  }
+  var T={
+    dual:{d:function(){
+      box(30,30,110,36,"#1F4E5F","#1F4E5F","IPv4 stack","");
+      box(30,78,110,36,"#C9720C","#C9720C","IPv6 stack","one device, both");
+      g.appendChild(el("path",{d:"M144 48 L326 48",class:"wire hi"}));
+      g.appendChild(el("path",{d:"M144 96 L326 96",class:"wire hi"}));
+      box(330,30,110,36,"#1F4E5F","#1F4E5F","IPv4 stack","");
+      box(330,78,110,36,"#C9720C","#C9720C","IPv6 stack","one device, both");
+    },rows:[["Best for","smoothest transition path"],["Cost","doubles administrative workload"],["Needs","no translation or tunnelling"]],
+      o:"<b>Dual stack</b> runs both protocols side by side. The client picks whichever the far end supports. Nothing is converted — but every device now has two stacks to configure and secure."},
+    tun:{d:function(){
+      box(24,60,88,36,"#C9720C","#C9720C","IPv6","endpoint");
+      g.appendChild(el("rect",{x:126,y:44,width:218,height:68,rx:10,fill:"#e3eef0",stroke:"#1F4E5F","stroke-width":1.8,"stroke-dasharray":"6 4"}));
+      g.appendChild(el("text",{x:235,y:38,"text-anchor":"middle",class:"cap"},"IPv4-only network"));
+      box(160,62,150,32,"#C9720C","#1F4E5F","IPv6 inside IPv4","6to4 / Teredo / ISATAP");
+      box(358,60,88,36,"#C9720C","#C9720C","IPv6","endpoint");
+    },rows:[["Best for","IPv6 across legacy infrastructure"],["Cost","complexity and overhead"],["Protocols","6to4, Teredo, ISATAP"]],
+      o:"<b>Tunnelling</b> wraps IPv6 packets inside IPv4 packets so they survive an IPv4-only path. No infrastructure replacement, but encapsulation adds overhead and makes troubleshooting harder."},
+    tr:{d:function(){
+      box(24,60,100,36,"#C9720C","#C9720C","IPv6-only","client");
+      box(180,52,110,52,"#2E7D6E","#2E7D6E","NAT64","+ DNS64");
+      g.appendChild(el("path",{d:"M128 78 L176 78",class:"wire hi"}));
+      g.appendChild(el("path",{d:"M294 78 L342 78",class:"wire hi"}));
+      box(346,60,100,36,"#1F4E5F","#1F4E5F","IPv4-only","legacy server");
+    },rows:[["Best for","IPv6-only reaching IPv4 content"],["Cost","breaks embedded-IP apps"],["Parts","NAT64 translates, DNS64 synthesises"]],
+      o:"<b>Translation</b> converts packet headers between versions. NAT64 does the addresses, DNS64 synthesises IPv6 records from IPv4 ones. Clean for users, but apps that embed IP addresses break."}
+  };
+  function set(k){
+    g.innerHTML="";T[k].d();
+    document.getElementById("txOut").innerHTML=T[k].o;
+    var b=document.getElementById("txBody");
+    b.innerHTML="";
+    T[k].rows.forEach(function(r){
+      var tr=document.createElement("tr");
+      tr.innerHTML="<td>"+r[0]+"</td><td>"+r[1]+"</td>";
+      b.appendChild(tr);
+    });
+  }
+  document.getElementById("txPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-t]");if(!b)return;pressed(this,b);set(b.dataset.t);
+  });
+  set("dual");
+})();
+
+/* 03 compression */
+(function(){
+  var EX=[
+    {full:["2001","0db8","0000","0000","0000","0000","0000","0001"],name:"2001:db8::1"},
+    {full:["fe80","0000","0000","0000","0204","61ff","fe9d","0001"],name:"fe80::204:61ff:fe9d:1"}
+  ];
+  var idx=0,step=0;
+  function render(){
+    var f=EX[idx].full.slice();
+    var addr=document.getElementById("cmpAddr");
+    var note=document.getElementById("cmpNote"),outEl=document.getElementById("cmpOut");
+    if(step===0){
+      addr.innerHTML=f.map(function(s){return '<span class="kept">'+s+"</span>";}).join(":");
+      note.textContent="preferred format — all eight segments, four digits each";
+      outEl.innerHTML="This is the <b>preferred format</b>. Every segment written in full, including leading zeros. Correct, but nobody types this.";
+    }else if(step===1){
+      addr.innerHTML=f.map(function(s){
+        var t=s.replace(/^0+/,"")||"0";
+        return t===s?'<span class="kept">'+s+"</span>":'<span class="z">'+s.slice(0,s.length-t.length)+'</span><span class="cut">'+t+"</span>";
+      }).join(":");
+      note.textContent="rule 1 — leading zeros dropped";
+      outEl.innerHTML="<b>Rule one:</b> leading zeros inside a segment can go. <code>0db8</code> becomes <code>db8</code>, <code>0000</code> becomes <code>0</code>. Nothing else changes yet.";
+    }else{
+      var t=f.map(function(s){return s.replace(/^0+/,"")||"0";});
+      var best=-1,bl=0,i=0;
+      while(i<8){
+        if(t[i]==="0"){var j=i;while(j<8&&t[j]==="0")j++;if(j-i>bl){bl=j-i;best=i;}i=j;}else i++;
+      }
+      var parts=[];
+      for(var k=0;k<8;k++){
+        if(bl>1&&k===best){parts.push('<span class="dc">::</span>');k+=bl-1;continue;}
+        parts.push('<span class="kept">'+t[k]+"</span>");
+      }
+      var s="";
+      for(var m=0;m<parts.length;m++){
+        s+=parts[m];
+        if(m<parts.length-1&&parts[m].indexOf("dc")<0&&parts[m+1].indexOf("dc")<0)s+=":";
+      }
+      addr.innerHTML=s;
+      note.textContent="rule 2 — longest run of zeros replaced by ::";
+      outEl.innerHTML="<b>Rule two:</b> "+bl+" consecutive all-zero segments became <code>::</code>. This can only appear <b>once</b> in an address — twice and there's no way to know how many zeros belong in each gap.";
+    }
+    document.getElementById("cmpNext").disabled=step>=2;
+  }
+  document.getElementById("cmpNext").addEventListener("click",function(){if(step<2){step++;render();}});
+  document.getElementById("cmpReset").addEventListener("click",function(){step=0;render();});
+  document.getElementById("cmpPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-i]");if(!b)return;
+    pressed(this,b);idx=+b.dataset.i;step=0;render();
+  });
+  render();
+})();
+
+/* 04 types */
+quiz([
+  {q:"2001:0db8:85a3::8a2e:0370:7334",a:"G",why:"Global unicast. It starts with 2001, inside the 2000::/3 block — publicly routable."},
+  {q:"fe80::1a2b:3c4d:5e6f:7a8b",a:"L",why:"Link-local. fe80::/10, automatically assigned, never routed off the link."},
+  {q:"fd12:3456:789a::1",a:"U",why:"Unique local. The fc00::/7 block covers fc and fd — private, not routable on the internet."},
+  {q:"ff02::1",a:"M",why:"Multicast. Everything starting ff is multicast. This particular one is all nodes on the link."},
+  {q:"fc00:abcd::9",a:"U",why:"Unique local. fc and fd both fall inside fc00::/7."},
+  {q:"ff02::2",a:"M",why:"Multicast — all routers on the link. This is where Router Solicitations are sent."}
+],"typ","Address","Look at the opening characters.");
+
+/* 05 GUA */
+(function(){
+  var SEG=[
+    {l:"Global routing prefix",bits:48,f:3,who:"Internet registry / ISP",
+     o:"The first <b>48 bits</b> are assigned to your organisation. This is what routes traffic to your network from anywhere in the world. The leading three bits are 001, which is what makes it 2000::/3."},
+    {l:"Subnet ID",bits:16,f:1,who:"You, the network administrator",
+     o:"The next <b>16 bits</b> are yours. 2¹⁶ = <b>65,536 subnets</b> from a single /48 allocation. This is where IPv6 subnetting actually happens."},
+    {l:"Interface ID",bits:64,f:4,who:"The device — EUI-64 or random",
+     o:"The final <b>64 bits</b> identify one interface. Derived from the MAC address via EUI-64, or randomly generated for privacy. This is why /64 is the standard subnet size."}
+  ];
+  var bar=document.getElementById("guaBar");
+  SEG.forEach(function(s,i){
+    var d=document.createElement("div");
+    d.className="bseg s"+i;
+    d.style.flex=s.f;
+    d.textContent=s.bits+" bits";
+    bar.appendChild(d);
+  });
+  var body=document.getElementById("guaBody");
+  SEG.forEach(function(s){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+s.l+"</td><td>"+s.bits+"</td><td>"+s.who+"</td>";
+    body.appendChild(tr);
+  });
+  function set(i){
+    [].forEach.call(bar.children,function(x,n){x.classList.toggle("dim",n!==i);});
+    [].forEach.call(body.children,function(x,n){x.className=n===i?"hl":"";});
+    document.getElementById("guaOut").innerHTML=SEG[i].o;
+  }
+  document.getElementById("guaPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-g]");if(!b)return;pressed(this,b);set(+b.dataset.g);
+  });
+  set(0);
+})();
+
+/* 06 link-local validity */
+quiz([
+  {q:"fe80::1",a:"Y",why:"Valid. Starts fe80, inside fe80::/10. Perfectly legal, and this is what you would configure manually with the link-local keyword."},
+  {q:"fe80::1a2b:3c4d:5e6f:7g8h",a:"N",why:"Not valid. <b>g and h are not hexadecimal digits.</b> Hex only runs 0–9 and a–f. Watch for this one — it appears as an example in the module."},
+  {q:"fec0::1234:5678",a:"N",why:"Not valid. It starts fe, but fe80::/10 only covers fe80 through febf. fec0 was the old site-local range and is deprecated."},
+  {q:"fe80::204:61ff:fe9d:1",a:"Y",why:"Valid, and note the ff:fe in the middle — this interface ID was generated by EUI-64 from a MAC address."},
+  {q:"2001:db8::1",a:"N",why:"Not valid as a link-local. That's a global unicast address — 2000::/3. Link-local must begin fe80."}
+],"ll","Address","Check the prefix — and check every character is hex.");
+
+/* 07 SLAAC */
+(function(){
+  var svg=document.getElementById("slViz");
+  var H={x:60,y:60,l:"Host"},R={x:410,y:60,l:"Router"};
+  var w=el("path",{d:"M100 60 L370 60",class:"wire"});
+  svg.appendChild(w);
+  var nodes={};
+  [H,R].forEach(function(p){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-40,y:p.y-16,width:80,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:p.y+4,"text-anchor":"middle"},p.l));
+    svg.appendChild(g);nodes[p.l]=g;
+  });
+  var msg=el("text",{x:235,y:38,"text-anchor":"middle",class:"cap"},"");
+  svg.appendChild(msg);
+  var sub=el("text",{x:235,y:98,"text-anchor":"middle",class:"cap"},"");
+  svg.appendChild(sub);
+  var MODES=[
+    {n:"SLAAC only",steps:[
+      {m:"RS  →  ff02::2",d:"host",t:"Router Solicitation, ICMPv6 type 133. Sent to the all-routers multicast address <b>ff02::2</b>: are there any IPv6 routers here?"},
+      {m:"RA  ←  ff02::1",d:"router",t:"Router Advertisement, ICMPv6 type 134, to the all-nodes address <b>ff02::1</b>. Carries the prefix, prefix length and default gateway."},
+      {m:"builds own address",d:"host",t:"The host generates its own 64-bit interface ID and joins it to the advertised prefix. <b>No server involved at all.</b>"},
+      {m:"DAD  →  NS",d:"host",t:"Duplicate Address Detection. The host sends a Neighbour Solicitation for its chosen address. Silence means nobody else has it, so it's safe to use."}
+    ],o:"Fully decentralised. DNS has to be set manually or delivered via RA extensions."},
+    {n:"SLAAC + stateless DHCPv6",steps:[
+      {m:"RS  →  ff02::2",d:"host",t:"Same start: Router Solicitation to all routers."},
+      {m:"RA  ←  ff02::1",d:"router",t:"The RA includes the prefix <b>and a flag</b> telling the host to ask DHCPv6 for the rest."},
+      {m:"builds own address",d:"host",t:"The host still builds its own address from the prefix. Address configuration stays decentralised."},
+      {m:"DHCPv6 Solicit",d:"host",t:"Now it asks a DHCPv6 server for <b>DNS servers and domain suffixes only</b> — not for an address."}
+    ],o:"The common campus setup. Decentralised addressing, centralised DNS."},
+    {n:"SLAAC + stateful DHCPv6",steps:[
+      {m:"RS  →  ff02::2",d:"host",t:"Router Solicitation, as always."},
+      {m:"RA  ←  ff02::1",d:"router",t:"The RA gives the gateway and prefix length, then tells the host to get its address from DHCPv6."},
+      {m:"DHCPv6 Solicit",d:"host",t:"The host asks the DHCPv6 server to <b>assign it an address</b> from a preconfigured pool."},
+      {m:"server assigns all",d:"router",t:"Address and DNS both come from the server. Used where administrators need IP tracking, logging or static leases."}
+    ],o:"Tightest control. The server decides everything, so every address is accounted for."}
+  ];
+  var mode=0,at=-1;
+  function draw(){
+    var M=MODES[mode];
+    var lad=document.getElementById("slLadder");
+    lad.innerHTML="";
+    M.steps.forEach(function(s,i){
+      var li=document.createElement("li");
+      if(i<=at)li.className="ok";
+      li.innerHTML='<span class="n">'+(i+1)+'</span>'+s.m;
+      lad.appendChild(li);
+    });
+    if(at<0){
+      msg.textContent="";sub.textContent=M.n;
+      w.classList.remove("hi");
+      nodes.Host.classList.remove("hi");nodes.Router.classList.remove("hi");
+      document.getElementById("slOut").innerHTML="Mode: <b>"+M.n+"</b>. "+M.o+" Press next message to begin.";
+    }else{
+      var s=M.steps[at];
+      msg.textContent=s.m;sub.textContent=M.n;
+      w.classList.add("hi");
+      nodes.Host.classList.toggle("hi",s.d==="host");
+      nodes.Router.classList.toggle("hi",s.d==="router");
+      document.getElementById("slOut").innerHTML=s.t;
+    }
+    document.getElementById("slNext").disabled=at>=M.steps.length-1;
+  }
+  document.getElementById("slNext").addEventListener("click",function(){if(at<MODES[mode].steps.length-1){at++;draw();}});
+  document.getElementById("slReset").addEventListener("click",function(){at=-1;draw();});
+  document.getElementById("modePills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;
+    pressed(this,b);mode=+b.dataset.m;at=-1;draw();
+  });
+  draw();
+})();
+
+/* 08 EUI-64 */
+(function(){
+  var mac="00:1A:2B:3C:4D:5E",step=0;
+  var box=document.getElementById("euiBox");
+  function build(){
+    var b=mac.split(":");
+    var first=parseInt(b[0],16);
+    var flip=first^2;
+    var hexFlip=("0"+flip.toString(16).toUpperCase()).slice(-2);
+    var bin=("00000000"+first.toString(2)).slice(-8);
+    var binF=("00000000"+flip.toString(2)).slice(-8);
+    var rows=[
+      {l:"MAC address",v:b.join(":")},
+      {l:"1. split",v:b.slice(0,3).join(":")+" &nbsp;|&nbsp; "+b.slice(3).join(":")},
+      {l:"2. insert",v:b.slice(0,3).join(":")+":<mark>FF:FE</mark>:"+b.slice(3).join(":")},
+      {l:"3. flip bit 7",v:bin+" → <mark>"+binF+"</mark> = "+hexFlip},
+      {l:"interface ID",v:hexFlip+b[1]+":"+b[2]+"FF:FE"+b[3]+":"+b[4]+b[5],res:true}
+    ];
+    box.innerHTML="";
+    rows.forEach(function(r,i){
+      var d=document.createElement("div");
+      d.className="eurow"+(i<=step?" lit":"")+(r.res?" res":"");
+      d.innerHTML='<div class="el">'+r.l+'</div><div class="ev">'+r.v+"</div>";
+      box.appendChild(d);
+    });
+    var NOTES=[
+      "A MAC address is <b>48 bits</b>. An IPv6 interface ID needs <b>64</b>. EUI-64 makes up the 16-bit difference.",
+      "<b>Step one:</b> split the MAC into two halves of three bytes each.",
+      "<b>Step two:</b> insert the fixed value <code>FFFE</code> between the halves. That's the 16 extra bits.",
+      "<b>Step three:</b> flip the 7th bit of the first byte — the Universal/Local bit. Here "+bin+" becomes "+binF+", so "+b[0]+" becomes "+hexFlip+".",
+      "Done. The interface ID is <b>"+hexFlip+b[1]+":"+b[2]+"FF:FE"+b[3]+":"+b[4]+b[5]+"</b>. Notice the <code>FF:FE</code> sitting in the middle — that's the giveaway that an address was built this way, and it's also why EUI-64 leaks the MAC."
+    ];
+    document.getElementById("euiOut").innerHTML=NOTES[step];
+    document.getElementById("euiNext").disabled=step>=4;
+  }
+  document.getElementById("euiNext").addEventListener("click",function(){if(step<4){step++;build();}});
+  document.getElementById("euiReset").addEventListener("click",function(){step=0;build();});
+  document.getElementById("euiPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;
+    pressed(this,b);mac=b.dataset.m;step=0;build();
+  });
+  build();
+})();
+
+/* 09 multicast */
+(function(){
+  var svg=document.getElementById("mcViz");
+  var pos=[{x:70,y:44,l:"Host A",k:"h"},{x:70,y:140,l:"Host B",k:"h"},
+           {x:400,y:44,l:"Router 1",k:"r"},{x:400,y:140,l:"Router 2",k:"r"}];
+  var src={x:235,y:92};
+  var wires=[],nodes=[];
+  pos.forEach(function(p){
+    var w=el("path",{d:"M"+src.x+" "+src.y+" L "+p.x+" "+p.y,class:"wire"});
+    svg.appendChild(w);wires.push(w);
+  });
+  svg.appendChild(el("circle",{cx:src.x,cy:src.y,r:20,fill:"#C9720C"}));
+  svg.appendChild(el("text",{x:src.x,y:src.y+4,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"10",fill:"#fff"},"src"));
+  pos.forEach(function(p){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-38,y:p.y-15,width:76,height:30,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:p.y+4,"text-anchor":"middle"},p.l));
+    svg.appendChild(g);nodes.push(g);
+  });
+  var M={
+    n1:{t:[0,1,2,3],o:"<b>ff02::1 — all nodes on the link.</b> Every IPv6 device receives it, hosts and routers alike. This is the closest thing IPv6 has to a broadcast, and it's how Router Advertisements reach everyone."},
+    r2:{t:[2,3],o:"<b>ff02::2 — all routers on the link.</b> Only routers listen. This is where a host sends its Router Solicitation, so hosts are never disturbed by it."},
+    h1:{t:[],o:"<b>ff01::1 — all nodes on the local host.</b> Interface-local scope. It never leaves the machine, so nothing on the wire sees it at all."},
+    sn:{t:[0],o:"<b>Solicited-node multicast.</b> Generated automatically for every unicast address on an interface. Neighbour Solicitations go here, so only the handful of devices that could own the target address are disturbed — not everyone. Far more efficient than IPv4's broadcast ARP."}
+  };
+  document.getElementById("mcPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-m]");if(!b)return;
+    pressed(this,b);
+    var m=M[b.dataset.m];
+    wires.forEach(function(w,i){w.classList.toggle("hi",m.t.indexOf(i)>-1);});
+    nodes.forEach(function(g,i){g.classList.toggle("hi",m.t.indexOf(i)>-1);});
+    document.getElementById("mcOut").innerHTML=m.o;
+  });
+  wires.forEach(function(w){w.classList.add("hi");});
+  nodes.forEach(function(g){g.classList.add("hi");});
+  document.getElementById("mcOut").innerHTML=M.n1.o;
+})();
+
+/* 10 troubleshooting */
+(function(){
+  var STEPS=[
+    {n:"ping ::1",ok:true,
+     t:"C:\\&gt; <span class='cmd'>ping ::1</span>\n\n<span class='pass'>Reply from ::1: time&lt;1ms\nReply from ::1: time&lt;1ms</span>",
+     o:"<b>Loopback works.</b> The local TCP/IP stack is fine. If this had failed, the problem would be internal to this machine and nothing else would be worth testing."},
+    {n:"ping the default gateway",ok:true,
+     t:"C:\\&gt; <span class='cmd'>ping 192.168.1.1</span>\n\n<span class='pass'>Reply from 192.168.1.1: time=1ms\nReply from 192.168.1.1: time=1ms</span>",
+     o:"<b>Gateway reachable.</b> LAN connectivity is good — cable, switch, addressing and the router's local interface all work. The fault is further out."},
+    {n:"ping an external host",ok:false,
+     t:"C:\\&gt; <span class='cmd'>ping 8.8.8.8</span>\n\n<span class='fail'>Request timed out.\nRequest timed out.</span>",
+     o:"<b>External access fails.</b> The LAN is fine but something beyond the gateway is broken. This is the rung that tells you the problem is upstream — now find out where."},
+    {n:"traceroute to locate the break",ok:false,
+     t:"C:\\&gt; <span class='cmd'>tracert 8.8.8.8</span>\n\n 1   1 ms  192.168.1.1\n 2   8 ms  203.0.113.1\n 3   <span class='fail'>*  *  *  Request timed out</span>\n 4   <span class='fail'>*  *  *  Request timed out</span>",
+     o:"<b>Found it.</b> Hop 2 answered, hop 3 didn't. Traceroute works by raising the TTL one step at a time — each router that decrements it to zero returns an <b>ICMP Time Exceeded</b>, and that reply is what names the hop. Silence from hop 3 onward puts the fault right there."}
+  ];
+  var at=-1;
+  function draw(){
+    var lad=document.getElementById("tsLadder");
+    lad.innerHTML="";
+    STEPS.forEach(function(s,i){
+      var li=document.createElement("li");
+      if(i<=at)li.className=s.ok?"ok":"fail";
+      li.innerHTML='<span class="n">'+(i+1)+'</span>'+s.n;
+      lad.appendChild(li);
+    });
+    var term=document.getElementById("tsTerm");
+    if(at<0){
+      term.innerHTML="C:\\&gt; _\n\nA user reports they cannot reach the internet.\nWork outwards from the machine itself.";
+      document.getElementById("tsOut").innerHTML="Always start closest to home. Each test that passes rules out everything beneath it.";
+    }else{
+      term.innerHTML=STEPS[at].t;
+      document.getElementById("tsOut").innerHTML=STEPS[at].o;
+    }
+    document.getElementById("tsNext").disabled=at>=STEPS.length-1;
+  }
+  document.getElementById("tsNext").addEventListener("click",function(){if(at<STEPS.length-1){at++;draw();}});
+  document.getElementById("tsReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+go(0);
+})();
+</script>
+</body>
+</html>
