@@ -97,6 +97,27 @@ svg.viz{width:100%;height:auto;display:block}
 .stacked .readout{font-size:15.5px}
 .stacked .pills button{font-size:15px;padding:8px 15px}
 
+/* ---- concept 11: group decision activity ---- */
+.taskbar{background:#fff7ed;border:2px solid var(--orange);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.taskbar b{display:block;color:#6d3a04;font-size:16px;margin-bottom:4px}
+.taskbar p{margin:0;color:#8a4d05;font-size:14.5px;line-height:1.45;max-width:none}
+.scen{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.scen .sn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 5px}
+.scen .st{margin:0 0 8px;font-size:19px;font-weight:700;color:var(--teal)}
+.scen .sd{margin:0;font-size:16px;line-height:1.5;color:var(--teal-dark);max-width:none}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media(max-width:520px){.yn{grid-template-columns:1fr}}
+.yn button{background:#fff;border:2px solid var(--line);border-radius:10px;padding:15px 10px;font-size:16px;font-weight:700;color:var(--teal);transition:.15s}
+.yn button:hover:not(:disabled){border-color:var(--teal)}
+.yn button.right{background:var(--green);border-color:var(--green);color:#fff}
+.yn button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.yn button:disabled{cursor:not-allowed}
+.why{border-radius:10px;padding:14px 16px;margin-top:12px;display:none;font-size:15.5px;line-height:1.5}
+.why.on{display:block}
+.why.yes{background:#e4f2ea;border:2px solid var(--green);color:#1f5c48}
+.why.no{background:#f3ece1;border:2px solid var(--orange);color:#8a4d05}
+.why b{font-weight:700}
+
 /* ---- numbered step ladder ---- */
 .ladder{margin:14px 0 4px;padding:0;list-style:none;counter-reset:none}
 .ladder li{display:flex;align-items:center;gap:12px;padding:10px 13px;border-radius:9px;margin-bottom:6px;background:#eef4f4;font-size:15px;line-height:1.35;transition:.2s}
@@ -304,7 +325,39 @@ svg.viz{width:100%;height:auto;display:block}
 <!-- 01 -->
 <section class="concept on">
   <div class="head">
-    <p class="eyebrow">Concept 01 — Address structure</p>
+    <p class="eyebrow">Concept 01 — Why subnetting matters</p>
+    <h1>Subnetting is not automatically the right answer.</h1>
+    <p class="lede">Before working out how to subnet, work out when it is worth doing. Five real situations — decide as a group whether subnetting would improve performance, security or manageability. Two of these five do not need it at all.</p>
+  </div>
+  <div class="stacked">
+    <div class="stage">
+
+      <div class="scen">
+        <p class="sn" id="scnN">Scenario 1 of 5</p>
+        <p class="st" id="scnT"></p>
+        <p class="sd" id="scnD"></p>
+      </div>
+
+      <div class="yn" id="scnBtns">
+        <button data-a="Y">Yes — subnet it</button>
+        <button data-a="N">No — leave it flat</button>
+      </div>
+
+      <div class="why" id="scnWhy"></div>
+
+      <div class="controls">
+        <button id="scnNext" disabled>Next scenario →</button>
+        <button id="scnReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="scnScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Address structure</p>
     <h1>Every IPv4 address is two things wearing one coat.</h1>
     <p class="lede">Part of it names the network. The rest names the device on it. Nothing in the address itself tells you where the line falls — the subnet mask does that.</p>
   </div>
@@ -352,10 +405,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 02 -->
+<!-- 03 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 02 — Masks and CIDR</p>
+    <p class="eyebrow">Concept 03 — Masks and CIDR</p>
     <h1>Three ways to write the same thing.</h1>
     <p class="lede">Binary, dotted decimal, and slash notation all describe one boundary. Being able to move between them on sight is most of what subnetting asks of you.</p>
   </div>
@@ -387,10 +440,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 03 -->
+<!-- 04 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 03 — Finding the network address</p>
+    <p class="eyebrow">Concept 04 — Finding the network address</p>
     <h1>AND the address with the mask. That's the whole trick.</h1>
     <p class="lede">A bitwise AND keeps a bit only where both inputs are 1. Run it across an address and its mask and the host bits vanish, leaving the network address behind.</p>
   </div>
@@ -419,10 +472,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 04 -->
+<!-- 05 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 04 — Local or remote</p>
+    <p class="eyebrow">Concept 05 — Local or remote</p>
     <h1>Same network address means talk directly. Different means find a router.</h1>
     <p class="lede">Before sending anything, a device ANDs its own address and the destination with the same mask, then compares. That single comparison decides whether a router is involved at all.</p>
   </div>
@@ -474,10 +527,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
   </section>
 
-<!-- 05 -->
+<!-- 06 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 05 — Unicast, broadcast, multicast</p>
+    <p class="eyebrow">Concept 06 — Unicast, broadcast, multicast</p>
     <h1>One device, every device, or a group that opted in.</h1>
     <p class="lede">Three delivery models, and broadcast splits into two kinds that behave very differently at a router.</p>
   </div>
@@ -511,10 +564,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 06 -->
+<!-- 07 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 06 — Public, private, special</p>
+    <p class="eyebrow">Concept 07 — Public, private, special</p>
     <h1>Some addresses can cross the internet. Most of yours can't.</h1>
     <p class="lede">Public addresses are globally unique and managed by IANA. Private ranges are reserved for internal use and stop at the edge. Two more ranges never go anywhere at all.</p>
   </div>
@@ -548,10 +601,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 07 -->
+<!-- 08 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 07 — Legacy classful addressing</p>
+    <p class="eyebrow">Concept 08 — Legacy classful addressing</p>
     <h1>The old system that wasted most of the internet.</h1>
     <p class="lede">Before CIDR, address blocks came in three fixed sizes. You took whichever fit worst. Classful addressing is obsolete now, but it still shows up in exam questions.</p>
   </div>
@@ -578,10 +631,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 08 -->
+<!-- 09 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 08 — Broadcast domains</p>
+    <p class="eyebrow">Concept 09 — Broadcast domains</p>
     <h1>A broadcast domain ends at a router. Never at a switch.</h1>
     <p class="lede">Every device in a broadcast domain has to process every broadcast, whether it cares or not. Grow the domain and that cost grows with it. Segmentation is the fix.</p>
   </div>
@@ -604,10 +657,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 09 -->
+<!-- 10 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 09 — Subnetting a /24</p>
+    <p class="eyebrow">Concept 10 — Subnetting a /24</p>
     <h1>Borrow bits from the hosts. Pay for it in host count.</h1>
     <p class="lede">Every bit you take from the host portion doubles your subnet count and halves your hosts per subnet. Two powers of two, moving in opposite directions.</p>
   </div>
@@ -639,10 +692,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 10 -->
+<!-- 11 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 10 — VLSM</p>
+    <p class="eyebrow">Concept 11 — VLSM</p>
     <h1>Fixed-size subnets waste addresses. VLSM stops that.</h1>
     <p class="lede">Give a ten-device office a /26 and you've thrown away fifty addresses. Variable Length Subnet Masking sizes each subnet to what it actually needs — allocated largest first.</p>
   </div>
@@ -666,6 +719,7 @@ svg.viz{width:100%;height:auto;display:block}
     </div>
   </div>
 </section>
+
 
 </main>
 
@@ -698,7 +752,7 @@ function toBin(v){
 }
 
 /* shell */
-var LABELS=["Structure","Masks / CIDR","The AND","Local / remote","Address types","Public / private","Classful","Broadcast domains","Subnetting","VLSM"];
+var LABELS=["Why subnetting","Structure","Masks / CIDR","The AND","Local / remote","Address types","Public / private","Classful","Broadcast domains","Subnetting","VLSM"];
 var secs=[].slice.call(document.querySelectorAll(".concept"));
 var cur=0,stepsNav=document.getElementById("steps");
 LABELS.forEach(function(t,i){
@@ -1250,6 +1304,76 @@ quiz([
   document.getElementById("vlAll").addEventListener("click",function(){at=ZONES.length;draw();});
   document.getElementById("vlReset").addEventListener("click",function(){at=0;draw();});
   draw();
+})();
+
+
+/* 11 group activity — subnet or not */
+(function(){
+  var SC=[
+    {t:"The flat campus",
+     d:"The university has 300 devices on one 192.168.1.0/24 network. Performance is slowing down, and devices are frequently sending ARP broadcasts.",
+     a:"Y",
+     w:"Too many devices in one broadcast domain. Subnetting reduces broadcast traffic.",
+     x:"Note the size problem too — a /24 gives 254 usable addresses, so 300 devices do not even fit."},
+    {t:"Guest Wi-Fi",
+     d:"Guests and staff are on the same wireless network. IT wants to prevent guests from accessing printers and internal services.",
+     a:"Y",
+     w:"Segmentation improves security. Subnetting allows isolation and firewall rules.",
+     x:"This is the security case rather than the performance one — nothing here is slow, it is just too open."},
+    {t:"Home network",
+     d:"A home has 8 devices: 2 phones, a smart TV, a laptop, and some IoT gadgets. All use 192.168.0.0/24.",
+     a:"N",
+     w:"No performance issue or need for segmentation. A flat network is fine.",
+     x:"Worth arguing about: Module 3.2 suggested putting IoT devices on their own segment because of weak security. For eight devices at home the module says the complexity is not justified — but the counter-argument is legitimate."},
+    {t:"VoIP and data",
+     d:"A company runs VoIP phones and PCs on the same subnet. During peak hours, call quality drops.",
+     a:"Y",
+     w:"Subnetting enables traffic prioritisation (QoS) and keeps latency-sensitive traffic separate.",
+     x:"Voice is the classic QoS case — a dropped video frame is survivable, a delayed voice packet is not."},
+    {t:"Internet caf&eacute;",
+     d:"An internet caf&eacute; has 25 PCs all on one /24 network. It uses basic NAT to provide internet access. No internal services are shared.",
+     a:"N",
+     w:"Small network with limited internal communication; subnetting offers no clear benefit.",
+     x:"25 devices generate little broadcast traffic, and with nothing shared internally there is nothing to segment from anything else."}
+  ];
+  var i=0,score=0,ans=0,revealed=false;
+  var btns=document.getElementById("scnBtns");
+  var why=document.getElementById("scnWhy");
+  var nextB=document.getElementById("scnNext");
+
+  function show(){
+    revealed=false;
+    document.getElementById("scnN").textContent="Scenario "+(i+1)+" of "+SC.length;
+    document.getElementById("scnT").textContent=SC[i].t.replace(/&eacute;/g,"\u00e9");
+    document.getElementById("scnD").innerHTML=SC[i].d;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    why.className="why";
+    why.innerHTML="";
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled||revealed)return;
+    revealed=true;
+    var right=SC[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    document.getElementById("scnScore").textContent="Score "+score+" / "+ans;
+    why.className="why on "+(right==="Y"?"yes":"no");
+    why.innerHTML="<b>"+(right==="Y"?"Yes — subnet it. ":"No — leave it flat. ")+"</b>"
+      +SC[i].w+" <i>"+SC[i].x+"</i>";
+    nextB.disabled=i>=SC.length-1;
+  });
+  nextB.addEventListener("click",function(){if(i<SC.length-1){i++;show();}});
+  document.getElementById("scnReset").addEventListener("click",function(){
+    i=0;score=0;ans=0;
+    document.getElementById("scnScore").textContent="Score 0 / 0";
+    show();
+  });
+  show();
 })();
 
 go(0);
