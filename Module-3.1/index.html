@@ -77,6 +77,95 @@ svg.viz{width:100%;height:auto;display:block}
 .wire.hi{stroke:var(--orange);stroke-width:2.8}
 .cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
 
+/* ---- concept 01: layer stack revisit ---- */
+.stackcmp{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stackcol{min-width:0}
+.stackcol h4{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;font-weight:700}
+.lyr{border:1px solid var(--line);background:#fff;border-radius:7px;padding:9px 11px;margin-bottom:5px;font-size:13.5px;display:flex;gap:9px;align-items:baseline;transition:.2s;cursor:pointer}
+.lyr i{font-family:var(--mono);font-style:normal;font-size:11px;color:var(--muted);min-width:13px;font-weight:700}
+.lyr:hover{border-color:var(--teal)}
+.lyr.dim{opacity:.22}
+.lyr.match{background:var(--orange);border-color:var(--orange);color:#fff}
+.lyr.match i{color:#ffe0bd}
+.lyr.sel{background:var(--teal);border-color:var(--teal);color:#fff}
+.lyr.sel i{color:#9fc2c9}
+.lyr.l4{box-shadow:0 0 0 2px var(--green)}
+.l4tag{display:inline-block;font-family:var(--mono);font-size:10px;background:var(--green);color:#fff;border-radius:4px;padding:1px 6px;margin-left:auto}
+
+/* ---- concept 02: segment / mux / demux ---- */
+.laneset{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+.lane{display:grid;grid-template-columns:112px 1fr;gap:11px;align-items:center;opacity:.28;transition:.3s}
+.lane.lit{opacity:1}
+.lane .ln{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--teal);text-align:right;line-height:1.25}
+.lane .ln em{display:block;font-style:normal;font-weight:400;font-size:10px;color:var(--muted);margin-top:2px}
+.lane .lb{display:flex;gap:3px;min-height:38px}
+.chunk{flex:1;min-width:0;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:#fff;padding:0 3px;overflow:hidden;white-space:nowrap;animation:pop .3s ease-out}
+@keyframes pop{from{transform:scaleX(.3);opacity:0}to{transform:none;opacity:1}}
+.chunk.a{background:var(--teal)}
+.chunk.b{background:var(--green)}
+.chunk.c{background:var(--orange)}
+
+/* ---- concept 08: sliding window ---- */
+.winstream{display:flex;gap:2px;position:relative;padding-top:26px;margin-top:6px}
+.wb{flex:1;min-width:0;height:36px;border-radius:4px;background:#eef4f4;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--muted);transition:.3s}
+.wb.ackd{background:var(--green);border-color:var(--green);color:#fff}
+.wb.sent{background:var(--teal);border-color:var(--teal);color:#fff}
+.wb.inwin{background:#fff;border-color:var(--orange);border-width:2px;color:var(--orange);font-weight:700}
+.winframe{position:absolute;top:18px;height:52px;border:3px solid var(--orange);border-radius:8px;transition:.35s;pointer-events:none}
+.winframe::before{content:"window";position:absolute;top:-20px;left:0;font-family:var(--mono);font-size:10.5px;color:var(--orange);font-weight:700;letter-spacing:.06em}
+.winmeta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:16px}
+.winmeta b{color:var(--teal)}
+
+/* ---- concept 11: DNS + DHCP flow diagrams ---- */
+.flowsvg{width:100%;height:auto;display:block;background:#fbfcfc;border:1px solid var(--line);border-radius:11px}
+.fnode rect{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.3s}
+.fnode .t{font-family:var(--sans);font-size:12px;font-weight:700;fill:var(--teal);transition:.3s}
+.fnode .s{font-family:var(--mono);font-size:9px;fill:var(--muted);transition:.3s}
+.fnode.act rect{fill:var(--teal);stroke:var(--teal)}
+.fnode.act .t{fill:#fff}
+.fnode.act .s{fill:#9fc2c9}
+.fnode.dim{opacity:.3}
+.farrow{fill:none;stroke:#cdd9da;stroke-width:2;transition:.3s}
+.farrow.q{stroke:var(--teal);stroke-width:3}
+.farrow.r{stroke:var(--green);stroke-width:3}
+.flabel{font-family:var(--mono);font-size:9.5px;fill:var(--muted);opacity:0;transition:.3s}
+.flabel.on{opacity:1;font-weight:700}
+.flabel.on.q{fill:var(--teal)}
+.flabel.on.r{fill:var(--green)}
+.fcap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.msgbox{background:#0f2530;color:#e8f1f2;border-radius:9px;padding:12px 14px;font-family:var(--mono);font-size:13px;line-height:1.6;margin-top:12px;min-height:62px}
+.msgbox .dir{color:#f7b955;font-weight:700}
+.msgbox .say{color:#8fe3c7}
+.stepdots{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.stepdots span{flex:1;min-width:14px;height:5px;border-radius:3px;background:var(--line);transition:.25s}
+.stepdots span.done{background:var(--green)}
+.stepdots span.now{background:var(--orange)}
+
+/* ---- concept 12: hands-on DNS lab ---- */
+.labhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.labhead .pill{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;background:var(--teal);color:#fff;border-radius:6px;padding:4px 11px}
+.labhead .of{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.dobox{background:#fff7ed;border:2px solid var(--orange);border-radius:12px;padding:18px 20px}
+.dobox .dh{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8a4d05;font-weight:700;margin:0 0 9px}
+.dobox .di{margin:0 0 14px;font-size:17px;line-height:1.5;color:#6d3a04;max-width:none;font-weight:600}
+.typeit{background:#0f2530;border-radius:9px;padding:14px 16px;font-family:var(--mono);font-size:clamp(14px,2.6vw,19px);font-weight:700;color:#f7b955;overflow-x:auto;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.typeit .pr{color:#7fa0a8;flex:none}
+.typeit.none{color:#7fa0a8;font-weight:400;font-size:15px;white-space:normal}
+.watchfor{margin:13px 0 0;font-size:15px;line-height:1.5;color:#8a4d05}
+.watchfor b{color:#6d3a04}
+.reveal{display:none;margin-top:16px}
+.reveal.on{display:block}
+.reveal .rh{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 8px}
+.reveal .term{font-size:12.5px}
+.reveal .expl{background:#e4f2ea;border:2px solid var(--green);border-radius:11px;padding:15px 17px;margin-top:12px;font-size:15.5px;line-height:1.55;color:#1f5c48}
+.reveal .expl b{color:#123a2d}
+.reveal .expl .tip{display:block;margin-top:9px;padding-top:9px;border-top:1px solid rgba(0,0,0,.13);font-size:14.5px}
+.labnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:14px}
+.dots span{width:26px;height:5px;border-radius:3px;background:var(--line);transition:.25s}
+.dots span.done{background:var(--green)}
+.dots span.now{background:var(--orange)}
+
 /* handshake ladder */
 .hs{margin:0;padding:0;list-style:none}
 .hs li{display:grid;grid-template-columns:64px 1fr 64px;gap:8px;align-items:center;padding:9px 0;opacity:.25;transition:.3s}
@@ -98,9 +187,6 @@ svg.viz{width:100%;height:auto;display:block}
 .byte.lost{background:var(--red);border-color:var(--red);color:#fff}
 .byte.ackd{background:var(--green);border-color:var(--green);color:#fff}
 
-/* window */
-.wintrack{position:relative;height:46px;background:#eef4f4;border-radius:8px;border:1px solid var(--line);overflow:hidden;margin-top:6px}
-.winfill{position:absolute;top:0;bottom:0;background:var(--orange);border-radius:8px;transition:.35s;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:11.5px;font-weight:700}
 
 /* tables */
 .tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
@@ -162,6 +248,7 @@ svg.viz{width:100%;height:auto;display:block}
 .term .pass{color:#8fe3c7}
 .term .fail{color:#ff9aa8}
 .term .cmd{color:#f7b955}
+.term .flag{background:#7a3b3b;color:#fff;border-radius:3px;padding:0 4px}
 
 .footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
 .footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
@@ -180,7 +267,7 @@ svg.viz{width:100%;height:auto;display:block}
   <div class="bar">
     <div class="brand">COMP1016 <span>/</span> Module 3.1 Recap</div>
     <div class="clock">
-      <output id="clock">25:00</output>
+      <output id="clock">30:00</output>
       <button id="clockBtn">Start</button>
     </div>
     <nav class="steps" id="steps" aria-label="Concepts"></nav>
@@ -193,7 +280,34 @@ svg.viz{width:100%;height:auto;display:block}
 <!-- 01 -->
 <section class="concept on">
   <div class="head">
-    <p class="eyebrow">Concept 01 — What Layer 4 does</p>
+    <p class="eyebrow">Concept 01 — Where we are in the stack</p>
+    <h1>Everything so far was getting the packet to the machine. Now we get it to the program.</h1>
+    <p class="lede">The layers below carry data from one machine to another. This module is layer 4 and above. Before adding anything new, place it — because half of what the transport layer does only makes sense once you know what is underneath it.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">OSI splits it seven ways to explain it. TCP/IP collapses it to four because that is what gets built.</p>
+      <p>Both models describe the same journey at different resolutions. The mapping between them does not change — but where you sit on it does.</p>
+      <p><strong>Layers 1 to 3</strong> are cables and signals, frames and MAC addresses, then packets and IP addresses and routing. All of that gets data from one machine to another machine.</p>
+      <p><strong>Layer 4</strong> is where this module starts. It takes over once the packet has arrived and asks a different question: <em>which program on this machine was it for?</em></p>
+      <p><strong>Layers 5 to 7</strong> — session, presentation, application — collapse into TCP/IP's single application layer, and that is the second half of this module.</p>
+      <p>Click any layer to see how the two models line up.</p>
+    </div>
+    <div class="stage">
+      <h3>Click a layer in either column</h3>
+      <div class="stackcmp">
+        <div class="stackcol"><h4>OSI — 7 layers</h4><div id="osiCol"></div></div>
+        <div class="stackcol"><h4>TCP/IP — 4 layers</h4><div id="tcpCol"></div></div>
+      </div>
+      <p class="readout" id="stackOut" style="min-height:64px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — What Layer 4 does</p>
     <h1>Your phone runs twenty apps on one connection. Layer 4 is why they don't collide.</h1>
     <p class="lede">The transport layer keeps every conversation separate, chops data into transmittable pieces, and puts it back together at the far end — regardless of what network sits underneath.</p>
   </div>
@@ -208,21 +322,21 @@ svg.viz{width:100%;height:auto;display:block}
       <p>All of this works independently of the network type, medium or host.</p>
     </div>
     <div class="stage">
-      <h3>Three apps, one link</h3>
-      <svg class="viz" id="muxViz" viewBox="0 0 470 210" role="img" aria-label="Multiplexing"></svg>
+      <h3>Segment, multiplex, demultiplex</h3>
+      <div class="laneset" id="muxLanes"></div>
       <div class="controls">
-        <button id="muxGo">Send everything at once</button>
+        <button id="muxNext">Next stage →</button>
         <button id="muxReset" class="ghost">Reset</button>
       </div>
-      <p class="readout" id="muxOut">Three applications, each with its own port number, sharing one network connection.</p>
+      <p class="readout" id="muxOut"></p>
     </div>
   </div>
 </section>
 
-<!-- 02 -->
+<!-- 03 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 02 — TCP versus UDP</p>
+    <p class="eyebrow">Concept 03 — TCP versus UDP</p>
     <h1>Get it right, or get it fast. You cannot have both.</h1>
     <p class="lede">TCP checks, confirms, reorders and resends. UDP sends and forgets. Every difference between them traces back to that one decision.</p>
   </div>
@@ -264,10 +378,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 03 -->
+<!-- 04 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 03 — Ports and sockets</p>
+    <p class="eyebrow">Concept 04 — Ports and sockets</p>
     <h1>The IP address finds the machine. The port finds the program.</h1>
     <p class="lede">Three ranges, assigned by IANA. The destination port names the service you want; the source port is invented on the spot so the reply knows where to land.</p>
   </div>
@@ -298,10 +412,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 04 -->
+<!-- 05 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 04 — The three-way handshake</p>
+    <p class="eyebrow">Concept 05 — The three-way handshake</p>
     <h1>SYN. SYN-ACK. ACK.</h1>
     <p class="lede">Three messages before a single byte of real data moves. They prove the destination is alive, listening on that port, and ready — and they synchronise the sequence numbers both sides will use.</p>
   </div>
@@ -326,10 +440,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 05 -->
+<!-- 06 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 05 — Closing the connection</p>
+    <p class="eyebrow">Concept 06 — Closing the connection</p>
     <h1>Four messages to shut down, not three.</h1>
     <p class="lede">Each direction has to be closed separately, because either side may still have data to send. FIN, ACK, FIN, ACK — and either end can start it.</p>
   </div>
@@ -354,10 +468,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 06 -->
+<!-- 07 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 06 — Sequence numbers and ACKs</p>
+    <p class="eyebrow">Concept 07 — Sequence numbers and ACKs</p>
     <h1>The acknowledgement number tells you what's expected next, not what arrived.</h1>
     <p class="lede">Receive bytes 1 to 10 and you acknowledge with 11. That off-by-one is deliberate, it's called expectational acknowledgement, and it's the single most misread number in TCP.</p>
   </div>
@@ -383,10 +497,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 07 -->
+<!-- 08 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 07 — Flow control and congestion</p>
+    <p class="eyebrow">Concept 08 — Flow control and congestion</p>
     <h1>Two different problems that look identical from the sender's chair.</h1>
     <p class="lede">Flow control protects the receiver from being overwhelmed. Congestion control protects the network in between. Both work by sending less — for entirely different reasons.</p>
   </div>
@@ -399,15 +513,15 @@ svg.viz{width:100%;height:auto;display:block}
       <p><strong>Congestion</strong> is different: routers overwhelmed with traffic start dropping packets. <strong>Slow start</strong> begins conservatively and ramps up. Once stable, <strong>congestion avoidance</strong> increases the rate far more gradually while watching for trouble.</p>
     </div>
     <div class="stage">
-      <h3>Watch the window move</h3>
-      <div class="pills" id="winPills">
-        <span class="lbl">Receiver</span>
-        <button data-w="0" aria-pressed="true">Buffer free</button>
-        <button data-w="1" aria-pressed="false">Filling up</button>
-        <button data-w="2" aria-pressed="false">Nearly full</button>
-        <button data-w="3" aria-pressed="false">Drained again</button>
+      <h3>Send data, wait for ACKs, watch the window slide</h3>
+      <div class="winstream" id="winStream"><div class="winframe" id="winFrame"></div></div>
+      <div class="winmeta" id="winMeta"></div>
+      <div class="controls">
+        <button id="winSend">Send what the window allows</button>
+        <button id="winAck" class="ghost">Receiver ACKs</button>
+        <button id="winShrink" class="ghost">Buffer fills — shrink window</button>
+        <button id="winReset" class="ghost">Reset</button>
       </div>
-      <div class="wintrack"><div class="winfill" id="winFill"></div></div>
       <p class="readout" id="winOut"></p>
       <table class="tbl" style="margin-top:16px">
         <thead><tr><th>MSS on Ethernet</th><th>Bytes</th></tr></thead>
@@ -422,10 +536,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 08 -->
+<!-- 09 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 08 — The application layer</p>
+    <p class="eyebrow">Concept 09 — The application layer</p>
     <h1>Three OSI layers collapse into one in TCP/IP.</h1>
     <p class="lede">Application, presentation and session are separate boxes in OSI. TCP/IP merges them. Underneath sits a set of protocols you identify by port number.</p>
   </div>
@@ -458,10 +572,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 09 -->
+<!-- 10 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 09 — Email and the web</p>
+    <p class="eyebrow">Concept 10 — Email and the web</p>
     <h1>POP3 takes your mail away. IMAP leaves it where it is.</h1>
     <p class="lede">One protocol sends, two retrieve, and the two retrievers behave completely differently the moment you own a second device.</p>
   </div>
@@ -500,10 +614,10 @@ svg.viz{width:100%;height:auto;display:block}
   </div>
 </section>
 
-<!-- 10 -->
+<!-- 11 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 10 — DNS and DHCP</p>
+    <p class="eyebrow">Concept 11 — DNS and DHCP</p>
     <h1>One finds addresses for names. The other hands out addresses entirely.</h1>
     <p class="lede">DNS walks a hierarchy from root to authoritative server. DHCP runs a four-step conversation every device has before it can speak at all.</p>
   </div>
@@ -517,18 +631,59 @@ svg.viz{width:100%;height:auto;display:block}
       <p>Discover is a broadcast — the client has no address yet, so it can't do anything else.</p>
     </div>
     <div class="stage">
-      <h3>Step the process</h3>
+      <h3>Follow the messages</h3>
       <div class="pills" id="dPills">
         <button data-d="dns" aria-pressed="true">DNS resolution</button>
         <button data-d="dhcp" aria-pressed="false">DHCP — DORA</button>
       </div>
-      <ul class="ladder" id="dLadder"></ul>
-      <div class="term" id="dTerm"></div>
+      <svg class="flowsvg" id="flowViz" viewBox="0 0 470 300" role="img" aria-label="Message flow"></svg>
+      <div class="msgbox" id="dMsg"></div>
+      <div class="stepdots" id="dDots"></div>
       <div class="controls">
-        <button id="dNext">Next step →</button>
+        <button id="dNext">Next message →</button>
+        <button id="dBack" class="ghost">← Back</button>
         <button id="dReset" class="ghost">Reset</button>
       </div>
       <p class="readout" id="dOut"></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 12 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 12 — Hands-on</p>
+    <h1>Open Command Prompt. We are going to interrogate DNS together.</h1>
+    <p class="lede">Eight short exercises on real websites. Do each one on your own machine, then we compare what everyone got — because on two of these you will not all see the same answer.</p>
+  </div>
+  <div class="stacked">
+    <div class="stage">
+      <div class="labhead">
+        <span class="pill" id="labPill">Exercise 1</span>
+        <span class="of" id="labOf">of 8</span>
+      </div>
+
+      <div class="dobox">
+        <p class="dh">Do this now</p>
+        <p class="di" id="labDo"></p>
+        <div class="typeit" id="labCmd"></div>
+        <p class="watchfor" id="labWatch"></p>
+      </div>
+
+      <div class="reveal" id="labReveal">
+        <p class="rh">What you should be looking at</p>
+        <div class="term" id="labTerm"></div>
+        <div class="expl" id="labExpl"></div>
+      </div>
+
+      <div class="labnav">
+        <button id="labShow">Show the answer</button>
+        <button id="labNext" class="ghost">Next exercise →</button>
+        <button id="labBack" class="ghost">← Back</button>
+        <button id="labReset" class="ghost">Restart</button>
+      </div>
+      <div class="dots" id="labDots"></div>
     </div>
   </div>
 </section>
@@ -551,7 +706,7 @@ function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttr
 function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
 
 /* shell */
-var LABELS=["Layer 4 role","TCP vs UDP","Ports","3-way handshake","Closing","Sequence / ACK","Flow control","App layer","Email / web","DNS / DHCP"];
+var LABELS=["Layer stack","Layer 4 role","TCP vs UDP","Ports","3-way handshake","Closing","Sequence / ACK","Flow control","App layer","Email / web","DNS / DHCP","DNS lab"];
 var secs=[].slice.call(document.querySelectorAll(".concept"));
 var cur=0,stepsNav=document.getElementById("steps");
 LABELS.forEach(function(t,i){
@@ -579,7 +734,7 @@ document.addEventListener("keydown",function(e){
 });
 
 /* clock */
-var total=25*60,left=total,timer=null;
+var total=30*60,left=total,timer=null;
 var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
 function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
 cbtn.addEventListener("click",function(){
@@ -620,42 +775,125 @@ function quiz(Q,pfx,word,hint){
   show();
 }
 
-/* 01 multiplexing */
+/* 01 layer stack revisit */
 (function(){
-  var svg=document.getElementById("muxViz");
-  var APPS=[{y:40,l:"Browser",p:"51432"},{y:100,l:"Email",p:"51433"},{y:160,l:"Game",p:"51434"}];
-  var wires=[],nodes=[];
-  APPS.forEach(function(a){
-    var w=el("path",{d:"M126 "+a.y+" C 180 "+a.y+", 180 100, 214 100",class:"wire"});
-    svg.appendChild(w);wires.push(w);
+  var OSI=[[7,"Application"],[6,"Presentation"],[5,"Session"],[4,"Transport"],[3,"Network"],[2,"Data link"],[1,"Physical"]];
+  var TCP=[[4,"Application",[7,6,5]],[3,"Transport",[4]],[2,"Internet",[3]],[1,"Network access",[2,1]]];
+  var WHERE={
+    7:"<b>OSI layer 7, Application.</b> Protocols the user's software speaks — HTTP, SMTP, DNS. Covered in the second half of this module.",
+    6:"<b>OSI layer 6, Presentation.</b> Formatting, compression, encryption. Folded into TCP/IP's application layer.",
+    5:"<b>OSI layer 5, Session.</b> Starts, maintains and ends conversations. Also folded into TCP/IP's application layer.",
+    4:"<b>OSI layer 4, Transport — where we are.</b> Process-to-process delivery. Ports, segments, TCP and UDP, reliability, flow control. Maps one-to-one onto TCP/IP's transport layer.",
+    3:"<b>OSI layer 3, Network.</b> IP addressing and routing. Gets the packet to the right <i>machine</i> — but says nothing about which program on it.",
+    2:"<b>OSI layer 2, Data link.</b> Frames and MAC addresses. Only meaningful on the local link.",
+    1:"<b>OSI layer 1, Physical.</b> Cables, signals, bits on the wire."
+  };
+  var TWHERE={
+    4:"<b>TCP/IP application layer.</b> Swallows OSI layers 7, 6 and 5 whole. The boundaries disappear; the functions don't.",
+    3:"<b>TCP/IP transport layer.</b> Maps one-to-one onto OSI layer 4. <b>This is where we are.</b>",
+    2:"<b>TCP/IP internet layer.</b> Maps onto OSI layer 3 — IP addressing and routing.",
+    1:"<b>TCP/IP network access layer.</b> Swallows OSI layers 2 and 1 — framing, addressing on the link, and the physical medium."
+  };
+  var osiCol=document.getElementById("osiCol"),tcpCol=document.getElementById("tcpCol");
+  var outEl=document.getElementById("stackOut");
+  OSI.forEach(function(L){
+    var d=document.createElement("div");
+    d.className="lyr"+(L[0]===4?" l4":"");
+    d.dataset.n=L[0];
+    d.innerHTML="<i>"+L[0]+"</i><span>"+L[1]+"</span>"+(L[0]===4?'<span class="l4tag">this module</span>':"");
+    d.addEventListener("click",function(){selOsi(L[0]);});
+    osiCol.appendChild(d);
   });
-  var trunk=el("path",{d:"M258 100 L330 100",class:"wire"});
-  svg.appendChild(trunk);
-  APPS.forEach(function(a){
-    var g=el("g",{class:"dev"});
-    g.appendChild(el("rect",{x:22,y:a.y-17,width:104,height:34,rx:6}));
-    g.appendChild(el("text",{x:74,y:a.y-2,"text-anchor":"middle"},a.l));
-    g.appendChild(el("text",{x:74,y:a.y+11,"text-anchor":"middle"},"port "+a.p));
-    svg.appendChild(g);nodes.push(g);
+  TCP.forEach(function(L,idx){
+    var d=document.createElement("div");
+    d.className="lyr"+(L[0]===3?" l4":"");
+    d.dataset.n=L[0];
+    d.innerHTML="<i>"+L[0]+"</i><span>"+L[1]+"</span>"+(L[0]===3?'<span class="l4tag">this module</span>':"");
+    d.addEventListener("click",function(){selTcp(idx);});
+    tcpCol.appendChild(d);
   });
-  svg.appendChild(el("rect",{x:214,y:82,width:44,height:36,rx:6,fill:"#1F4E5F"}));
-  svg.appendChild(el("text",{x:236,y:104,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"9",fill:"#fff"},"MUX"));
-  svg.appendChild(el("rect",{x:334,y:78,width:112,height:44,rx:6,fill:"#C9720C"}));
-  svg.appendChild(el("text",{x:390,y:96,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"10",fill:"#fff","font-weight":"700"},"one link"));
-  svg.appendChild(el("text",{x:390,y:110,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"9",fill:"#ffe0bd"},"192.168.1.10"));
-  svg.appendChild(el("text",{x:236,y:196,"text-anchor":"middle",class:"cap"},"the port number keeps each conversation separate"));
-  document.getElementById("muxGo").addEventListener("click",function(){
-    wires.forEach(function(w){w.classList.add("hi");});
-    trunk.classList.add("hi");
-    nodes.forEach(function(n){n.classList.add("hi");});
-    document.getElementById("muxOut").innerHTML="All three streams are <b>multiplexed</b> onto one connection. On the way back, the transport layer <b>demultiplexes</b> using the port number — the reply to port 51433 goes to email, never to the game. Same IP address, three separate conversations.";
+  function clear(){
+    [].forEach.call(osiCol.children,function(x){x.className="lyr"+(x.dataset.n==="4"?" l4":"");});
+    [].forEach.call(tcpCol.children,function(x){x.className="lyr"+(x.dataset.n==="3"?" l4":"");});
+  }
+  function selOsi(n){
+    clear();
+    var owner=TCP.filter(function(t){return t[2].indexOf(n)>-1;})[0];
+    [].forEach.call(osiCol.children,function(x){
+      if(+x.dataset.n===n)x.className+=" sel";
+      else x.className+=" dim";
+    });
+    [].forEach.call(tcpCol.children,function(x){
+      if(+x.dataset.n===owner[0])x.className+=" match";
+      else x.className+=" dim";
+    });
+    outEl.innerHTML=WHERE[n]+" It sits inside TCP/IP's <b>"+owner[1].toLowerCase()+"</b> layer.";
+  }
+  function selTcp(idx){
+    clear();
+    var L=TCP[idx];
+    [].forEach.call(tcpCol.children,function(x,i){
+      if(i===idx)x.className+=" sel";
+      else x.className+=" dim";
+    });
+    [].forEach.call(osiCol.children,function(x){
+      if(L[2].indexOf(+x.dataset.n)>-1)x.className+=" match";
+      else x.className+=" dim";
+    });
+    var names=L[2].map(function(n){return OSI.filter(function(o){return o[0]===n;})[0][1].toLowerCase();});
+    outEl.innerHTML=TWHERE[L[0]]+" Covers OSI "+(names.length>1?"layers ":"layer ")+names.join(", ")+".";
+  }
+  selOsi(4);
+})();
+
+/* 02 segment, multiplex, demultiplex */
+(function(){
+  var LANES=[
+    {n:"Application data",e:"three streams, three ports"},
+    {n:"Segmented",e:"split into transmittable pieces"},
+    {n:"Multiplexed",e:"interleaved onto one link"},
+    {n:"Demultiplexed",e:"sorted back by port number"}
+  ];
+  var box=document.getElementById("muxLanes"),at=-1;
+  LANES.forEach(function(L){
+    var d=document.createElement("div");
+    d.className="lane";
+    d.innerHTML='<div class="ln">'+L.n+"<em>"+L.e+"</em></div><div class=\"lb\"></div>";
+    box.appendChild(d);
   });
-  document.getElementById("muxReset").addEventListener("click",function(){
-    wires.forEach(function(w){w.classList.remove("hi");});
-    trunk.classList.remove("hi");
-    nodes.forEach(function(n){n.classList.remove("hi");});
-    document.getElementById("muxOut").textContent="Three applications, each with its own port number, sharing one network connection.";
-  });
+  var APPS=[{c:"a",l:"browser 51432"},{c:"b",l:"email 51433"},{c:"c",l:"game 51434"}];
+  function fill(i,cells){
+    var lb=box.children[i].querySelector(".lb");
+    lb.innerHTML="";
+    cells.forEach(function(c){
+      var d=document.createElement("div");
+      d.className="chunk "+c[0];
+      d.style.flex=c[2]||1;
+      d.textContent=c[1];
+      lb.appendChild(d);
+    });
+  }
+  function draw(){
+    [].forEach.call(box.children,function(x,i){x.classList.toggle("lit",i<=at);});
+    if(at>=0)fill(0,APPS.map(function(a){return [a.c,a.l,1];}));
+    if(at>=1)fill(1,[["a","1",1],["a","2",1],["b","1",1],["b","2",1],["c","1",1],["c","2",1]]);
+    if(at>=2)fill(2,[["a","a1",1],["c","c1",1],["b","b1",1],["a","a2",1],["b","b2",1],["c","c2",1]]);
+    if(at>=3)fill(3,APPS.map(function(a){return [a.c,a.l,1];}));
+    for(var k=at+1;k<4;k++)box.children[k].querySelector(".lb").innerHTML="";
+    var O=[
+      "<b>Three applications, three conversations.</b> A browser, a mail client and a game, all running at once on one machine with one IP address. Each gets its own dynamically assigned source port.",
+      "<b>Segmenting.</b> Each stream is too big to send in one go, so the transport layer chops it into pieces — <b>segments</b> in TCP, <b>datagrams</b> in UDP. Every piece carries a header with the port numbers.",
+      "<b>Multiplexing.</b> All six pieces are interleaved onto the single network connection. Look at the order — they are mixed together, and no application gets to monopolise the link.",
+      "<b>Demultiplexing.</b> At the far end the receiver reads the <b>port number</b> in each header and sorts the pieces back into three streams. Port 51433 goes to email and never to the game. Reassembled, in order, and delivered to the right program."
+    ];
+    document.getElementById("muxOut").innerHTML=at<0
+      ? "Press next stage to follow three applications' data across one link."
+      : O[at];
+    document.getElementById("muxNext").disabled=at>=3;
+  }
+  document.getElementById("muxNext").addEventListener("click",function(){if(at<3){at++;draw();}});
+  document.getElementById("muxReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
 })();
 
 /* 02 TCP vs UDP */
@@ -788,24 +1026,56 @@ quiz([
   draw();
 })();
 
-/* 07 window */
+/* 08 sliding window */
 (function(){
-  var W=[
-    {p:88,b:"64 KB",o:"Receiver's buffer is empty, so it advertises a <b>large window</b>. The sender can push 64 KB before pausing for an acknowledgement."},
-    {p:52,b:"32 KB",o:"The application isn't reading fast enough and the buffer is filling. The receiver <b>shrinks the window</b> in its next ACK, and the sender slows down automatically."},
-    {p:18,b:"8 KB",o:"Nearly full. A very small window now — the sender may transmit only 8 KB before waiting. This is <b>flow control</b> doing its job: no packets are lost, the sender is simply throttled."},
-    {p:88,b:"64 KB",o:"The application caught up and drained the buffer, so the window <b>slides open again</b>. This adjustment happens continuously through the session — that's why it's called a sliding window."}
-  ];
-  function set(i){
-    var f=document.getElementById("winFill");
-    f.style.width=W[i].p+"%";
-    f.textContent="window "+W[i].b;
-    document.getElementById("winOut").innerHTML=W[i].o;
+  var N=16, win=6, base=0, sent=0;
+  var stream=document.getElementById("winStream");
+  var frame=document.getElementById("winFrame");
+  var cells=[];
+  for(var i=0;i<N;i++){
+    var d=document.createElement("div");
+    d.className="wb";
+    d.textContent=(i+1);
+    stream.appendChild(d);cells.push(d);
   }
-  document.getElementById("winPills").addEventListener("click",function(e){
-    var b=e.target.closest("button[data-w]");if(!b)return;pressed(this,b);set(+b.dataset.w);
+  function draw(msg){
+    cells.forEach(function(c,i){
+      c.className="wb"+(i<base?" ackd":(i<sent?" sent":(i<base+win?" inwin":"")));
+    });
+    var pct=100/N;
+    frame.style.left="calc("+(base*pct)+"% + "+(base*2)+"px)";
+    frame.style.width="calc("+(Math.min(win,N-base)*pct)+"% - 2px)";
+    document.getElementById("winMeta").innerHTML=
+       "window size <b>"+win+" segments</b>"
+      +" &nbsp;·&nbsp; acknowledged <b>"+base+"</b>"
+      +" &nbsp;·&nbsp; sent, awaiting ACK <b>"+(sent-base)+"</b>"
+      +" &nbsp;·&nbsp; may still send <b>"+Math.max(0,base+win-sent)+"</b>";
+    document.getElementById("winOut").innerHTML=msg;
+    document.getElementById("winSend").disabled=(sent>=base+win)||(sent>=N);
+    document.getElementById("winAck").disabled=(sent<=base);
+  }
+  document.getElementById("winSend").addEventListener("click",function(){
+    var room=Math.min(base+win,N)-sent;
+    sent+=room;
+    draw("Sent <b>"+room+" segment"+(room>1?"s":"")+"</b> — everything the window allowed. The sender now <b>stops and waits</b>. It cannot send segment "+(sent+1)+" until an acknowledgement moves the window forward, no matter how much data is queued.");
   });
-  set(0);
+  document.getElementById("winAck").addEventListener("click",function(){
+    var moved=Math.min(2,sent-base);
+    base+=moved;
+    draw("Receiver acknowledged <b>"+moved+" segment"+(moved>1?"s":"")+"</b>. The window <b>slides right</b> — that is literally what the name means. Room has opened at the leading edge, so the sender may transmit "+Math.max(0,base+win-sent)+" more.");
+  });
+  document.getElementById("winShrink").addEventListener("click",function(){
+    win=(win>2)?2:6;
+    if(sent>base+win)sent=base+win;
+    draw(win===2
+      ? "The receiver's application is not reading fast enough, so its buffer is filling. It advertises a <b>smaller window — 2 segments</b> — in its next ACK, and the sender throttles automatically. <b>No packets were lost.</b> That is flow control working, not failing."
+      : "The application caught up and drained the buffer, so the receiver advertises a <b>larger window</b> again. This renegotiation happens continuously through the session.");
+  });
+  document.getElementById("winReset").addEventListener("click",function(){
+    win=6;base=0;sent=0;
+    draw("16 segments to send. The orange frame is the window — the sender may transmit only what falls inside it before waiting for an acknowledgement.");
+  });
+  draw("16 segments to send. The orange frame is the window — the sender may transmit only what falls inside it before waiting for an acknowledgement.");
 })();
 
 /* 08 protocols */
@@ -876,61 +1146,264 @@ quiz([
   set("pop");
 })();
 
-/* 10 DNS / DHCP */
+/* 11 DNS + DHCP flow diagrams */
 (function(){
-  var SETS={
-    dns:{
-      steps:[
-        {n:"Check local cache",t:"Browser: is www.example.edu.au already known?\n<span class='fail'>Not in cache.</span>",
-         o:"Every lookup starts here. A cache hit ends the whole process instantly, which is why repeat visits feel faster."},
-        {n:"Query the DNS resolver",t:"→ resolver at the ISP\n<span class='cmd'>where is www.example.edu.au?</span>",
-         o:"The request goes to a <b>resolver</b>, usually run by the ISP or a public DNS service. The resolver does the legwork from here."},
-        {n:"Root server",t:"resolver → root server\n<span class='pass'>ask the .au TLD server</span>",
-         o:"The <b>root server</b> doesn't know the answer. It knows who handles that top-level domain and points there."},
-        {n:"TLD server",t:"resolver → .au TLD server\n<span class='pass'>ask the authoritative nameserver</span>",
-         o:"The <b>TLD server</b> for .au points to the authoritative nameserver responsible for that specific domain."},
-        {n:"Authoritative nameserver",t:"resolver → authoritative server\n<span class='pass'>203.0.113.42</span>",
-         o:"The <b>authoritative nameserver</b> holds the real record and returns the address."},
-        {n:"Address returned to the browser",t:"<span class='pass'>www.example.edu.au = 203.0.113.42</span>\nbrowser opens a TCP connection to port 443",
-         o:"The resolver hands the address back and the browser can finally connect. All of that happened before a single byte of the page was requested. <b>nslookup</b> runs this same query manually when you need to troubleshoot it."}
-      ],
-      start:"A user types a web address. Nothing can happen until the name becomes a number."
-    },
-    dhcp:{
-      steps:[
-        {n:"Discover",t:"client → broadcast\n<span class='cmd'>DHCP DISCOVER</span>\n\"Is there a DHCP server available?\"",
-         o:"The client has <b>no address yet</b>, so it can only broadcast. It doesn't know who to ask or where they are."},
-        {n:"Offer",t:"server → client\n<span class='cmd'>DHCP OFFER</span>\n\"You can use 192.168.1.50\"",
-         o:"A server responds with an available address plus the mask, gateway and DNS servers. More than one server may offer."},
-        {n:"Request",t:"client → broadcast\n<span class='cmd'>DHCP REQUEST</span>\n\"I'd like the address you offered\"",
-         o:"The client formally requests that specific offer. Still broadcast, so any other servers that offered know to withdraw theirs."},
-        {n:"Acknowledge",t:"server → client\n<span class='pass'>DHCP ACK</span>\n\"Lease confirmed\"",
-         o:"The server confirms the lease and the client may now use the address. <b>D-O-R-A.</b> Leases expire and get reassigned, which is what makes DHCP efficient on a busy network."}
-      ],
-      start:"A device joins the network with no IP address at all. Four messages fix that."
-    }
-  };
-  var which="dns",at=-1;
-  function draw(){
-    var S=SETS[which];
-    var lad=document.getElementById("dLadder");
-    lad.innerHTML="";
-    S.steps.forEach(function(s,i){
-      var li=document.createElement("li");
-      if(i<=at)li.className="ok";
-      li.innerHTML='<span class="n">'+(i+1)+'</span>'+s.n;
-      lad.appendChild(li);
-    });
-    document.getElementById("dTerm").innerHTML=at<0?"_":S.steps[at].t;
-    document.getElementById("dOut").innerHTML=at<0?S.start:S.steps[at].o;
-    document.getElementById("dNext").disabled=at>=S.steps.length-1;
+  var NS="http://www.w3.org/2000/svg";
+  var svg=document.getElementById("flowViz");
+
+  /* ---------- node + arrow builders ---------- */
+  function node(id,x,y,w,h,title,sub){
+    var g=el("g",{class:"fnode","data-id":id});
+    g.appendChild(el("rect",{x:x-w/2,y:y-h/2,width:w,height:h,rx:8}));
+    g.appendChild(el("text",{x:x,y:y+(sub?-2:4),"text-anchor":"middle",class:"t"},title));
+    if(sub)g.appendChild(el("text",{x:x,y:y+12,"text-anchor":"middle",class:"s"},sub));
+    return g;
   }
-  document.getElementById("dNext").addEventListener("click",function(){if(at<SETS[which].steps.length-1){at++;draw();}});
+  function arrow(id,d,kind){
+    return el("path",{class:"farrow","data-a":id,"data-k":kind,d:d,
+      "marker-end":kind==="q"?"url(#hq)":"url(#hr)"});
+  }
+  function label(id,x,y,txt,kind,anchor){
+    return el("text",{class:"flabel","data-l":id,"data-k":kind,x:x,y:y,"text-anchor":anchor||"middle"},txt);
+  }
+
+  /* ---------- DNS scene ---------- */
+  var DNS={
+    build:function(){
+      svg.setAttribute("viewBox","0 0 470 300");
+      var defs=el("defs",{});
+      defs.innerHTML='<marker id="hq" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#1F4E5F"/></marker>'
+        +'<marker id="hr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2E7D6E"/></marker>';
+      svg.appendChild(defs);
+
+      svg.appendChild(arrow("1","M84 142 L146 142","q"));
+      svg.appendChild(arrow("8","M146 164 L84 164","r"));
+      svg.appendChild(arrow("2","M228 132 L344 58","q"));
+      svg.appendChild(arrow("3","M344 74 L228 146","r"));
+      svg.appendChild(arrow("4","M232 148 L342 148","q"));
+      svg.appendChild(arrow("5","M342 166 L232 166","r"));
+      svg.appendChild(arrow("6","M228 176 L344 246","q"));
+      svg.appendChild(arrow("7","M344 262 L228 190","r"));
+
+      svg.appendChild(node("pc",48,153,72,44,"You","browser"));
+      svg.appendChild(node("res",188,153,80,52,"Resolver","your DNS server"));
+      svg.appendChild(node("root",392,52,96,44,"Root server","."));
+      svg.appendChild(node("tld",392,157,96,44,"TLD server",".com"));
+      svg.appendChild(node("auth",392,262,96,44,"Authoritative","example.com"));
+
+      svg.appendChild(label("1",115,134,"1  query","q"));
+      svg.appendChild(label("8",115,180,"8  answer","r"));
+      svg.appendChild(label("2",268,88,"2","q"));
+      svg.appendChild(label("3",300,112,"3  go to .com","r"));
+      svg.appendChild(label("4",287,142,"4","q"));
+      svg.appendChild(label("5",287,182,"5  go to ns1","r"));
+      svg.appendChild(label("6",268,222,"6","q"));
+      svg.appendChild(label("7",300,246,"7  the address","r"));
+      svg.appendChild(el("text",{x:188,y:210,"text-anchor":"middle",class:"fcap"},"the resolver does all the running around"));
+    },
+    steps:[
+      {a:"1",on:["pc","res"],dir:"You  →  Resolver",say:"where is www.example.com?",
+       o:"Your machine checks its own cache first. On a miss it asks the <b>resolver</b> — usually your ISP's DNS server. From here on, <b>you wait</b>. The resolver does everything else on your behalf."},
+      {a:"2",on:["res","root"],dir:"Resolver  →  Root server",say:"where is www.example.com?",
+       o:"The resolver starts at the top. There are 13 root server addresses worldwide and they know one thing: which server handles each top-level domain."},
+      {a:"3",on:["root","res"],dir:"Root server  →  Resolver",say:"I don't know. Ask the .com server.",
+       o:"<b>The root does not give the answer.</b> It refers the resolver onward. Notice the reply comes <b>back to the resolver</b>, not to you — this is the pattern that repeats three times."},
+      {a:"4",on:["res","tld"],dir:"Resolver  →  TLD server (.com)",say:"where is www.example.com?",
+       o:"Same question, asked again, one level lower. The resolver had to come back and set off again — it never hands the query sideways."},
+      {a:"5",on:["tld","res"],dir:"TLD server  →  Resolver",say:"Ask ns1.example.com — that domain's own server.",
+       o:"Another referral, not an answer. The .com server knows which nameserver is <b>authoritative</b> for example.com, and nothing more."},
+      {a:"6",on:["res","auth"],dir:"Resolver  →  Authoritative server",say:"where is www.example.com?",
+       o:"Third time asking the same question. This server actually holds the record for the domain."},
+      {a:"7",on:["auth","res"],dir:"Authoritative server  →  Resolver",say:"203.0.113.42",
+       o:"<b>The real answer, from the server that owns it.</b> This is the only reply in the whole exchange that is authoritative — every other one was a referral."},
+      {a:"8",on:["res","pc"],dir:"Resolver  →  You",say:"203.0.113.42",
+       o:"The resolver returns the address and <b>caches it</b>, so the next person asking gets it in one step instead of four. That is why your second visit to a site feels instant."}
+    ],
+    intro:"Eight messages before the browser sends a single byte to the website. Watch how the resolver returns to the centre every time."
+  };
+
+  /* ---------- DHCP scene ---------- */
+  var DHCP={
+    build:function(){
+      svg.setAttribute("viewBox","0 0 470 260");
+      var defs=el("defs",{});
+      defs.innerHTML='<marker id="hq" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#1F4E5F"/></marker>'
+        +'<marker id="hr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2E7D6E"/></marker>';
+      svg.appendChild(defs);
+
+      svg.appendChild(arrow("d1","M112 48 L332 48","q"));
+      svg.appendChild(arrow("d2","M332 82 L112 82","r"));
+      svg.appendChild(arrow("d3","M112 116 L332 116","q"));
+      svg.appendChild(arrow("d4","M332 150 L112 150","r"));
+      svg.appendChild(arrow("b1","M76 74 L76 176","q"));
+      svg.appendChild(arrow("b2","M76 74 L200 176","q"));
+
+      svg.appendChild(node("cli",70,48,84,44,"New device","no IP yet"));
+      svg.appendChild(node("srv",386,48,96,44,"DHCP server","192.168.1.1"));
+      svg.appendChild(node("o1",76,200,84,38,"Other host",""));
+      svg.appendChild(node("o2",212,200,84,38,"Other host",""));
+
+      svg.appendChild(label("d1",222,40,"1  DISCOVER","q"));
+      svg.appendChild(label("d2",222,74,"2  OFFER","r"));
+      svg.appendChild(label("d3",222,108,"3  REQUEST","q"));
+      svg.appendChild(label("d4",222,142,"4  ACK","r"));
+      svg.appendChild(el("text",{x:144,y:240,"text-anchor":"middle",class:"fcap"},"broadcasts reach every device on the segment"));
+    },
+    steps:[
+      {a:"d1",extra:["b1","b2"],on:["cli","srv","o1","o2"],dir:"Device  →  everyone (broadcast)",say:"DHCP DISCOVER — is there a server out there?",
+       o:"The device has <b>no address at all</b>, so it cannot address anyone specifically. It shouts to the whole segment. Every host receives it; only a DHCP server acts on it."},
+      {a:"d2",on:["srv","cli"],dir:"Server  →  Device",say:"DHCP OFFER — you can have 192.168.1.50",
+       o:"The server offers an address, plus subnet mask, default gateway and DNS servers. If there are two servers, the device may receive <b>two offers</b>."},
+      {a:"d3",extra:["b1","b2"],on:["cli","srv","o1","o2"],dir:"Device  →  everyone (broadcast)",say:"DHCP REQUEST — I'll take that one",
+       o:"Still a broadcast, and that is deliberate. Any <b>other</b> server that made an offer hears this and knows to withdraw it, so the unused address goes back in the pool."},
+      {a:"d4",on:["srv","cli"],dir:"Server  →  Device",say:"DHCP ACK — lease confirmed",
+       o:"The lease is confirmed and the device may finally use the address. <b>D-O-R-A.</b> The lease has a time limit, and the device must renew it before it expires."}
+    ],
+    intro:"Four messages, and two of them are broadcasts. Watch which ones reach the other hosts."
+  };
+
+  /* ---------- driver ---------- */
+  var scene=DNS,at=-1;
+  function build(){
+    svg.innerHTML="";
+    scene.build();
+    var dots=document.getElementById("dDots");
+    dots.innerHTML="";
+    scene.steps.forEach(function(){dots.appendChild(document.createElement("span"));});
+  }
+  function draw(){
+    var arrows=svg.querySelectorAll(".farrow");
+    var labels=svg.querySelectorAll(".flabel");
+    var nodes=svg.querySelectorAll(".fnode");
+    [].forEach.call(arrows,function(a){a.setAttribute("class","farrow");});
+    [].forEach.call(labels,function(l){l.setAttribute("class","flabel");});
+    [].forEach.call(nodes,function(n){n.setAttribute("class","fnode");});
+
+    if(at>=0){
+      var st=scene.steps[at];
+      var ids=[st.a].concat(st.extra||[]);
+      ids.forEach(function(id){
+        var a=svg.querySelector('.farrow[data-a="'+id+'"]');
+        if(a)a.setAttribute("class","farrow "+a.getAttribute("data-k"));
+      });
+      var lb=svg.querySelector('.flabel[data-l="'+st.a+'"]');
+      if(lb)lb.setAttribute("class","flabel on "+lb.getAttribute("data-k"));
+      [].forEach.call(nodes,function(n){
+        n.setAttribute("class","fnode "+(st.on.indexOf(n.getAttribute("data-id"))>-1?"act":"dim"));
+      });
+      document.getElementById("dMsg").innerHTML=
+        '<span class="dir">'+st.dir+'</span>\n<span class="say">"'+st.say+'"</span>';
+      document.getElementById("dOut").innerHTML=st.o;
+    }else{
+      document.getElementById("dMsg").innerHTML='<span class="dir">ready</span>\npress next message to begin';
+      document.getElementById("dOut").innerHTML=scene.intro;
+    }
+    var dots=document.getElementById("dDots");
+    [].forEach.call(dots.children,function(d,n){
+      d.className=n<at?"done":(n===at?"now":"");
+    });
+    document.getElementById("dNext").disabled=at>=scene.steps.length-1;
+    document.getElementById("dBack").disabled=at<0;
+  }
+  document.getElementById("dNext").addEventListener("click",function(){
+    if(at<scene.steps.length-1){at++;draw();}
+  });
+  document.getElementById("dBack").addEventListener("click",function(){
+    if(at>=0){at--;draw();}
+  });
   document.getElementById("dReset").addEventListener("click",function(){at=-1;draw();});
   document.getElementById("dPills").addEventListener("click",function(e){
     var b=e.target.closest("button[data-d]");if(!b)return;
-    pressed(this,b);which=b.dataset.d;at=-1;draw();
+    pressed(this,b);
+    scene=(b.dataset.d==="dns")?DNS:DHCP;
+    at=-1;build();draw();
   });
+  build();draw();
+})();
+
+
+/* 12 hands-on DNS lab */
+(function(){
+  var L=[
+    {do:"Open Command Prompt, then look up Google's address.",
+     cmd:"nslookup www.google.com",
+     watch:"Look at the <b>top two lines</b> before the answer. Who actually answered you?",
+     term:"C:\\&gt; <span class='cmd'>nslookup www.google.com</span>\n\n<span class='note'>Server:  dns1.local\nAddress: 192.168.1.1</span>\n\nNon-authoritative answer:\nName:    www.google.com\nAddresses: 2404:6800:4006:80e::2004\n           <span class='pass'>142.250.204.4</span>",
+     expl:"The first two lines are <b>the server that answered you</b> — your own DNS resolver, not Google. Everything after that is the reply.<span class='tip'><b>Non-authoritative</b> means this resolver got the answer from a cache or another server, rather than from the domain's own nameserver. Almost every lookup you ever run says this.</span>"},
+
+    {do:"Now look up Microsoft. Everyone in the room, run the same command.",
+     cmd:"nslookup www.microsoft.com",
+     watch:"Compare the address you got with the person next to you. <b>Are they the same?</b>",
+     term:"C:\\&gt; <span class='cmd'>nslookup www.microsoft.com</span>\n\n<span class='note'>Server:  dns1.local\nAddress: 192.168.1.1</span>\n\nNon-authoritative answer:\nName:    www.microsoft.com-c-3.edgekey.net\nAddresses: <span class='pass'>23.55.148.203</span>\n           <span class='flag'>← yours may differ</span>",
+     expl:"Different people very likely got <b>different addresses</b>, and that is correct. Large sites sit behind a <b>content delivery network</b>, so DNS hands each client the nearest or least-loaded server.<span class='tip'>Notice the name in the reply is not the name you asked for — it resolved through a chain of aliases ending in <b>edgekey.net</b>, which is the CDN.</span>"},
+
+    {do:"Pick any website you actually use. Anything at all — a shop, a news site, your bank. Look it up.",
+     cmd:"nslookup www.YOURCHOICE.com",
+     watch:"Write down the <b>IP address</b> it gives you. We will use it in the next exercise.",
+     term:"C:\\&gt; <span class='cmd'>nslookup www.bbc.co.uk</span>\n\n<span class='note'>Server:  dns1.local\nAddress: 192.168.1.1</span>\n\nNon-authoritative answer:\nName:    www.bbc.co.uk\nAddress: <span class='pass'>151.101.128.81</span>",
+     expl:"Whatever site you chose, the shape of the answer is identical. <b>Every name you have ever typed into a browser goes through this step first</b> — you have simply never watched it happen.<span class='tip'>If you got several addresses back, any of them will work. The client usually takes the first one.</span>"},
+
+    {do:"Ping the same site by name, and watch the address in the first line.",
+     cmd:"ping www.YOURCHOICE.com",
+     watch:"Does the address in square brackets <b>match</b> what nslookup told you a moment ago?",
+     term:"C:\\&gt; <span class='cmd'>ping www.bbc.co.uk</span>\n\nPinging www.bbc.co.uk [<span class='pass'>151.101.128.81</span>] with 32 bytes of data:\n<span class='fail'>Request timed out.\nRequest timed out.</span>",
+     expl:"The address matches, because <b>ping had to resolve the name too</b> — it did the same DNS lookup silently before sending anything.<span class='tip'>Many sites time out on ping because they block ICMP. <b>That is not a DNS failure.</b> DNS worked perfectly — it gave you an address. Whether the host answers a ping is a completely separate question.</span>"},
+
+    {do:"Ask DNS who is officially responsible for a domain.",
+     cmd:"nslookup -type=ns google.com",
+     watch:"These are the <b>authoritative</b> servers — the ones that hold the real records.",
+     term:"C:\\&gt; <span class='cmd'>nslookup -type=ns google.com</span>\n\ngoogle.com  nameserver = <span class='pass'>ns1.google.com</span>\ngoogle.com  nameserver = <span class='pass'>ns2.google.com</span>\ngoogle.com  nameserver = ns3.google.com\ngoogle.com  nameserver = ns4.google.com",
+     expl:"These are the servers at the end of the chain — root, then TLD, then <b>these</b>. When your resolver said \"non-authoritative\" earlier, these are the servers it was distinguishing itself from.<span class='tip'>There are four of them for redundancy. If one fails, the domain stays reachable.</span>"},
+
+    {do:"DNS holds more than addresses. Ask for a domain's mail servers.",
+     cmd:"nslookup -type=mx gmail.com",
+     watch:"Look at the <b>preference</b> numbers. Lower means higher priority.",
+     term:"C:\\&gt; <span class='cmd'>nslookup -type=mx gmail.com</span>\n\ngmail.com  MX preference = <span class='pass'>5</span>, mail exchanger = gmail-smtp-in.l.google.com\ngmail.com  MX preference = 10, mail exchanger = alt1.gmail-smtp-in.l.google.com\ngmail.com  MX preference = 20, mail exchanger = alt2.gmail-smtp-in.l.google.com",
+     expl:"<b>MX records</b> tell a sending mail server where to deliver mail for this domain. This is how SMTP knows where to go.<span class='tip'>Lower preference wins. A sender tries 5 first, and only falls back to 10 and 20 if it cannot connect — so the numbers are a failover order, not a ranking of quality.</span>"},
+
+    {do:"Look at what your own machine has cached, then wipe it.",
+     cmd:"ipconfig /displaydns | more",
+     watch:"Press <b>space</b> to page through, or <b>q</b> to quit. Then run <b>ipconfig /flushdns</b>.",
+     term:"C:\\&gt; <span class='cmd'>ipconfig /displaydns | more</span>\n\n    www.bbc.co.uk\n    ----------------------------------------\n    Record Name . : www.bbc.co.uk\n    Record Type . : 1\n    <span class='pass'>Time To Live  : 217</span>\n    A (Host) Record : 151.101.128.81\n\nC:\\&gt; <span class='cmd'>ipconfig /flushdns</span>\n<span class='pass'>Successfully flushed the DNS Resolver Cache.</span>",
+     expl:"Your machine keeps answers so it does not have to ask twice. <b>Time To Live</b> is the seconds remaining before that entry is thrown away.<span class='tip'>Run <b>/displaydns</b> again straight after the flush and it is nearly empty. Visit a site, run it a third time, and the entry is back. That is the whole caching story in three commands.</span>"},
+
+    {do:"Finally, look up something that does not exist. Invent a name.",
+     cmd:"nslookup thisdomaindoesnotexist12345.com",
+     watch:"Read the wording carefully. <b>Which machine</b> is telling you it failed?",
+     term:"C:\\&gt; <span class='cmd'>nslookup thisdomaindoesnotexist12345.com</span>\n\n<span class='note'>Server:  dns1.local\nAddress: 192.168.1.1</span>\n\n<span class='fail'>*** dns1.local can't find thisdomaindoesnotexist12345.com:\n    Non-existent domain</span>",
+     expl:"Your DNS server <b>answered</b> — and its answer was that the name does not exist. That is a successful query with a negative result, not a broken server.<span class='tip'>Compare with exercise 4: a site that resolves but will not answer a ping. One is a DNS failure, the other is not, and telling them apart is most of DNS troubleshooting.</span>"}
+  ];
+
+  var i=0,shown=false;
+  var dots=document.getElementById("labDots");
+  L.forEach(function(){dots.appendChild(document.createElement("span"));});
+
+  function draw(){
+    var x=L[i];
+    document.getElementById("labPill").textContent="Exercise "+(i+1);
+    document.getElementById("labOf").textContent="of "+L.length;
+    document.getElementById("labDo").textContent=x.do;
+    document.getElementById("labCmd").innerHTML='<span class="pr">C:\\&gt;</span>'+x.cmd;
+    document.getElementById("labWatch").innerHTML=x.watch;
+    document.getElementById("labTerm").innerHTML=x.term;
+    document.getElementById("labExpl").innerHTML=x.expl;
+    document.getElementById("labReveal").className="reveal"+(shown?" on":"");
+    document.getElementById("labShow").textContent=shown?"Answer shown":"Show the answer";
+    document.getElementById("labShow").disabled=shown;
+    document.getElementById("labNext").disabled=i>=L.length-1;
+    document.getElementById("labBack").disabled=i===0;
+    [].forEach.call(dots.children,function(d,n){
+      d.className=n<i?"done":(n===i?"now":"");
+    });
+  }
+  document.getElementById("labShow").addEventListener("click",function(){shown=true;draw();});
+  document.getElementById("labNext").addEventListener("click",function(){
+    if(i<L.length-1){i++;shown=false;draw();}
+  });
+  document.getElementById("labBack").addEventListener("click",function(){
+    if(i>0){i--;shown=true;draw();}
+  });
+  document.getElementById("labReset").addEventListener("click",function(){i=0;shown=false;draw();});
   draw();
 })();
 

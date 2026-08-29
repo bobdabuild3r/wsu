@@ -22,10 +22,36 @@
     color: var(--text);
     min-height: 100vh;
   }
-  header { padding: 18px 28px 10px; text-align: center; }
-  header h1 { margin: 0; font-size: 30px; letter-spacing: 0.5px; color: #fff; }
-  header p { margin: 4px 0 0; color: #9fc2c9; font-size: 14px; }
-
+  header {
+    padding: 18px 28px 10px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 30px;
+    letter-spacing: 0.5px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .version-tag {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #9fc2c9;
+    background: var(--card-done);
+    border: 1px solid #3d6a78;
+    border-radius: 4px;
+    padding: 3px 8px;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+  header p {
+    margin: 4px 0 0;
+    color: #9fc2c9;
+    font-size: 14px;
+  }
   #scoreboard {
     display: flex;
     gap: 14px;
@@ -52,7 +78,12 @@
     border-bottom: 1px dashed #3d6a78;
     padding-bottom: 3px;
   }
-  .team .score { font-size: 30px; font-weight: 800; color: var(--orange); margin: 6px 0; }
+  .team .score {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--orange);
+    margin: 6px 0;
+  }
   .team .buttons { display: flex; gap: 6px; justify-content: center; }
   .team button {
     background: var(--green);
@@ -100,10 +131,14 @@
     transition: transform 0.1s ease, background 0.2s ease;
   }
   .cell:hover { transform: scale(1.04); background: var(--teal); }
-  .cell.done { background: var(--card-done); color: #33484f; cursor: default; }
+  .cell.done {
+    background: var(--card-done);
+    color: #33484f;
+    cursor: default;
+  }
   .cell.done:hover { transform: none; background: var(--card-done); }
 
-  #resetRow { text-align: center; padding: 14px; }
+  #resetRow { text-align: center; padding: 14px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   #resetRow button {
     background: #333;
     color: #ddd;
@@ -113,7 +148,15 @@
     cursor: pointer;
     font-size: 13px;
   }
+  #resetRow button.results-btn {
+    background: linear-gradient(90deg,#7a5a12,#8a6a1a);
+    color: #fff;
+    border: 1px solid #c9a227;
+    font-weight: 700;
+  }
+  #resetRow button:hover { filter: brightness(1.15); }
 
+  /* Modal */
   #overlay {
     display: none;
     position: fixed;
@@ -127,7 +170,7 @@
   #modal {
     background: linear-gradient(180deg, #1c4356, #122c38);
     border-radius: 16px;
-    max-width: 800px;
+    max-width: 780px;
     width: 100%;
     padding: 40px 44px;
     text-align: center;
@@ -142,11 +185,20 @@
     font-size: 14px;
     margin-bottom: 6px;
   }
-  #modalPoints { color: #9fc2c9; font-size: 14px; margin-bottom: 18px; }
-  #modalQuestion { font-size: 25px; font-weight: 600; line-height: 1.4; margin-bottom: 22px; }
+  #modalPoints {
+    color: #9fc2c9;
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  #modalQuestion {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 22px;
+  }
   #modalAnswer {
     display: none;
-    font-size: 21px;
+    font-size: 22px;
     color: #8fe3c7;
     font-weight: 700;
     margin-bottom: 22px;
@@ -166,82 +218,212 @@
   }
   #modal button.close { background: #555; }
   #modal button:hover { filter: brightness(1.12); }
+  #modalAssign {
+    display: none;
+    margin-bottom: 18px;
+    padding-top: 4px;
+  }
+  #modalAssign .assignLabel {
+    color: #9fc2c9;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  #modalAssign .assignRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  #modalAssign button {
+    background: var(--teal);
+    border: 1px solid #3d6a78;
+    color: #fff;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  #modalAssign button:hover { filter: brightness(1.2); background: var(--green); }
 
-  /* ---- password gate ---- */
-  #gate {
+  /* Final results modal */
+  #resultsOverlay {
+    display: none;
     position: fixed;
     inset: 0;
-    background: var(--bg);
-    z-index: 100;
-    display: flex;
+    background: rgba(0,0,0,0.86);
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    z-index: 20;
+    padding: 20px;
   }
-  #gate.unlocked { display: none; }
-  #gateBox {
-    background: var(--card);
-    border: 1px solid #2c5d70;
+  #resultsModal {
+    background: linear-gradient(180deg, #1c4356, #122c38);
     border-radius: 16px;
-    padding: 40px 38px;
-    max-width: 420px;
+    max-width: 560px;
     width: 100%;
+    padding: 36px 40px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid #2c5d70;
   }
-  #gateBox h2 { margin: 0 0 6px; font-size: 22px; color: #fff; }
-  #gateBox p { margin: 0 0 22px; color: #9fc2c9; font-size: 14px; line-height: 1.5; }
-  #gateInput {
-    width: 100%;
-    background: #0f2530;
-    border: 1px solid #3d6a78;
-    border-radius: 8px;
+  #resultsModal h2 {
+    margin: 0 0 6px;
     color: #fff;
-    font-size: 17px;
-    font-family: inherit;
-    padding: 12px 14px;
-    text-align: center;
-    letter-spacing: 1px;
+    font-size: 26px;
+    letter-spacing: 0.5px;
   }
-  #gateInput:focus { outline: none; border-color: var(--orange); }
-  #gateBtn {
-    margin-top: 14px;
-    width: 100%;
-    background: var(--green);
+  #resultsModal .subtitle {
+    color: #9fc2c9;
+    font-size: 13px;
+    margin: 0 0 22px;
+  }
+  .tie-note {
+    color: #ffd45e;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .rank-row.first {
+    background: linear-gradient(90deg,#4a3a12,#5c4713);
+    border: 1px solid #c9a227;
+  }
+  .rank-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--orange);
+    min-width: 30px;
+    text-align: center;
+  }
+  .rank-row.first .rank-num { color: #ffd45e; }
+  .rank-name {
+    flex: 1;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    word-break: break-word;
+  }
+  .rank-score {
+    font-size: 18px;
+    font-weight: 800;
+    color: #9fc2c9;
+    white-space: nowrap;
+  }
+  .rank-medal { font-size: 20px; width: 24px; text-align: center; }
+  #resultsModal button.close {
+    background: #555;
     color: #fff;
     border: none;
+    padding: 12px 26px;
     border-radius: 8px;
-    padding: 12px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    margin-top: 14px;
   }
-  #gateBtn:hover { filter: brightness(1.15); }
-  #gateError { margin-top: 12px; min-height: 20px; color: #ff9aa8; font-size: 14px; }
+  #resultsModal button.close:hover { filter: brightness(1.15); }
+
+  /* Access gate */
+  #gateOverlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 20px;
+  }
+  #gateBox {
+    background: linear-gradient(180deg, #1c4356, #122c38);
+    border-radius: 16px;
+    max-width: 420px;
+    width: 100%;
+    padding: 36px 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid #2c5d70;
+  }
+  #gateBox h2 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: 22px;
+  }
+  #gateBox p {
+    color: #9fc2c9;
+    font-size: 14px;
+    margin: 0 0 20px;
+  }
+  #gateInput {
+    width: 100%;
+    background: var(--card-done);
+    border: 1px solid #3d6a78;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+  }
+  #gateInput:focus { outline: none; border-color: var(--orange); }
+  #gateBox button {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 14px;
+  }
+  #gateBox button:hover { filter: brightness(1.12); }
+  #gateError {
+    display: none;
+    color: #e08787;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+  body.locked > *:not(#gateOverlay) { display: none; }
 </style>
 </head>
-<body>
+<body class="locked">
 
-<div id="gate">
+<div id="gateOverlay">
   <div id="gateBox">
-    <h2>Module 3.1 Jeopardy</h2>
+    <h2>Module 3.1 — Final Review</h2>
     <p>Enter the access code your lecturer gives you at the end of the session.</p>
-    <input id="gateInput" type="password" autocomplete="off" placeholder="Access code">
-    <button id="gateBtn">Unlock the board</button>
-    <div id="gateError"></div>
+    <input type="password" id="gateInput" placeholder="Access code" autocomplete="off">
+    <div id="gateError">That code isn't right — try again.</div>
+    <div><button id="gateSubmit">Enter</button></div>
   </div>
 </div>
 
 <header>
-  <h1>Module 3.1 — Final Review</h1>
-  <p>Pick a category and a point value. Teams answer out loud; you decide who scores.</p>
+  <h1>Module 3.1 — Final Review <span class="version-tag">Version 2.0</span></h1>
+  <p>Pick a category and a point value. Teams answer out loud; you decide who scores. Click a team's name to rename it.</p>
 </header>
 
 <div id="scoreboard"></div>
 
 <div id="board"></div>
 
-<div id="resetRow"><button onclick="resetBoard()">Reset board (new class / re-run)</button></div>
+<div id="resetRow">
+  <button class="results-btn" onclick="openResults()">🏆 Final results</button>
+  <button onclick="resetBoard()">Reset board (new class / re-run)</button>
+</div>
 
 <div id="overlay">
   <div id="modal">
@@ -249,6 +431,10 @@
     <div id="modalPoints"></div>
     <div id="modalQuestion"></div>
     <div id="modalAnswer"></div>
+    <div id="modalAssign">
+      <div class="assignLabel">Who got it right? Click a team to award the points.</div>
+      <div class="assignRow" id="assignRow"></div>
+    </div>
     <div>
       <button id="showAnswerBtn" onclick="showAnswer()">Show answer</button>
       <button class="close" onclick="closeModal()">Close</button>
@@ -256,60 +442,46 @@
   </div>
 </div>
 
+<div id="resultsOverlay">
+  <div id="resultsModal">
+    <h2>Final Results</h2>
+    <p class="subtitle">Ranked by score — highest first</p>
+    <div id="resultsList"></div>
+    <button class="close" onclick="closeResults()">Close</button>
+  </div>
+</div>
+
 <script>
-// ==========================================================
-//  ACCESS CODE — change the line below to set a new one.
-//  This is a simple classroom gate, not real security:
-//  anyone who views the page source can read this value.
-// ==========================================================
-const ACCESS_CODE = "ack11";
-
-function tryUnlock() {
-  const entered = document.getElementById("gateInput").value.trim();
-  if (entered.toLowerCase() === ACCESS_CODE.toLowerCase()) {
-    document.getElementById("gate").classList.add("unlocked");
-  } else {
-    document.getElementById("gateError").textContent = "That code isn't right. Try again.";
-    document.getElementById("gateInput").value = "";
-    document.getElementById("gateInput").focus();
-  }
-}
-document.getElementById("gateBtn").addEventListener("click", tryUnlock);
-document.getElementById("gateInput").addEventListener("keydown", function (e) {
-  if (e.key === "Enter") tryUnlock();
-});
-document.getElementById("gateInput").focus();
-
 const DATA = {
   "TCP vs UDP": {
-    100: { q: "Which of the two transport protocols is connection-oriented?", a: "TCP — UDP is connectionless" },
-    200: { q: "How big is the TCP header, and how big is the UDP header?", a: "TCP is 20 bytes; UDP is 8 bytes" },
-    300: { q: "Name the four fields in a UDP header.", a: "Source port, destination port, length, and checksum" },
-    400: { q: "A live video stream drops a few frames. Why is UDP still the right choice, and what would TCP do instead?", a: "A dropped frame is barely noticed, but delay ruins the stream. TCP would stop and retransmit the lost data, adding latency" },
+    100: { q: "Which of the two protocols sets up a connection before sending any data?", a: "TCP — UDP just sends" },
+    200: { q: "Which protocol is faster, and why?", a: "UDP — it doesn't set anything up, doesn't acknowledge, and doesn't retransmit" },
+    300: { q: "Name one thing that uses TCP and one thing that uses UDP.", a: "TCP: web browsing, email, file transfer, SSH. UDP: video calls, online games, live streaming, DNS" },
+    400: { q: "Why is UDP the better choice for a live video call?", a: "A dropped frame is barely noticed, but TCP would stop and retransmit it — and that delay ruins the call" },
   },
-  "Ports + Sockets": {
-    100: { q: "What port does HTTPS use?", a: "TCP 443" },
-    200: { q: "Give the three IANA port ranges by name and number.", a: "Well-known 0–1023, registered 1024–49151, dynamic/private/ephemeral 49152–65535" },
-    300: { q: "What is a socket, and what is a socket pair?", a: "A socket is an IP address plus a port number. A socket pair is the client socket and the server socket together" },
-    400: { q: "You open three tabs to the same website. What stays the same in each connection and what changes?", a: "The destination IP and port stay the same; the dynamically assigned source port is different for each, which is how the replies are kept apart" },
+  "Ports": {
+    100: { q: "What port number does a secure website use?", a: "443 — HTTPS" },
+    200: { q: "What port number does a plain, unencrypted website use?", a: "80 — HTTP" },
+    300: { q: "What is a socket made up of?", a: "An IP address plus a port number" },
+    400: { q: "You open three tabs to the same website. How does your computer tell the three replies apart?", a: "Each connection is given a different source port number" },
   },
-  "TCP Mechanics": {
+  "Connections": {
     100: { q: "Name the three messages of the TCP three-way handshake.", a: "SYN, SYN-ACK, ACK" },
-    200: { q: "How many messages are needed to close a TCP connection gracefully, and what are they?", a: "Four — FIN, ACK, FIN, ACK. Each direction is closed separately" },
-    300: { q: "Host A sends bytes 1 to 10. What acknowledgement number does Host B send back, and why that number?", a: "ACK 11 — expectational acknowledgement names the next byte expected, not the last one received" },
-    400: { q: "On an Ethernet network with a 1500-byte MTU, what is the default MSS, and how do you arrive at it?", a: "1460 bytes — 1500 minus the 20-byte IP header and the 20-byte TCP header" },
+    200: { q: "What is the handshake for?", a: "To set up the connection and confirm the destination is available and listening before any real data is sent" },
+    300: { q: "Which message is used to close a TCP connection?", a: "FIN" },
+    400: { q: "Does the acknowledgement number tell you what has already arrived, or what the receiver wants next?", a: "What it wants next — this is called expectational acknowledgement" },
   },
-  "Flow + Congestion": {
-    100: { q: "Which TCP header field controls how much data can be sent before an acknowledgement?", a: "The window size" },
-    200: { q: "What is flow control protecting against?", a: "Overwhelming the receiver — buffer overflow at the receiving end" },
-    300: { q: "What is the difference between flow control and congestion control?", a: "Flow control protects the receiver's buffer; congestion control protects the routers and links in between" },
-    400: { q: "Name the two congestion control behaviours from the module and describe what each does.", a: "Slow start sends a small amount first and gradually increases it. Congestion avoidance then raises the rate far more gradually while monitoring the network" },
+  "Flow Control": {
+    100: { q: "Which one protects the receiver from being overwhelmed — flow control or congestion control?", a: "Flow control. Congestion control protects the network in between" },
+    200: { q: "What does the window size tell the sender?", a: "How much data it may send before it has to stop and wait for an acknowledgement" },
+    300: { q: "Why is it called a sliding window?", a: "It moves forward as acknowledgements come back, and the receiver can resize it during the session" },
+    400: { q: "A receiver shrinks its window. Has something gone wrong?", a: "No — its buffer is filling, so it slows the sender down. Nothing is lost. That's flow control working, not failing" },
   },
-  "Application Layer": {
-    100: { q: "What does DNS do?", a: "Translates human-readable domain names into IP addresses" },
-    200: { q: "Which three OSI layers are combined into the single TCP/IP application layer?", a: "Application, presentation, and session" },
-    300: { q: "What are the four steps of DHCP, and what acronym are they remembered by?", a: "Discover, Offer, Request, Acknowledge — DORA" },
-    400: { q: "You read your email on a laptop, then check your phone and the inbox is empty. Which retrieval protocol was in use, and what should it have been?", a: "POP3 — it downloads mail and deletes it from the server. IMAP keeps messages on the server and synchronises across devices" },
+  "Applications": {
+    100: { q: "What does DNS do?", a: "Turns a domain name into an IP address" },
+    200: { q: "What does DHCP do for a device joining a network?", a: "Automatically gives it an IP address, subnet mask, default gateway and DNS servers" },
+    300: { q: "Which email protocol leaves your messages on the server so every device stays in sync?", a: "IMAP. POP3 downloads them and deletes them from the server" },
+    400: { q: "What does the S in HTTPS actually add?", a: "Encryption using SSL/TLS — it gives privacy, protects the data from tampering, and proves you reached the real server" },
   },
 };
 
@@ -323,6 +495,10 @@ let teams = [
 ];
 let current = null;
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 function renderScoreboard() {
   const el = document.getElementById("scoreboard");
   el.innerHTML = "";
@@ -330,7 +506,7 @@ function renderScoreboard() {
     const div = document.createElement("div");
     div.className = "team";
     div.innerHTML = `
-      <input class="teamname" value="${t.name}" onchange="renameTeam(${i}, this.value)">
+      <input class="teamname" value="${escapeHtml(t.name)}" onchange="renameTeam(${i}, this.value)">
       <div class="score">${t.score}</div>
       <div class="buttons">
         <button onclick="adjustScore(${i}, 100)">+100</button>
@@ -373,11 +549,31 @@ function openQuestion(cat, pts) {
   ansEl.style.display = "none";
   ansEl.textContent = "Answer: " + DATA[cat][pts].a;
   document.getElementById("showAnswerBtn").style.display = "inline-block";
+  document.getElementById("modalAssign").style.display = "none";
+  document.getElementById("assignRow").innerHTML = "";
   document.getElementById("overlay").style.display = "flex";
 }
 function showAnswer() {
   document.getElementById("modalAnswer").style.display = "block";
   document.getElementById("showAnswerBtn").style.display = "none";
+  renderAssignRow();
+  document.getElementById("modalAssign").style.display = "block";
+}
+function renderAssignRow() {
+  const row = document.getElementById("assignRow");
+  row.innerHTML = "";
+  const pts = current ? current.pts : 0;
+  teams.forEach((t, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = `${t.name} (+${pts})`;
+    btn.onclick = () => assignPoints(i);
+    row.appendChild(btn);
+  });
+}
+function assignPoints(i) {
+  if (!current) return;
+  adjustScore(i, current.pts);
+  closeModal();
 }
 function closeModal() {
   if (current) {
@@ -400,8 +596,76 @@ function resetBoard() {
   renderBoard();
 }
 
+/* ---------- Final results (ranked, ties share a rank) ---------- */
+function computeRanking() {
+  const sorted = [...teams].sort((a, b) => b.score - a.score);
+  let rank = 0, lastScore = null;
+  return sorted.map((t, i) => {
+    if (lastScore === null || t.score !== lastScore) {
+      rank = i + 1;
+      lastScore = t.score;
+    }
+    return { name: t.name, score: t.score, rank };
+  });
+}
+
+function openResults() {
+  const ranked = computeRanking();
+  const topRank = ranked.length ? ranked[0].rank : 1;
+  const winners = ranked.filter(r => r.rank === topRank);
+  const list = document.getElementById("resultsList");
+  list.innerHTML = "";
+
+  if (winners.length > 1) {
+    const note = document.createElement("p");
+    note.className = "tie-note";
+    note.textContent = `It's a tie for 1st: ${winners.map(w => w.name).join(" & ")}!`;
+    list.appendChild(note);
+  }
+
+  ranked.forEach(r => {
+    const row = document.createElement("div");
+    row.className = "rank-row" + (r.rank === 1 ? " first" : "");
+    const medal = r.rank === 1 ? "🏆" : r.rank === 2 ? "🥈" : r.rank === 3 ? "🥉" : "";
+    row.innerHTML = `<div class="rank-num">${r.rank}</div><div class="rank-name">${escapeHtml(r.name)}</div><div class="rank-score">${r.score} pts</div><div class="rank-medal">${medal}</div>`;
+    list.appendChild(row);
+  });
+
+  document.getElementById("resultsOverlay").style.display = "flex";
+}
+function closeResults() {
+  document.getElementById("resultsOverlay").style.display = "none";
+}
+
 renderScoreboard();
 renderBoard();
+
+/* ---------- Access gate ---------- */
+(function () {
+  var ACCESS_CODE = "ack11";
+  var input = document.getElementById("gateInput");
+  var submitBtn = document.getElementById("gateSubmit");
+  var errorEl = document.getElementById("gateError");
+  var overlay = document.getElementById("gateOverlay");
+
+  function tryUnlock() {
+    var val = (input.value || "").trim().toLowerCase();
+    if (val === ACCESS_CODE) {
+      document.body.classList.remove("locked");
+      overlay.style.display = "none";
+    } else {
+      errorEl.style.display = "block";
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  submitBtn.addEventListener("click", tryUnlock);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") tryUnlock();
+  });
+  input.focus();
+})();
 </script>
 </body>
 </html>
