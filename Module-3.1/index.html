@@ -45,7 +45,7 @@ main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
 .head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
 .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
 h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
-.lede{margin:0;max-width:64ch;color:var(--muted);font-size:17.5px}
+.lede{margin:0;max-width:none;color:var(--muted);font-size:17.5px}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
 @media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
 .prose p{margin:0 0 13px;max-width:52ch}
@@ -115,6 +115,37 @@ svg.viz{width:100%;height:auto;display:block}
 .winframe::before{content:"window";position:absolute;top:-20px;left:0;font-family:var(--mono);font-size:10.5px;color:var(--orange);font-weight:700;letter-spacing:.06em}
 .winmeta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:16px}
 .winmeta b{color:var(--teal)}
+
+/* ---- stacked layout: prose spread across the width, interactive below ---- */
+.stacked{display:block}
+.stacked .prose{margin-bottom:20px;columns:2;column-gap:38px}
+.stacked .prose p{max-width:none;break-inside:avoid;-webkit-column-break-inside:avoid}
+.stacked .prose .keyline{column-span:all;-webkit-column-span:all;font-size:19px;margin-bottom:18px}
+.stacked .stage{padding:24px 26px}
+@media(max-width:820px){.stacked .prose{columns:1}}
+
+/* ---- ladder timing diagrams ---- */
+.ladderwrap{background:#fbfcfc;border:1px solid var(--line);border-radius:11px;padding:6px}
+.ladsvg{width:100%;height:auto;display:block}
+.hostline{stroke:#8fa3a6;stroke-width:2.5}
+.hosticon rect{fill:#dbe7ea;stroke:var(--teal);stroke-width:1.8}
+.hosticon text{font-family:var(--sans);font-size:13px;font-weight:700;fill:var(--teal)}
+.msg{opacity:0;transition:opacity .35s}
+.msg.on{opacity:1}
+.msg path{fill:none;stroke-width:2.6}
+.msg.data path{stroke:#e08a1e;marker-end:url(#ah-d)}
+.msg.ack path{stroke:#2E7D6E;marker-end:url(#ah-a)}
+.msg.lost path{stroke:#e08a1e;marker-end:none}
+.msg text{font-family:var(--sans);font-size:12.5px;font-weight:600;fill:var(--text)}
+.msg.ack text{fill:#1f5c48}
+.msg .xmark{stroke:#a02c2c;stroke-width:4;stroke-linecap:round}
+.msg.retx text{fill:#8a4d05}
+.msg.retx path{stroke:#C9720C;stroke-dasharray:6 3}
+.wbadge rect{fill:var(--orange);stroke:#fff;stroke-width:1.5}
+.wbadge text{font-family:var(--mono);font-size:11px;fill:#fff;font-weight:700;letter-spacing:.03em}
+.stopmark text{font-family:var(--mono);font-size:10.5px;fill:#a02c2c;font-weight:700}
+.stopmark path{stroke:#a02c2c;stroke-width:2;stroke-dasharray:4 3}
+.padlabel{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
 
 /* ---- concept 11: DNS + DHCP flow diagrams ---- */
 .flowsvg{width:100%;height:auto;display:block;background:#fbfcfc;border:1px solid var(--line);border-radius:11px}
@@ -336,7 +367,41 @@ svg.viz{width:100%;height:auto;display:block}
 <!-- 03 -->
 <section class="concept">
   <div class="head">
-    <p class="eyebrow">Concept 03 — TCP versus UDP</p>
+    <p class="eyebrow">Concept 03 — Ports and sockets</p>
+    <h1>The IP address finds the machine. The port finds the program.</h1>
+    <p class="lede">Three ranges, assigned by IANA. The destination port names the service you want; the source port is invented on the spot so the reply knows where to land.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">A socket is an IP address plus a port number. A socket pair is both ends of one conversation.</p>
+      <p>The <strong>destination port</strong> specifies the service being requested on the remote host. Port 80 means HTTP, 443 means HTTPS.</p>
+      <p>The <strong>source port</strong> is assigned dynamically by the initiating device. Because every request gets a different one, many conversations run simultaneously without interfering.</p>
+      <p>IANA splits the range three ways. <strong>Well-known 0–1023</strong> for standard services. <strong>Registered 1024–49151</strong> for specific applications. <strong>Dynamic 49152–65535</strong> assigned by clients on the fly.</p>
+      <p>Combine address and port and you get a <strong>socket</strong>. Both sockets together are a socket pair, and that pair is what lets a server keep hundreds of client connections straight.</p>
+    </div>
+    <div class="stage">
+      <h3>The port range</h3>
+      <div class="portbar" id="portBar"></div>
+      <div class="pills" id="portPills" style="margin-top:14px">
+        <button data-p="0" aria-pressed="true">Well-known</button>
+        <button data-p="1" aria-pressed="false">Registered</button>
+        <button data-p="2" aria-pressed="false">Dynamic</button>
+      </div>
+      <p class="readout" id="portOut"></p>
+      <p class="sock" id="sockLine"></p>
+      <p class="readout" id="sockOut" style="text-align:center"></p>
+      <div class="controls">
+        <button id="sockNew">New browser tab</button>
+        <button id="sockReset" class="ghost">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — TCP versus UDP</p>
     <h1>Get it right, or get it fast. You cannot have both.</h1>
     <p class="lede">TCP checks, confirms, reorders and resends. UDP sends and forgets. Every difference between them traces back to that one decision.</p>
   </div>
@@ -374,40 +439,6 @@ svg.viz{width:100%;height:auto;display:block}
           <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</section>
-
-<!-- 04 -->
-<section class="concept">
-  <div class="head">
-    <p class="eyebrow">Concept 04 — Ports and sockets</p>
-    <h1>The IP address finds the machine. The port finds the program.</h1>
-    <p class="lede">Three ranges, assigned by IANA. The destination port names the service you want; the source port is invented on the spot so the reply knows where to land.</p>
-  </div>
-  <div class="split">
-    <div class="prose">
-      <p class="keyline">A socket is an IP address plus a port number. A socket pair is both ends of one conversation.</p>
-      <p>The <strong>destination port</strong> specifies the service being requested on the remote host. Port 80 means HTTP, 443 means HTTPS.</p>
-      <p>The <strong>source port</strong> is assigned dynamically by the initiating device. Because every request gets a different one, many conversations run simultaneously without interfering.</p>
-      <p>IANA splits the range three ways. <strong>Well-known 0–1023</strong> for standard services. <strong>Registered 1024–49151</strong> for specific applications. <strong>Dynamic 49152–65535</strong> assigned by clients on the fly.</p>
-      <p>Combine address and port and you get a <strong>socket</strong>. Both sockets together are a socket pair, and that pair is what lets a server keep hundreds of client connections straight.</p>
-    </div>
-    <div class="stage">
-      <h3>The port range</h3>
-      <div class="portbar" id="portBar"></div>
-      <div class="pills" id="portPills" style="margin-top:14px">
-        <button data-p="0" aria-pressed="true">Well-known</button>
-        <button data-p="1" aria-pressed="false">Registered</button>
-        <button data-p="2" aria-pressed="false">Dynamic</button>
-      </div>
-      <p class="readout" id="portOut"></p>
-      <p class="sock" id="sockLine"></p>
-      <p class="readout" id="sockOut" style="text-align:center"></p>
-      <div class="controls">
-        <button id="sockNew">New browser tab</button>
-        <button id="sockReset" class="ghost">Reset</button>
-      </div>
     </div>
   </div>
 </section>
@@ -475,7 +506,7 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>The acknowledgement number tells you what's expected next, not what arrived.</h1>
     <p class="lede">Receive bytes 1 to 10 and you acknowledge with 11. That off-by-one is deliberate, it's called expectational acknowledgement, and it's the single most misread number in TCP.</p>
   </div>
-  <div class="split">
+  <div class="stacked">
     <div class="prose">
       <p class="keyline">Host A sends bytes 1–10. Host B replies ACK 11. Eleven, not ten.</p>
       <p>Every segment carries a <strong>sequence number</strong> marking its position in the overall stream, so the receiver can reorder anything that arrives out of sequence.</p>
@@ -485,13 +516,16 @@ svg.viz{width:100%;height:auto;display:block}
       <p><strong>Selective Acknowledgement</strong>, when both ends support it, lets the receiver acknowledge non-contiguous blocks — so only the genuinely missing segments get resent, not everything after the gap.</p>
     </div>
     <div class="stage">
-      <h3>Send ten bytes, lose one</h3>
-      <div class="bytes" id="byteRow"></div>
-      <div class="term" id="seqTerm"></div>
+      <h3>Ten segments, two lost, and the recovery</h3>
+      <div class="ladderwrap"><svg class="ladsvg" id="seqLad" viewBox="0 0 820 430" role="img" aria-label="Sequence and acknowledgement timing diagram"></svg></div>
+      <div class="stepdots" id="seqDots"></div>
       <div class="controls">
-        <button id="seqNext">Next step →</button>
+        <button id="seqNext">Next →</button>
+        <button id="seqBack" class="ghost">← Back</button>
         <button id="seqReset" class="ghost">Reset</button>
       </div>
+      <p class="readout" id="seqOut"></p>
+    </div>
       <p class="readout" id="seqOut"></p>
     </div>
   </div>
@@ -504,7 +538,7 @@ svg.viz{width:100%;height:auto;display:block}
     <h1>Two different problems that look identical from the sender's chair.</h1>
     <p class="lede">Flow control protects the receiver from being overwhelmed. Congestion control protects the network in between. Both work by sending less — for entirely different reasons.</p>
   </div>
-  <div class="split">
+  <div class="stacked">
     <div class="prose">
       <p class="keyline">Flow control is about the receiver's buffer. Congestion control is about the routers in the middle.</p>
       <p><strong>Window size</strong> in the TCP header says how many bytes the sender may transmit before waiting for an acknowledgement. It stops buffer overflow at the receiving end.</p>
@@ -513,15 +547,16 @@ svg.viz{width:100%;height:auto;display:block}
       <p><strong>Congestion</strong> is different: routers overwhelmed with traffic start dropping packets. <strong>Slow start</strong> begins conservatively and ramps up. Once stable, <strong>congestion avoidance</strong> increases the rate far more gradually while watching for trouble.</p>
     </div>
     <div class="stage">
-      <h3>Send data, wait for ACKs, watch the window slide</h3>
-      <div class="winstream" id="winStream"><div class="winframe" id="winFrame"></div></div>
-      <div class="winmeta" id="winMeta"></div>
+      <h3>The receiver changes the window mid-conversation</h3>
+      <div class="ladderwrap"><svg class="ladsvg" id="winLad" viewBox="0 0 820 500" role="img" aria-label="Flow control timing diagram"></svg></div>
+      <div class="stepdots" id="winDots"></div>
       <div class="controls">
-        <button id="winSend">Send what the window allows</button>
-        <button id="winAck" class="ghost">Receiver ACKs</button>
-        <button id="winShrink" class="ghost">Buffer fills — shrink window</button>
+        <button id="winNext">Next →</button>
+        <button id="winBack" class="ghost">← Back</button>
         <button id="winReset" class="ghost">Reset</button>
       </div>
+      <p class="readout" id="winOut"></p>
+    </div>
       <p class="readout" id="winOut"></p>
       <table class="tbl" style="margin-top:16px">
         <thead><tr><th>MSS on Ethernet</th><th>Bytes</th></tr></thead>
@@ -706,7 +741,7 @@ function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttr
 function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
 
 /* shell */
-var LABELS=["Layer stack","Layer 4 role","TCP vs UDP","Ports","3-way handshake","Closing","Sequence / ACK","Flow control","App layer","Email / web","DNS / DHCP","DNS lab"];
+var LABELS=["Layer stack","Layer 4 role","Ports","TCP vs UDP","3-way handshake","Closing","Sequence / ACK","Flow control","App layer","Email / web","DNS / DHCP","DNS lab"];
 var secs=[].slice.call(document.querySelectorAll(".concept"));
 var cur=0,stepsNav=document.getElementById("steps");
 LABELS.forEach(function(t,i){
@@ -983,100 +1018,151 @@ quiz([
   }
 })();
 
-/* 06 sequence */
-(function(){
-  var row=document.getElementById("byteRow");
-  for(var i=1;i<=10;i++){
-    var d=document.createElement("div");
-    d.className="byte";d.textContent=i;
-    row.appendChild(d);
-  }
-  var STEPS=[
-    {cls:function(i){return "sent";},
-     t:"Host A → Host B\n<span class='cmd'>SEQ 1</span>  sending bytes 1–10",
-     o:"Host A sends ten bytes starting at sequence number 1. The sequence number counts <b>bytes</b>, not segments."},
-    {cls:function(i){return i===7?"lost":"sent";},
-     t:"<span class='fail'>byte 7 lost in transit</span>\nbytes 1–6 arrive, 8–10 arrive",
-     o:"Byte 7 never arrives. Bytes 8, 9 and 10 do — <b>out of order relative to what's missing</b>. Host B can see the gap because the sequence numbers don't run continuously."},
-    {cls:function(i){return i<7?"ackd":(i===7?"lost":"sent");},
-     t:"Host B → Host A\n<span class='cmd'>ACK 7</span>  next byte expected",
-     o:"Host B acknowledges with <b>ACK 7</b> — not 6. Expectational acknowledgement names the <b>next byte wanted</b>, confirming everything before it arrived. Bytes 1–6 are safe."},
-    {cls:function(i){return i<=7?"ackd":"sent";},
-     t:"Host A → Host B\n<span class='cmd'>SEQ 7</span>  retransmitting byte 7",
-     o:"Host A resends byte 7. With <b>Selective Acknowledgement</b> in play, Host B had already reported that 8–10 arrived, so only the genuinely missing byte gets resent — not everything from 7 onward."},
-    {cls:function(i){return "ackd";},
-     t:"Host B → Host A\n<span class='pass'>ACK 11</span>  all ten bytes received",
-     o:"<b>ACK 11.</b> Ten bytes were sent, the acknowledgement is eleven. That off-by-one is the whole point — it names what comes next, not what came last."}
-  ];
-  var at=-1;
-  function draw(){
-    [].forEach.call(row.children,function(b,i){
-      b.className="byte"+(at<0?"":" "+STEPS[at].cls(i+1));
+/* shared ladder renderer */
+function buildLadder(svg,cfg){
+  svg.innerHTML="";
+  var defs=el("defs",{});
+  defs.innerHTML='<marker id="ah-d" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e08a1e"/></marker>'
+    +'<marker id="ah-a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2E7D6E"/></marker>';
+  svg.appendChild(defs);
+  cfg.panels.forEach(function(p){
+    [[p.ax,"A"],[p.bx,"B"]].forEach(function(h){
+      var g=el("g",{class:"hosticon"});
+      g.appendChild(el("rect",{x:h[0]-19,y:6,width:38,height:28,rx:5}));
+      g.appendChild(el("text",{x:h[0],y:25,"text-anchor":"middle"},h[1]));
+      svg.appendChild(g);
+      svg.appendChild(el("line",{class:"hostline",x1:h[0],y1:40,x2:h[0],y2:cfg.bottom}));
     });
-    document.getElementById("seqTerm").innerHTML=at<0
-      ? "Host A has ten bytes to send.\nPress next step to start."
-      : STEPS[at].t;
-    document.getElementById("seqOut").innerHTML=at<0
-      ? "Sequence numbers count bytes in the stream, starting from a random Initial Sequence Number."
-      : STEPS[at].o;
-    document.getElementById("seqNext").disabled=at>=STEPS.length-1;
+    p.rows.forEach(function(r){
+      var g=el("g",{class:"msg "+(r.kind||"data")+(r.lost?" lost":"")+(r.retx?" retx":""),"data-s":r.s});
+      var x1=r.rev?p.bx:p.ax, x2=r.rev?p.ax:p.bx;
+      var endX=r.lost?(x1+(x2-x1)*0.58):x2;
+      g.appendChild(el("path",{d:"M"+(x1+(r.rev?-4:4))+" "+(r.y+9)+" L"+(endX+(r.rev?6:-6))+" "+(r.y+9)}));
+      g.appendChild(el("text",{x:p.ax+10,y:r.y,"text-anchor":"start"},r.t));
+      if(r.lost){
+        g.appendChild(el("path",{class:"xmark",d:"M"+(endX-7)+" "+(r.y+2)+" L"+(endX+7)+" "+(r.y+16)}));
+        g.appendChild(el("path",{class:"xmark",d:"M"+(endX+7)+" "+(r.y+2)+" L"+(endX-7)+" "+(r.y+16)}));
+      }
+      if(r.win!=null){
+        var wb=el("g",{class:"wbadge"});
+        wb.appendChild(el("rect",{x:p.bx-92,y:r.y-13,width:80,height:19,rx:5}));
+        wb.appendChild(el("text",{x:p.bx-52,y:r.y+1,"text-anchor":"middle"},"window = "+r.win));
+        g.appendChild(wb);
+      }
+      if(r.stop){
+        var sm=el("g",{class:"stopmark"});
+        sm.appendChild(el("path",{d:"M"+(p.ax-6)+" "+(r.y+24)+" L"+(p.bx-10)+" "+(r.y+24)}));
+        sm.appendChild(el("text",{x:p.ax+10,y:r.y+38},r.stop));
+        g.appendChild(sm);
+      }
+      svg.appendChild(g);
+    });
+    if(p.cap)svg.appendChild(el("text",{x:(p.ax+p.bx)/2,y:cfg.bottom+18,"text-anchor":"middle",class:"padlabel"},p.cap));
+  });
+}
+function runLadder(svg,cfg,pfx,steps,intro){
+  var at=-1;
+  var dots=document.getElementById(pfx+"Dots");
+  dots.innerHTML="";
+  steps.forEach(function(){dots.appendChild(document.createElement("span"));});
+  function draw(){
+    [].forEach.call(svg.querySelectorAll(".msg"),function(m){
+      m.classList.toggle("on",+m.getAttribute("data-s")<=at);
+    });
+    [].forEach.call(dots.children,function(d,n){d.className=n<at?"done":(n===at?"now":"");});
+    document.getElementById(pfx+"Out").innerHTML=at<0?intro:steps[at];
+    document.getElementById(pfx+"Next").disabled=at>=steps.length-1;
+    document.getElementById(pfx+"Back").disabled=at<0;
   }
-  document.getElementById("seqNext").addEventListener("click",function(){if(at<STEPS.length-1){at++;draw();}});
-  document.getElementById("seqReset").addEventListener("click",function(){at=-1;draw();});
+  document.getElementById(pfx+"Next").addEventListener("click",function(){if(at<steps.length-1){at++;draw();}});
+  document.getElementById(pfx+"Back").addEventListener("click",function(){if(at>=0){at--;draw();}});
+  document.getElementById(pfx+"Reset").addEventListener("click",function(){at=-1;draw();});
+  buildLadder(svg,cfg);
   draw();
+}
+
+/* 07 sequence + ACK ladder */
+(function(){
+  var L=[],y=58;
+  function row(t,o){o=o||{};o.t=t;o.y=y;y+=(o.stop?58:33);return o;}
+  var left=[
+    row("Segment 1",{s:0}),
+    row("Segment 2",{s:0}),
+    row("Segment 3",{s:1,lost:true}),
+    row("Segment 4",{s:1,lost:true}),
+    row("Segment 5",{s:2}),
+    row("Segment 6",{s:2}),
+    row("Segment 7",{s:2}),
+    row("Segment 8",{s:2}),
+    row("Segment 9",{s:2}),
+    row("Segment 10",{s:2})
+  ];
+  y=58;
+  var right=[
+    row("ACK 3, SACK 5-10",{s:3,rev:true,kind:"ack"}),
+    row("Segment 3",{s:4,retx:true}),
+    row("Segment 4",{s:4,retx:true}),
+    row("Segment 11",{s:5}),
+    row("Segment 12",{s:5}),
+    row("ACK 13",{s:6,rev:true,kind:"ack"})
+  ];
+  var cfg={bottom:400,panels:[
+    {ax:70,bx:300,rows:left,cap:"segments 3 and 4 never arrive"},
+    {ax:520,bx:750,rows:right,cap:"only the missing two are resent"}
+  ]};
+  runLadder(document.getElementById("seqLad"),cfg,"seq",[
+    "Host A sends <b>segments 1 and 2</b>. Both arrive. Each carries a sequence number marking its place in the stream.",
+    "<b>Segments 3 and 4 are lost in transit.</b> Host A does not know yet — nothing tells a sender a segment vanished.",
+    "A keeps sending. <b>Segments 5 through 10 arrive safely</b>, but B now has a gap: it holds 1, 2, and 5 to 10, with nothing in between.",
+    "B replies <b>ACK 3, SACK 5-10</b>. Read it as two separate facts. <b>ACK 3</b> means \"everything before segment 3 arrived, and 3 is what I want next.\" <b>SACK 5-10</b> is the Selective Acknowledgement saying \"I already have these, don't resend them.\"",
+    "A retransmits <b>only segments 3 and 4</b>. Without SACK it would have had to resend 3 through 10 — eight segments instead of two. This is the entire reason SACK exists.",
+    "With the gap filled, A carries on with <b>segments 11 and 12</b>.",
+    "B sends <b>ACK 13</b>. Twelve segments were sent; the acknowledgement is thirteen. It names the <b>next byte expected</b>, not the last one received — that off-by-one is expectational acknowledgement."
+  ],"Host A has twelve segments to send. Press next to follow them, including the two that go missing.");
 })();
 
-/* 08 sliding window */
+/* 08 flow control ladder */
 (function(){
-  var N=16, win=6, base=0, sent=0;
-  var stream=document.getElementById("winStream");
-  var frame=document.getElementById("winFrame");
-  var cells=[];
-  for(var i=0;i<N;i++){
-    var d=document.createElement("div");
-    d.className="wb";
-    d.textContent=(i+1);
-    stream.appendChild(d);cells.push(d);
-  }
-  function draw(msg){
-    cells.forEach(function(c,i){
-      c.className="wb"+(i<base?" ackd":(i<sent?" sent":(i<base+win?" inwin":"")));
-    });
-    var pct=100/N;
-    frame.style.left="calc("+(base*pct)+"% + "+(base*2)+"px)";
-    frame.style.width="calc("+(Math.min(win,N-base)*pct)+"% - 2px)";
-    document.getElementById("winMeta").innerHTML=
-       "window size <b>"+win+" segments</b>"
-      +" &nbsp;·&nbsp; acknowledged <b>"+base+"</b>"
-      +" &nbsp;·&nbsp; sent, awaiting ACK <b>"+(sent-base)+"</b>"
-      +" &nbsp;·&nbsp; may still send <b>"+Math.max(0,base+win-sent)+"</b>";
-    document.getElementById("winOut").innerHTML=msg;
-    document.getElementById("winSend").disabled=(sent>=base+win)||(sent>=N);
-    document.getElementById("winAck").disabled=(sent<=base);
-  }
-  document.getElementById("winSend").addEventListener("click",function(){
-    var room=Math.min(base+win,N)-sent;
-    sent+=room;
-    draw("Sent <b>"+room+" segment"+(room>1?"s":"")+"</b> — everything the window allowed. The sender now <b>stops and waits</b>. It cannot send segment "+(sent+1)+" until an acknowledgement moves the window forward, no matter how much data is queued.");
-  });
-  document.getElementById("winAck").addEventListener("click",function(){
-    var moved=Math.min(2,sent-base);
-    base+=moved;
-    draw("Receiver acknowledged <b>"+moved+" segment"+(moved>1?"s":"")+"</b>. The window <b>slides right</b> — that is literally what the name means. Room has opened at the leading edge, so the sender may transmit "+Math.max(0,base+win-sent)+" more.");
-  });
-  document.getElementById("winShrink").addEventListener("click",function(){
-    win=(win>2)?2:6;
-    if(sent>base+win)sent=base+win;
-    draw(win===2
-      ? "The receiver's application is not reading fast enough, so its buffer is filling. It advertises a <b>smaller window — 2 segments</b> — in its next ACK, and the sender throttles automatically. <b>No packets were lost.</b> That is flow control working, not failing."
-      : "The application caught up and drained the buffer, so the receiver advertises a <b>larger window</b> again. This renegotiation happens continuously through the session.");
-  });
-  document.getElementById("winReset").addEventListener("click",function(){
-    win=6;base=0;sent=0;
-    draw("16 segments to send. The orange frame is the window — the sender may transmit only what falls inside it before waiting for an acknowledgement.");
-  });
-  draw("16 segments to send. The orange frame is the window — the sender may transmit only what falls inside it before waiting for an acknowledgement.");
+  var y=58;
+  function row(t,o){o=o||{};o.t=t;o.y=y;y+=(o.stop?58:33);return o;}
+  var left=[
+    row("ACK — ready",{s:0,rev:true,kind:"ack",win:4}),
+    row("Segment 1",{s:1}),
+    row("Segment 2",{s:1}),
+    row("Segment 3",{s:1}),
+    row("Segment 4",{s:1,stop:"window full — A stops"}),
+    row("ACK 5",{s:2,rev:true,kind:"ack",win:4}),
+    row("Segment 5",{s:3}),
+    row("Segment 6",{s:3}),
+    row("Segment 7",{s:3}),
+    row("Segment 8",{s:3,stop:"window full again"})
+  ];
+  y=58;
+  var right=[
+    row("ACK 9",{s:4,rev:true,kind:"ack",win:2}),
+    row("Segment 9",{s:5}),
+    row("Segment 10",{s:5,stop:"only two allowed"}),
+    row("ACK 11",{s:6,rev:true,kind:"ack",win:6}),
+    row("Segment 11",{s:7}),
+    row("Segment 12",{s:7}),
+    row("Segment 13",{s:7})
+  ];
+  var cfg={bottom:462,panels:[
+    {ax:70,bx:300,rows:left,cap:"B's buffer is healthy"},
+    {ax:520,bx:750,rows:right,cap:"buffer fills, then drains"}
+  ]};
+  runLadder(document.getElementById("winLad"),cfg,"win",[
+    "B advertises a <b>window of 4</b>. That is B telling A: send me four segments, then stop and wait.",
+    "A sends <b>segments 1 to 4</b> and <b>stops</b>. It may have far more data queued — it is not allowed to send it.",
+    "B acknowledges and advertises <b>4 again</b>. The window <b>slides forward</b>: room has opened at the leading edge.",
+    "A sends <b>segments 5 to 8</b>, then stops once more. The pattern is send-to-the-limit, wait, repeat.",
+    "Now B's application is reading slowly and its buffer is filling. B advertises a <b>window of only 2</b>. <b>Nothing has been lost and nothing has failed</b> — B is simply throttling A.",
+    "A obeys immediately and sends <b>just two segments</b>. This is flow control working: the sender slows down without a single dropped packet.",
+    "B's application catches up and drains the buffer, so B advertises a <b>window of 6</b>.",
+    "A can now send <b>more per round trip than at any point so far</b>. The window is renegotiated continuously — that is what makes it a <i>sliding</i> window."
+  ],"The window size is set by the receiver, not the sender. Watch the badge on each ACK.");
 })();
+
 
 /* 08 protocols */
 (function(){
