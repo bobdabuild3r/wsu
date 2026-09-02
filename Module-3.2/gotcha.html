@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>😱 Gotcha! Phishing Awareness</title>
+<style>
+  :root{
+    --ink:#241436;
+    --paper:#fff8ec;
+    --pink:#ff5d8f;
+    --orange:#ff9640;
+    --yellow:#ffd23f;
+    --teal:#2ec4b6;
+    --purple:#7b5ea7;
+    --line:#241436;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 10% 15%, #ffe9c7 0%, transparent 45%),
+      radial-gradient(circle at 90% 85%, #d9f2ee 0%, transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Comic Sans MS','Chalkboard SE','Marker Felt', 'Segoe Print', system-ui, sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 16px 64px;
+    overflow-x:hidden;
+  }
+
+  canvas#confetti{
+    position:fixed; inset:0; pointer-events:none; z-index:5;
+  }
+
+  .stage{
+    max-width:720px;
+    width:100%;
+    position:relative;
+    z-index:2;
+  }
+
+  .badge{
+    display:inline-block;
+    background:var(--yellow);
+    border:3px solid var(--line);
+    border-radius:999px;
+    padding:6px 18px;
+    font-weight:bold;
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    box-shadow:4px 4px 0 var(--line);
+    transform:rotate(-3deg);
+    margin-bottom:18px;
+  }
+
+  h1{
+    font-size:clamp(2.4rem, 8vw, 4rem);
+    line-height:1.05;
+    margin:0 0 8px;
+    color:var(--pink);
+    -webkit-text-stroke:2px var(--line);
+    text-shadow:4px 4px 0 var(--line);
+  }
+
+  .sub{
+    font-size:1.2rem;
+    font-weight:bold;
+    margin:0 0 28px;
+    color:var(--ink);
+  }
+
+  .fish-wrap{
+    display:flex;
+    justify-content:center;
+    margin:8px 0 24px;
+  }
+
+  .fish-wrap svg{
+    width:220px;
+    height:auto;
+    animation:bob 2.6s ease-in-out infinite;
+    filter:drop-shadow(6px 6px 0 rgba(36,20,54,0.15));
+  }
+
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) rotate(-2deg); }
+    50%{ transform:translateY(-14px) rotate(2deg); }
+  }
+
+  .card{
+    background:#fff;
+    border:3px solid var(--line);
+    border-radius:22px;
+    box-shadow:8px 8px 0 var(--line);
+    padding:26px 28px;
+    margin-bottom:22px;
+    text-align:left;
+  }
+
+  .card h2{
+    margin-top:0;
+    font-size:1.4rem;
+    color:var(--purple);
+  }
+
+  .card p{
+    line-height:1.55;
+    font-size:1.05rem;
+  }
+
+  .redflags{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    gap:12px;
+  }
+  .redflags li{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:var(--paper);
+    border:2px dashed var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    font-size:1rem;
+    line-height:1.4;
+  }
+  .redflags .num{
+    flex:0 0 auto;
+    background:var(--teal);
+    border:2px solid var(--line);
+    border-radius:50%;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    color:#fff;
+  }
+
+  .highlight{
+    background:linear-gradient(180deg, transparent 60%, var(--yellow) 60%);
+    font-weight:bold;
+  }
+
+  .cta{
+    text-align:center;
+    margin-top:8px;
+  }
+  .cta p{
+    font-weight:bold;
+    font-size:1.15rem;
+  }
+  .stamp{
+    display:inline-block;
+    border:4px solid var(--pink);
+    color:var(--pink);
+    border-radius:12px;
+    padding:10px 22px;
+    font-size:1.3rem;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    transform:rotate(-4deg);
+    margin-top:6px;
+  }
+
+  footer{
+    margin-top:30px;
+    font-size:0.85rem;
+    color:#7a6a8f;
+    text-align:center;
+  }
+
+  @media (prefers-color-scheme: dark){
+    body{
+      background:
+        radial-gradient(circle at 10% 15%, #3a2a12 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, #16332f 0%, transparent 45%),
+        #1b1224;
+      color:#f5eee0;
+    }
+    .card{ background:#241633; color:#f5eee0; }
+    .redflags li{ background:#1b1224; }
+    footer{ color:#b8a9d1; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="stage">
+  <span class="badge">🎣 you clicked it</span>
+  <h1>GOTCHA!</h1>
+  <p class="sub">There is no free ticket. This was a phishing drill.</p>
+
+  <div class="fish-wrap">
+    <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <!-- hook line -->
+      <line x1="100" y1="0" x2="100" y2="34" stroke="#241436" stroke-width="3"/>
+      <path d="M100 34 q10 6 0 14 q-10 6 0 12" fill="none" stroke="#241436" stroke-width="3"/>
+      <!-- fish body -->
+      <ellipse cx="95" cy="90" rx="55" ry="34" fill="#ff9640" stroke="#241436" stroke-width="3"/>
+      <!-- tail -->
+      <path d="M40 90 L10 68 L18 90 L10 112 Z" fill="#ff5d8f" stroke="#241436" stroke-width="3" stroke-linejoin="round"/>
+      <!-- fin -->
+      <path d="M85 58 Q100 30 118 58 Z" fill="#ffd23f" stroke="#241436" stroke-width="3" stroke-linejoin="round"/>
+      <!-- eye (dizzy X eyes = caught!) -->
+      <g stroke="#241436" stroke-width="3" stroke-linecap="round">
+        <line x1="118" y1="76" x2="128" y2="86"/>
+        <line x1="128" y1="76" x2="118" y2="86"/>
+      </g>
+      <!-- mouth caught on hook -->
+      <path d="M132 96 q10 8 -2 14" fill="none" stroke="#241436" stroke-width="3"/>
+      <!-- bubbles -->
+      <circle cx="150" cy="60" r="4" fill="none" stroke="#241436" stroke-width="2"/>
+      <circle cx="160" cy="45" r="3" fill="none" stroke="#241436" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h2>What just happened</h2>
+    <p>
+      That email promised a free ticket. The form asked you to type in some details.
+      This page was the "prize." None of it was real &mdash; it was a class exercise to
+      see how a phishing link actually feels to click.
+    </p>
+    <p>
+      If this had been a real attacker, the details you typed into that form could
+      already be in someone else's hands. <span class="highlight">That's the whole point of the drill.</span>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>The red flags you swam past 🐠</h2>
+    <ul class="redflags">
+      <li><span class="num">1</span> <span><strong>Too good to be true.</strong> A free prize out of nowhere is one of the oldest bait tactics in the book.</span></li>
+      <li><span class="num">2</span> <span><strong>Urgency / excitement.</strong> "Claim it now" short-circuits the part of your brain that would normally ask questions.</span></li>
+      <li><span class="num">3</span> <span><strong>Asked for details before anything was proven.</strong> Legit prizes don't need your info before you've even seen what you won.</span></li>
+      <li><span class="num">4</span> <span><strong>A link led to another link led to another page.</strong> Real phishing chains hop across multiple sites to dodge filters &mdash; this one did too.</span></li>
+      <li><span class="num">5</span> <span><strong>No way to verify the sender.</strong> Did you check who actually sent the original email, or just trust the subject line?</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Next time, before you click</h2>
+    <p>
+      Hover over links to see where they <em>actually</em> go. Check the sender's real
+      address, not just the display name. Ask: would this organization really contact
+      me this way, about this, right now? And if a message makes you feel a rush of
+      excitement or panic &mdash; that feeling is the trap working, not a reason to hurry.
+    </p>
+  </div>
+
+  <div class="cta">
+    <p>No data was harmed in the making of this drill. 🎉</p>
+    <div class="stamp">You've been phished (safely)</div>
+  </div>
+
+  <footer>
+    Cyber Awareness Exercise &middot; Simulated Phishing Drill<br>
+    This page is part of a classroom training exercise. No real information was collected here.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var canvas = document.getElementById('confetti');
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var colors = ['#ff5d8f','#ff9640','#ffd23f','#2ec4b6','#7b5ea7'];
+  var pieces = [];
+  var COUNT = 140;
+
+  function spawn(){
+    pieces = [];
+    for(var i=0;i<COUNT;i++){
+      pieces.push({
+        x: Math.random()*W,
+        y: -20 - Math.random()*H,
+        r: 4 + Math.random()*5,
+        c: colors[Math.floor(Math.random()*colors.length)],
+        vy: 2 + Math.random()*3,
+        vx: -1.5 + Math.random()*3,
+        rot: Math.random()*360,
+        vr: -6 + Math.random()*12
+      });
+    }
+  }
+  spawn();
+
+  var elapsed = 0;
+  var DURATION = 4200; // ms of confetti fall
+  var last = null;
+
+  function frame(ts){
+    if(last === null) last = ts;
+    var dt = ts - last;
+    last = ts;
+    elapsed += dt;
+
+    ctx.clearRect(0,0,W,H);
+
+    if(elapsed < DURATION){
+      pieces.forEach(function(p){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.6);
+        ctx.restore();
+      });
+      requestAnimationFrame(frame);
+    } else {
+      ctx.clearRect(0,0,W,H);
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
