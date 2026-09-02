@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4.1 — Recap</title>
+<style>
+:root{
+  --teal:#1F4E5F; --teal-dark:#163a47; --teal-mid:#2c6478;
+  --green:#2E7D6E; --orange:#C9720C; --red:#7a3b3b;
+  --bg:#f5f8f8; --card:#fff; --line:#dde6e6;
+  --text:#1a1a1a; --muted:#5b6a6d;
+  --sans:'Segoe UI',Calibri,Arial,sans-serif;
+  --mono:Consolas,'Courier New',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.55}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+header.top{position:sticky;top:0;z-index:40;background:var(--teal);color:#fff}
+.bar{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;white-space:nowrap}
+.brand span{color:var(--orange)}
+nav.steps{display:flex;gap:4px;flex:1 1 100%;order:3;flex-wrap:wrap}
+@media(min-width:1120px){nav.steps{flex:1 1 auto;order:0}}
+nav.steps button{background:rgba(255,255,255,.07);border:1px solid #3d6a78;color:#cfe3e6;border-radius:6px;padding:4px 9px;font-size:12.5px;display:flex;align-items:baseline;gap:6px;transition:.15s}
+nav.steps button b{font-family:var(--mono);font-size:11px;color:#9fc2c9}
+nav.steps button:hover{background:var(--teal-mid);color:#fff}
+nav.steps button[aria-current="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+nav.steps button[aria-current="true"] b{color:#ffe0bd}
+.clock{display:flex;align-items:center;gap:7px;margin-left:auto;white-space:nowrap}
+.clock output{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--orange);min-width:62px;text-align:right}
+.clock output.low{color:#ffb36b}
+.clock button{background:var(--green);border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:13px;font-weight:600}
+.clock button:hover{filter:brightness(1.15)}
+.progress{height:4px;background:var(--teal-dark)}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .3s}
+
+main{max-width:1240px;margin:0 auto;padding:26px 20px 92px}
+.concept{display:none;animation:rise .25s ease-out}
+.concept.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{border-bottom:2px solid var(--line);padding-bottom:15px;margin-bottom:24px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700;margin:0 0 7px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;color:var(--teal)}
+.lede{margin:0;max-width:none;color:var(--muted);font-size:17.5px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:30px;align-items:start}
+@media(max-width:920px){.split{grid-template-columns:1fr;gap:22px}}
+.stacked{display:block}
+.stacked .prose{margin-bottom:20px;columns:2;column-gap:38px}
+.stacked .prose p{max-width:none;break-inside:avoid}
+.stacked .prose .keyline{column-span:all;font-size:19px;margin-bottom:18px}
+.stacked .stage{padding:24px 26px}
+@media(max-width:820px){.stacked .prose{columns:1}}
+.prose p{margin:0 0 13px;max-width:52ch}
+.prose p:last-child{margin-bottom:0}
+.prose code{font-family:var(--mono);font-size:.92em;background:#e6eeef;padding:1px 5px;border-radius:4px}
+.keyline{border-left:4px solid var(--orange);background:#fff7ed;padding:10px 0 10px 14px;margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.35;color:var(--teal-dark);border-radius:0 6px 6px 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.controls button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:600;transition:.15s}
+.controls button:hover:not(:disabled){filter:brightness(1.15)}
+.controls button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.controls button.ghost:hover:not(:disabled){background:var(--teal);color:#fff;filter:none}
+.controls button:disabled{opacity:.35;cursor:not-allowed}
+.readout{font-size:14px;color:var(--muted);margin-top:13px;min-height:20px;line-height:1.6}
+.readout b{color:var(--teal);font-weight:700}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--teal);transition:.15s}
+.pills button:hover{border-color:var(--teal)}
+.pills button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.pills .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);align-self:center;font-weight:700}
+svg.viz{width:100%;height:auto;display:block}
+
+.dev rect,.dev circle{fill:#fff;stroke:var(--teal);stroke-width:1.8;transition:.25s}
+.dev text{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.dev.hi rect,.dev.hi circle{fill:var(--orange);stroke:var(--orange)}
+.dev.hi text{fill:#fff;font-weight:700}
+.dev.bad rect,.dev.bad circle{fill:#7a3b3b;stroke:#7a3b3b}
+.dev.bad text{fill:#fff;font-weight:700}
+.wire{stroke:#b9cbcd;stroke-width:2;fill:none;transition:.25s}
+.wire.hi{stroke:var(--orange);stroke-width:2.8}
+.wire.bad{stroke:#7a3b3b;stroke-width:2.4;stroke-dasharray:5 3}
+.cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+/* numbered ladder */
+.ladder{margin:14px 0 4px;padding:0;list-style:none}
+.ladder li{display:flex;align-items:center;gap:12px;padding:10px 13px;border-radius:9px;margin-bottom:6px;background:#eef4f4;font-size:15px;line-height:1.35;transition:.2s}
+.ladder li .n{font-family:var(--mono);font-size:13px;font-weight:700;background:var(--teal);color:#fff;border-radius:6px;padding:3px 10px;flex:none;min-width:28px;text-align:center}
+.ladder li.ok{background:#e4f2ea}
+.ladder li.ok .n{background:var(--green)}
+.ladder li.now{background:#fff4e6}
+.ladder li.now .n{background:var(--orange)}
+
+/* day cards */
+.days{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+@media(max-width:820px){.days{grid-template-columns:repeat(2,1fr)}}
+.days button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 8px;text-align:center;color:var(--teal);transition:.15s}
+.days button .d{font-weight:700;font-size:14px;display:block}
+.days button .s{font-size:10.5px;color:var(--muted);display:block;margin-top:3px;font-family:var(--mono)}
+.days button:hover{border-color:var(--teal)}
+.days button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.days button[aria-pressed="true"] .s{color:#9fc2c9}
+.checklist{margin:14px 0 0;padding:0;list-style:none}
+.checklist li{display:flex;gap:10px;padding:8px 11px;border-radius:8px;margin-bottom:5px;background:#eef4f4;font-size:14.5px;line-height:1.4}
+.checklist li b{color:var(--teal)}
+.checklist li .tick{color:var(--green);font-weight:700;flex:none}
+
+/* cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.cards{grid-template-columns:1fr}}
+.cards button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px 11px;text-align:left;color:var(--teal);transition:.15s}
+.cards button .t{font-weight:700;font-size:14px;display:block}
+.cards button .s{font-size:11.5px;color:var(--muted);display:block;margin-top:3px;font-family:var(--mono)}
+.cards button:hover{border-color:var(--teal)}
+.cards button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.cards button[aria-pressed="true"] .s{color:#9fc2c9}
+
+/* terminal */
+.term{font-family:var(--mono);font-size:12.5px;background:#0f2530;color:#e8f1f2;border-radius:10px;padding:12px;line-height:1.7;white-space:pre-wrap;overflow-x:auto}
+.term .pass{color:#8fe3c7}
+.term .fail{color:#ff9aa8}
+.term .cmd{color:#f7b955}
+.term .note{color:#7fa0a8}
+.term .flag{background:#7a3b3b;color:#fff;border-radius:3px;padding:0 4px}
+#pingTerm,#trTerm,#hostTerm,#arpTerm,#cdpTerm,#iosTerm{min-height:180px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:12px}
+.tbl th{background:var(--teal);color:#fff;text-align:left;padding:6px 8px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.tbl td{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top}
+.tbl tr:nth-child(even) td{background:#f7fafa}
+.tbl tr.hl td{background:#ffe6c2;font-weight:700}
+.tbl tr.bad td{background:#f6e4e4;color:#7a3b3b;font-weight:700}
+
+/* baseline bars */
+.bl{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.blrow{display:grid;grid-template-columns:96px 1fr 84px;gap:10px;align-items:center}
+.blrow .bn{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;font-weight:700}
+.bltrack{background:#eef4f4;border-radius:7px;height:30px;position:relative;overflow:hidden}
+.blfill{position:absolute;left:0;top:0;bottom:0;border-radius:7px;transition:width .4s;background:var(--green)}
+.blfill.warn{background:var(--orange)}
+.blfill.bad{background:var(--red)}
+.blmark{position:absolute;top:0;bottom:0;width:2px;background:var(--teal-dark)}
+.blrow .bv{font-family:var(--mono);font-size:12.5px;font-weight:700;text-align:right}
+.blrow .bv.warn{color:var(--orange)}
+.blrow .bv.bad{color:var(--red)}
+
+/* quiz */
+.qcard{background:#eef4f4;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:12px}
+.qcard .qn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.qcard .qt{margin:0;font-size:16px;line-height:1.45;color:var(--teal-dark)}
+.opts{display:grid;gap:8px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opts.c4{grid-template-columns:repeat(2,1fr)}
+@media(max-width:520px){.opts.c2,.opts.c4{grid-template-columns:1fr}}
+.opts button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 8px;font-size:14px;font-weight:700;color:var(--teal);transition:.15s}
+.opts button:hover:not(:disabled){border-color:var(--teal)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:not-allowed}
+.score{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:11px}
+
+.footnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(245,248,248,.95);border-top:1px solid var(--line)}
+.footnav .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.footnav button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 17px;font-size:14px;font-weight:600}
+.footnav button:hover:not(:disabled){filter:brightness(1.15)}
+.footnav button:disabled{opacity:.32;cursor:not-allowed}
+.footnav button.ghost{background:#fff;color:var(--teal);border:1px solid var(--line)}
+.footnav .hint{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:700px){.footnav .hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">COMP1016 <span>/</span> Module 4.1 Recap</div>
+    <div class="clock">
+      <output id="clock">30:00</output>
+      <button id="clockBtn">Start</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="Concepts"></nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main>
+
+<!-- 01 -->
+<section class="concept on">
+  <div class="head">
+    <p class="eyebrow">Concept 01 — The administrator's week</p>
+    <h1>Seven days, seven jobs, and none of them are optional.</h1>
+    <p class="lede">Build it, address it, secure it, run the services, plan for growth, watch it, tune it. The module frames the whole role as a week of checklists — here they are in one place.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Design and build come first. Everything after that is keeping it alive.</p>
+      <p>Network administrators design topologies, configure devices, monitor performance and mitigate threats. The module's framing is deliberately light, but the seven areas map onto a real job description.</p>
+      <p>Notice the shape: the first two days are <strong>building</strong>, the middle three are <strong>operating</strong>, and the last two are <strong>improving</strong>. Most incidents in the earlier modules trace back to something skipped on one of these lists.</p>
+      <p>Documentation appears on two separate days. That's not an accident — it's the task most often postponed and most missed during an outage.</p>
+      <p>Click a day to see its checklist.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a day</h3>
+      <div class="days" id="dayGrid">
+        <button data-d="mon" aria-pressed="true"><span class="d">Mon</span><span class="s">build</span></button>
+        <button data-d="tue" aria-pressed="false"><span class="d">Tue</span><span class="s">subnet</span></button>
+        <button data-d="wed" aria-pressed="false"><span class="d">Wed</span><span class="s">secure</span></button>
+        <button data-d="thu" aria-pressed="false"><span class="d">Thu</span><span class="s">services</span></button>
+        <button data-d="fri" aria-pressed="false"><span class="d">Fri</span><span class="s">growth</span></button>
+        <button data-d="sat" aria-pressed="false"><span class="d">Sat</span><span class="s">monitor</span></button>
+        <button data-d="sun" aria-pressed="false"><span class="d">Sun</span><span class="s">optimise</span></button>
+      </div>
+      <ul class="checklist" id="dayList"></ul>
+      <p class="readout" id="dayOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 02 — Choosing the gear</p>
+    <h1>Fixed hardware is cheaper today and a problem in three years.</h1>
+    <p class="lede">Four buying decisions, and the one the module tests is fixed versus modular. Buying for today's headcount is the mistake that costs most.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Modular gear can be upgraded. Fixed gear has to be replaced.</p>
+      <p><strong>Pick the hardware.</strong> Firewalls to keep attackers out, routers to guide traffic, switches to move it internally, access points to serve wireless users. More users means more ports and more capacity.</p>
+      <p><strong>Budget properly.</strong> Enough ports for every device plus spares, adequate switching capacity and backplane speed, and features like access control and centralised management.</p>
+      <p><strong>Check the operating system.</strong> NAT, DHCP and DNS support, built-in security such as encryption and firewall rules, QoS settings, and VoIP support if you need it.</p>
+      <p><strong>Plan to grow.</strong> <strong>Fixed</strong> devices are predictable but not future-proof. <strong>Modular</strong> gear can be upgraded, which means less waste and more options. Future-proof with support for 10 Gbps and above, stacking or uplink flexibility, and wireless scalability.</p>
+    </div>
+    <div class="stage">
+      <h3>Fixed or modular?</h3>
+      <div class="pills" id="gearPills">
+        <button data-g="fixed" aria-pressed="true">Fixed devices</button>
+        <button data-g="mod" aria-pressed="false">Modular gear</button>
+      </div>
+      <svg class="viz" id="gearViz" viewBox="0 0 470 170" role="img" aria-label="Fixed versus modular growth"></svg>
+      <p class="readout" id="gearOut"></p>
+      <table class="tbl">
+        <thead><tr><th>Buying decision</th><th>What to check</th></tr></thead>
+        <tbody>
+          <tr><td>Hardware</td><td>firewalls, routers, switches, access points</td></tr>
+          <tr><td>Budget</td><td>port count + spares, switching capacity, backplane speed</td></tr>
+          <tr><td>OS features</td><td>NAT, DHCP, DNS, encryption, QoS, VoIP</td></tr>
+          <tr class="hl"><td>Growth</td><td>10 Gbps+, stacking, uplink flexibility, Wi-Fi scalability</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 03 — ping</p>
+    <h1>It tells you something is reachable. It never tells you where the break is.</h1>
+    <p class="lede">An ICMP Echo Request out, an Echo Reply back, and a round-trip time. That is the entire tool — and its limits are exactly why traceroute exists.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">ping verifies Layer 3 reachability. Nothing above it, nothing more specific than reachable or not.</p>
+      <p>ping sends an <strong>ICMP Echo Request</strong> to a destination and listens for an <strong>Echo Reply</strong>. It measures latency as round-trip time, and packet loss.</p>
+      <p><strong>Standard ping</strong> uses the device's default interface as the source. <strong>Extended ping</strong> on Cisco IOS lets you change the source address, packet size and repeat count — type <code>ping</code> alone in privileged EXEC mode to get it.</p>
+      <p>As a security tool it detects denial-of-service symptoms such as ICMP floods, showing up as unusually high response times or lost packets. It also tests firewall rules by confirming whether ICMP is blocked or allowed as intended.</p>
+      <p>Use it to verify only authorised ranges can reach key infrastructure, and check latency regularly to spot scanning or degradation from malicious traffic.</p>
+    </div>
+    <div class="stage">
+      <h3>Run it against four targets</h3>
+      <div class="pills" id="pingPills">
+        <button data-p="ok" aria-pressed="true">Healthy host</button>
+        <button data-p="slow" aria-pressed="false">Under ICMP flood</button>
+        <button data-p="fw" aria-pressed="false">Blocked by firewall</button>
+        <button data-p="down" aria-pressed="false">Host down</button>
+      </div>
+      <div class="term" id="pingTerm"></div>
+      <p class="readout" id="pingOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 04 — traceroute</p>
+    <h1>It maps the path by deliberately letting packets die.</h1>
+    <p class="lede">Start the TTL at 1 so the first router kills it and complains. Then 2, then 3. Every complaint names a hop. Three asterisks mean somebody chose not to answer.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Each router that decrements TTL to zero returns ICMP Time Exceeded — and that reply is the hop.</p>
+      <p>The packet's TTL starts at 1 and increases by one each iteration. Every router that forwards it decrements TTL by 1. When TTL hits zero the router drops the packet and sends back <strong>ICMP Time Exceeded</strong>. The process repeats until the destination answers or a hop goes silent.</p>
+      <p>The implementations differ. <strong>Cisco IOS traceroute</strong> uses UDP packets with invalid ports, and the destination replies ICMP Port Unreachable. <strong>Windows tracert</strong> uses ICMP Echo Requests. <strong>Extended traceroute</strong> lets you change source IP, maximum TTL and timeouts.</p>
+      <p>Hops that don't respond appear as <code>* * *</code>. That may mean a firewall block or a router configured not to answer ICMP — <strong>not necessarily a fault</strong>.</p>
+      <p>For security it reveals intermediary devices that may be intercepting or dropping traffic, and unexpected routing paths that could indicate misconfiguration, black holes or rogue gateways.</p>
+    </div>
+    <div class="stage">
+      <h3>Increment the TTL</h3>
+      <svg class="viz" id="trViz" viewBox="0 0 470 110" role="img" aria-label="Traceroute hops"></svg>
+      <div class="term" id="trTerm"></div>
+      <div class="controls">
+        <button id="trNext">Next TTL →</button>
+        <button id="trReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="trOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 05 — Host configuration</p>
+    <h1>Four switches on one command, and each answers a different question.</h1>
+    <p class="lede">ipconfig on its own is almost useless for troubleshooting. The switches are where the diagnosis lives — and one of them exposes DNS poisoning.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">A 169.254 address means DHCP failed. That one reading tells you where to look next.</p>
+      <p><strong>Windows.</strong> <code>ipconfig</code> shows IPv4 and IPv6 address, subnet mask and default gateway. <code>ipconfig /all</code> adds DNS servers, MAC address and DHCP lease information. <code>ipconfig /release</code> and <code>/renew</code> drop and re-request the lease, which resolves IP conflicts and stale settings. <code>ipconfig /displaydns</code> shows cached DNS entries.</p>
+      <p><strong>Linux.</strong> <code>ifconfig</code> is deprecated on many systems; <code>ip address</code> or <code>ip a</code> is the modern replacement, with more detail and support for multiple IPs per interface.</p>
+      <p><strong>macOS.</strong> <code>ifconfig</code> works as on Linux, and <code>networksetup -listallnetworkservices</code> lists every interface.</p>
+      <p>The security value: verify the configuration hasn't been manipulated by malware such as rogue DNS settings, spot unauthorised static IPs, examine <code>/displaydns</code> for poisoning, and check <code>/all</code> for a rogue DHCP server handing out false configuration.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a switch</h3>
+      <div class="pills" id="hostPills">
+        <button data-h="plain" aria-pressed="true">ipconfig</button>
+        <button data-h="all" aria-pressed="false">ipconfig /all</button>
+        <button data-h="dns" aria-pressed="false">/displaydns</button>
+        <button data-h="apipa" aria-pressed="false">DHCP failed</button>
+      </div>
+      <div class="term" id="hostTerm"></div>
+      <p class="readout" id="hostOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 06 — ARP inspection</p>
+    <h1>Two IP addresses sharing one MAC is not a coincidence.</h1>
+    <p class="lede">arp -a lists what your machine believes about its neighbours. Read it carefully and ARP spoofing is visible in a single line.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">If the gateway's MAC changed and nothing else did, treat it as an attack until proven otherwise.</p>
+      <p>ARP maps an IP address to a MAC address, and it's essential for communication on the local network. <code>arp -a</code> lists every IP-to-MAC pair in the host's cache.</p>
+      <p>ARP is a <strong>Layer 2</strong> protocol. If IP connectivity fails despite correct IP settings, ARP resolution may be the cause. If a device doesn't appear in the cache, ping it first to trigger resolution.</p>
+      <p>For security this is how you identify <strong>ARP spoofing</strong> — an attacker mapping their own MAC to another device's IP, usually the gateway. It validates MAC-to-IP bindings and detects impersonation.</p>
+      <p>The defensive habit: inspect ARP tables regularly and confirm the gateway's MAC hasn't changed unexpectedly. Knowing the attack exists is one thing; this is how you catch it in progress.</p>
+    </div>
+    <div class="stage">
+      <h3>Read the cache</h3>
+      <div class="pills" id="arpPills">
+        <button data-a="clean" aria-pressed="true">Normal</button>
+        <button data-a="spoof" aria-pressed="false">Something is wrong</button>
+      </div>
+      <div class="term" id="arpTerm"></div>
+      <p class="readout" id="arpOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 07 — CDP</p>
+    <h1>A troubleshooting gift that is also a free map for attackers.</h1>
+    <p class="lede">Cisco Discovery Protocol tells you what's plugged in where, even before IP works. It tells anyone else the same thing, which is why it belongs off on user-facing ports.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Useful internally. Disabled on anything a user can reach.</p>
+      <p>CDP is a proprietary <strong>Layer 2</strong> protocol that lets Cisco devices discover directly connected Cisco neighbours — <strong>even when Layer 3 IP connectivity isn't established yet</strong>. That's what makes it valuable when nothing is working.</p>
+      <p><code>show cdp neighbors</code> lists directly connected Cisco devices. <code>show cdp neighbors detail</code> adds platform, software version, IP address and interface.</p>
+      <p>That detail is the problem. An attacker gathers device types, software versions and topology, then targets known vulnerabilities in those exact versions.</p>
+      <p>Disable it with <code>no cdp enable</code> per interface, or <code>no cdp run</code> globally.</p>
+      <p>The balance: use CDP internally for legitimate discovery and to validate authorised connections, and turn it off on external or user-facing ports.</p>
+    </div>
+    <div class="stage">
+      <h3>Same command, two readings</h3>
+      <div class="pills" id="cdpPills">
+        <button data-c="admin" aria-pressed="true">What you see</button>
+        <button data-c="attacker" aria-pressed="false">What an attacker sees</button>
+      </div>
+      <div class="term" id="cdpTerm"></div>
+      <p class="readout" id="cdpOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 08 — IOS verification</p>
+    <h1>Eight show commands, each with a second job.</h1>
+    <p class="lede">Every one of these answers an operational question and a security question at the same time. The security column is the half students skip.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">show running-config is an audit tool, not just a config dump.</p>
+      <p>These commands give deep insight into router and switch configuration and activity. The module pairs each with its security application, and that pairing is the point of the section.</p>
+      <p><code>show running-config</code> shows active settings — and lets you audit for weak passwords, missing access control lists and open ports.</p>
+      <p><code>show version</code> gives IOS and hardware information — and tells you whether the platform is still supported and patched.</p>
+      <p><code>show ip route</code> displays the routing table — and reveals rogue routes or routing anomalies.</p>
+      <p><code>show interfaces</code> gives physical and logical statistics — and detects flooding, errors, or unused ports left open.</p>
+      <p>Click any command for both readings.</p>
+    </div>
+    <div class="stage">
+      <h3>Pick a command</h3>
+      <div class="pills" id="iosPills">
+        <button data-i="run" aria-pressed="true">running-config</button>
+        <button data-i="ver" aria-pressed="false">version</button>
+        <button data-i="proto" aria-pressed="false">protocols</button>
+        <button data-i="route" aria-pressed="false">ip route</button>
+        <button data-i="arp" aria-pressed="false">arp</button>
+        <button data-i="ipint" aria-pressed="false">ip interface</button>
+        <button data-i="ints" aria-pressed="false">interfaces</button>
+        <button data-i="brief" aria-pressed="false">ip int brief</button>
+      </div>
+      <div class="term" id="iosTerm"></div>
+      <p class="readout" id="iosOut"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 09 — Baselines</p>
+    <h1>You cannot call it abnormal if you never measured normal.</h1>
+    <p class="lede">A baseline is a performance profile gathered over time. Without one, a latency spike is just a number — with one, it is evidence.</p>
+  </div>
+  <div class="split">
+    <div class="prose">
+      <p class="keyline">Latency, packet loss, throughput and error rates, logged with timestamps, across different times of day.</p>
+      <p>A network baseline defines what normal looks like under different loads. It helps detect anomalies such as sudden latency spikes or throughput drops, supports planning for upgrades and load balancing, and speeds up incident response.</p>
+      <p>To establish one, regularly log <code>ping</code>, <code>traceroute</code>, <code>show interfaces</code> and <code>show ip route</code> output, and store the results with timestamps.</p>
+      <p>Abnormal spikes in latency or dropped packets can indicate <strong>DDoS attacks</strong> or <strong>botnet traffic</strong>.</p>
+      <p>Compare new output against the baseline to detect anomalies. Use SNMP-based monitoring, Syslog or NetFlow for automated tracking and alerts, and watch for sudden changes in interface statistics or new routing entries.</p>
+    </div>
+    <div class="stage">
+      <h3>Today against the baseline</h3>
+      <div class="pills" id="blPills">
+        <button data-b="norm" aria-pressed="true">Normal day</button>
+        <button data-b="busy" aria-pressed="false">Busy period</button>
+        <button data-b="ddos" aria-pressed="false">Something is wrong</button>
+      </div>
+      <div class="bl" id="blRows"></div>
+      <p class="readout" id="blOut" style="min-height:58px"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="concept">
+  <div class="head">
+    <p class="eyebrow">Concept 10 — The six-step process</p>
+    <h1>Identify, theorise, test, plan, verify, document.</h1>
+    <p class="lede">A structured approach fixes problems faster and finds vulnerabilities on the way through. Each step has its own commands and its own security insight.</p>
+  </div>
+  <div class="stacked">
+    <div class="prose">
+      <p class="keyline">Step 1 is always identify the problem. Step 6 is always document — and it is the one people skip.</p>
+      <p>Network problems come from misconfiguration, hardware failure, software error or malicious activity. Working the steps in order stops you fixing symptoms and missing causes.</p>
+      <p>Each step below carries the commands the module assigns to it, and the security insight that goes with it. Step through them, then try the scenarios underneath.</p>
+    </div>
+    <div class="stage">
+      <h3>Work the process</h3>
+      <ul class="ladder" id="tsLadder"></ul>
+      <div class="term" id="tsTerm"></div>
+      <div class="controls">
+        <button id="tsNext">Next step →</button>
+        <button id="tsReset" class="ghost">Reset</button>
+      </div>
+      <p class="readout" id="tsOut"></p>
+
+      <h3 style="margin-top:24px">Match the symptom to the command</h3>
+      <div class="qcard">
+        <p class="qn" id="scN">Scenario 1 of 5</p>
+        <p class="qt" id="scQ"></p>
+      </div>
+      <div class="opts c4" id="scBtns">
+        <button data-a="A">ipconfig /all and ping</button>
+        <button data-a="B">show interfaces</button>
+        <button data-a="C">arp -a</button>
+        <button data-a="D">show ip route and show cdp neighbors</button>
+      </div>
+      <p class="readout" id="scOut">Pick the tool you would reach for first.</p>
+      <div class="controls">
+        <button id="scNext" class="ghost" disabled>Next scenario</button>
+        <button id="scReset" class="ghost">Restart</button>
+      </div>
+      <p class="score" id="scScore">Score 0 / 0</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footnav">
+  <div class="in">
+    <button id="prev" class="ghost">← Back</button>
+    <span class="hint">Use ← → or the buttons to move</span>
+    <button id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+function pressed(box,btn){[].forEach.call(box.children,function(x){if(x.tagName==="BUTTON")x.setAttribute("aria-pressed",x===btn?"true":"false");});}
+
+/* shell */
+var LABELS=["Admin week","Gear","ping","traceroute","Host config","ARP","CDP","IOS show","Baselines","Six steps"];
+var secs=[].slice.call(document.querySelectorAll(".concept"));
+var cur=0,stepsNav=document.getElementById("steps");
+LABELS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.innerHTML="<b>"+(i<9?"0":"")+(i+1)+"</b>"+t;
+  b.addEventListener("click",function(){go(i);});
+  stepsNav.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach(function(s,n){s.classList.toggle("on",n===i);});
+  [].forEach.call(stepsNav.children,function(b,n){b.setAttribute("aria-current",n===i?"true":"false");});
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("prog").style.width=((i+1)/secs.length*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prev").addEventListener("click",function(){go(cur-1);});
+document.getElementById("next").addEventListener("click",function(){go(cur+1);});
+document.addEventListener("keydown",function(e){
+  var t=e.target.tagName;if(t==="INPUT"||t==="TEXTAREA")return;
+  if(e.key==="ArrowRight")go(cur+1);
+  else if(e.key==="ArrowLeft")go(cur-1);
+});
+
+/* clock */
+var total=30*60,left=total,timer=null;
+var outC=document.getElementById("clock"),cbtn=document.getElementById("clockBtn");
+function paint(){var m=Math.floor(left/60),s=left%60;outC.textContent=m+":"+(s<10?"0":"")+s;outC.classList.toggle("low",left<=180);}
+cbtn.addEventListener("click",function(){
+  if(timer){clearInterval(timer);timer=null;cbtn.textContent="Resume";return;}
+  if(left<=0){left=total;paint();}
+  cbtn.textContent="Pause";
+  timer=setInterval(function(){left--;paint();if(left<=0){clearInterval(timer);timer=null;cbtn.textContent="Restart";}},1000);
+});
+paint();
+
+/* quiz builder */
+function quiz(Q,pfx,word,hint){
+  var i=0,score=0,ans=0;
+  var qEl=document.getElementById(pfx+"Q"),nEl=document.getElementById(pfx+"N"),oEl=document.getElementById(pfx+"Out");
+  var btns=document.getElementById(pfx+"Btns"),nextB=document.getElementById(pfx+"Next"),sc=document.getElementById(pfx+"Score");
+  function show(){
+    nEl.textContent=word+" "+(i+1)+" of "+Q.length;
+    qEl.textContent=Q[i].q;
+    [].forEach.call(btns.children,function(b){b.className="";b.disabled=false;});
+    oEl.textContent=hint;
+    nextB.disabled=true;
+  }
+  btns.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;
+    var right=Q[i].a;
+    [].forEach.call(btns.children,function(x){
+      x.disabled=true;
+      if(x.dataset.a===right)x.classList.add("right");
+      else if(x===b)x.classList.add("wrong");
+    });
+    ans++;if(b.dataset.a===right)score++;
+    sc.textContent="Score "+score+" / "+ans;
+    oEl.innerHTML=(b.dataset.a===right?"<b>Correct.</b> ":"<b>Not quite.</b> ")+Q[i].why;
+    nextB.disabled=i>=Q.length-1;
+  });
+  nextB.addEventListener("click",function(){if(i<Q.length-1){i++;show();}});
+  document.getElementById(pfx+"Reset").addEventListener("click",function(){i=0;score=0;ans=0;sc.textContent="Score 0 / 0";show();});
+  show();
+}
+
+/* 01 admin week */
+(function(){
+  var D={
+    mon:{t:"Build the foundation",l:["Pick the hardware — firewalls, routers, switches, access points","Budget for enough ports plus spares","Check switching capacity and backplane speed","Look for NAT, DHCP, DNS, QoS and VoIP support","Choose fixed or modular with growth in mind"],
+      o:"<b>Monday is procurement.</b> Every decision here is expensive to reverse, which is why the module puts it first."},
+    tue:{t:"Address and configure",l:["Give every device a unique IP — no duplicates","Subnet to reduce congestion and simplify troubleshooting","Choose static or dynamic routing to suit the layout","Set up DNS and DHCP","Apply QoS so voice and video get priority"],
+      o:"<b>Tuesday is Modules 2.1 and 2.2 in practice.</b> The subnetting and addressing work you already did is a day's job here."},
+    wed:{t:"Secure and stabilise",l:["Build redundancy — spare routers, switches, links","Go multi-homed rather than trusting one ISP","Deploy firewalls, VPNs, encryption, IDS/IPS","Use role-based access — not everyone needs full rights","Monitor bandwidth and patch vulnerabilities"],
+      o:"<b>Wednesday is the defence list.</b> Redundancy protects availability; the rest protects confidentiality and integrity."},
+    thu:{t:"Run the services",l:["Keep network-aware applications working","Enable SSH for remote management — locked down","Configure VPN services for remote workers","Manage email, web, FTP and authentication servers","Back up server data and test the restore"],
+      o:"<b>Thursday is the services layer.</b> Note SSH rather than Telnet — that is what transport input ssh enforces on the VTY lines."},
+    fri:{t:"Plan for growth",l:["Keep topology diagrams current — physical and logical","Maintain a device inventory","Analyse traffic to find bottlenecks","Plan hardware upgrades before performance degrades"],
+      o:"<b>Friday is capacity planning.</b> Documentation appears here and again on Sunday — the module repeats it deliberately."},
+    sat:{t:"Monitor and respond",l:["Track CPU, RAM and network use","Use Task Manager, Event Viewer and data usage tools","Inspect packets with Wireshark","Find IP conflicts, routing errors and bottlenecks","Have an incident response and escalation plan"],
+      o:"<b>Saturday is operations.</b> The escalation plan matters as much as the tools — knowing when to hand it up is part of the job."},
+    sun:{t:"Optimise",l:["Keep topology documentation fresh","Track model numbers and firmware versions","Budget for regular upgrades including security","Identify peak periods and spread the load","Move critical servers to quieter segments"],
+      o:"<b>Sunday is tuning.</b> Firmware version tracking is what turns show version from a curiosity into a patch management tool."}
+  };
+  var list=document.getElementById("dayList");
+  function set(k){
+    var d=D[k];
+    list.innerHTML="";
+    d.l.forEach(function(x){
+      var li=document.createElement("li");
+      li.innerHTML='<span class="tick">✔</span><span>'+x+"</span>";
+      list.appendChild(li);
+    });
+    document.getElementById("dayOut").innerHTML=d.o;
+  }
+  document.getElementById("dayGrid").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-d]");if(!b)return;pressed(this,b);set(b.dataset.d);
+  });
+  set("mon");
+})();
+
+/* 02 gear */
+(function(){
+  var svg=document.getElementById("gearViz");
+  var g=el("g",{});svg.appendChild(g);
+  function box(x,y,w,h,fill,label,sub){
+    g.appendChild(el("rect",{x:x,y:y,width:w,height:h,rx:7,fill:fill,stroke:fill}));
+    g.appendChild(el("text",{x:x+w/2,y:y+h/2+4,"text-anchor":"middle","font-family":"Consolas, monospace","font-size":"11",fill:"#fff","font-weight":"700"},label));
+    if(sub)g.appendChild(el("text",{x:x+w/2,y:y+h+15,"text-anchor":"middle",class:"cap"},sub));
+  }
+  var G={
+    fixed:{d:function(){
+      box(26,52,120,44,"#1F4E5F","24 ports","year 1 — fits");
+      g.appendChild(el("text",{x:200,y:78,"font-family":"Consolas, monospace","font-size":"20",fill:"#5b6a6d"},"→"));
+      box(240,52,120,44,"#7a3b3b","24 ports","year 3 — full");
+      g.appendChild(el("text",{x:404,y:78,"font-family":"Consolas, monospace","font-size":"20",fill:"#7a3b3b"},"✗"));
+      g.appendChild(el("text",{x:235,y:132,"text-anchor":"middle",class:"cap"},"out of capacity — replace the whole unit"));
+    },o:"<b>Fixed devices</b> are easy and predictable, and the price looks good on the day. When you outgrow the port count there is no upgrade path — you buy the box again."},
+    mod:{d:function(){
+      box(26,52,120,44,"#1F4E5F","base unit","year 1");
+      g.appendChild(el("text",{x:200,y:78,"font-family":"Consolas, monospace","font-size":"20",fill:"#5b6a6d"},"→"));
+      box(240,52,80,44,"#1F4E5F","base","");
+      box(326,52,58,44,"#2E7D6E","+mod","year 3 — extended");
+      g.appendChild(el("text",{x:412,y:78,"font-family":"Consolas, monospace","font-size":"20",fill:"#2E7D6E"},"✓"));
+      g.appendChild(el("text",{x:235,y:132,"text-anchor":"middle",class:"cap"},"add a module — less waste, more options"));
+    },o:"<b>Modular gear</b> costs more up front and can be upgraded rather than replaced. That is the module's answer to its own quiz question: modular allows for upgrades and future growth."}
+  };
+  function set(k){g.innerHTML="";G[k].d();document.getElementById("gearOut").innerHTML=G[k].o;}
+  document.getElementById("gearPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-g]");if(!b)return;pressed(this,b);set(b.dataset.g);
+  });
+  set("fixed");
+})();
+
+/* 03 ping */
+(function(){
+  var P={
+    ok:{t:"C:\\&gt; <span class='cmd'>ping 192.168.1.1</span>\n\n<span class='pass'>Reply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=2ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64</span>\n\nPackets: Sent = 4, Received = 4, Lost = 0 (0% loss)\nMinimum = 1ms, Maximum = 2ms, Average = 1ms",
+      o:"<b>Healthy.</b> Zero loss, low and consistent round-trip time. Layer 3 connectivity confirmed — but this says nothing about whether the application on that host works."},
+    slow:{t:"C:\\&gt; <span class='cmd'>ping 192.168.1.1</span>\n\n<span class='fail'>Reply from 192.168.1.1: bytes=32 time=412ms TTL=64\nRequest timed out.\nReply from 192.168.1.1: bytes=32 time=988ms TTL=64\nRequest timed out.</span>\n\nPackets: Sent = 4, Received = 2, <span class='flag'>Lost = 2 (50% loss)</span>\nMinimum = 412ms, Maximum = 988ms, Average = 700ms",
+      o:"<b>Denial-of-service symptoms.</b> Unusually high response times and heavy packet loss are exactly what the module lists as ICMP flood indicators. The host is up — it is drowning."},
+    fw:{t:"C:\\&gt; <span class='cmd'>ping 203.0.113.50</span>\n\n<span class='fail'>Request timed out.\nRequest timed out.\nRequest timed out.\nRequest timed out.</span>\n\nPackets: Sent = 4, Received = 0, Lost = 4 (100% loss)",
+      o:"<b>Identical output to a dead host.</b> This is ping's core limitation. A firewall correctly blocking ICMP looks the same as a machine that is switched off. You cannot tell which from here — that is what traceroute is for."},
+    down:{t:"C:\\&gt; <span class='cmd'>ping 192.168.1.99</span>\n\n<span class='fail'>Destination host unreachable.\nDestination host unreachable.\nDestination host unreachable.\nDestination host unreachable.</span>\n\nPackets: Sent = 4, Received = 0, Lost = 4 (100% loss)",
+      o:"<b>Different message, different meaning.</b> \"Destination host unreachable\" comes from a <b>router</b> saying it has no path — not silence. Compare it with the timeout above: the wording tells you who answered."}
+  };
+  function set(k){
+    document.getElementById("pingTerm").innerHTML=P[k].t;
+    document.getElementById("pingOut").innerHTML=P[k].o;
+  }
+  document.getElementById("pingPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-p]");if(!b)return;pressed(this,b);set(b.dataset.p);
+  });
+  set("ok");
+})();
+
+/* 04 traceroute */
+(function(){
+  var svg=document.getElementById("trViz");
+  var pts=[{x:44,l:"PC"},{x:150,l:"R1"},{x:256,l:"R2"},{x:362,l:"FW"},{x:440,l:"dst"}];
+  var wires=[],nodes=[];
+  for(var i=0;i<4;i++){
+    var w=el("path",{d:"M"+(pts[i].x+26)+" 50 L"+(pts[i+1].x-26)+" 50",class:"wire"});
+    svg.appendChild(w);wires.push(w);
+  }
+  pts.forEach(function(p){
+    var g=el("g",{class:"dev"});
+    g.appendChild(el("rect",{x:p.x-26,y:34,width:52,height:32,rx:5}));
+    g.appendChild(el("text",{x:p.x,y:54,"text-anchor":"middle"},p.l));
+    svg.appendChild(g);nodes.push(g);
+  });
+  var tag=el("text",{x:235,y:92,"text-anchor":"middle",class:"cap"},"");
+  svg.appendChild(tag);
+  var HOPS=[
+    {ttl:1,hit:1,line:" 1    1 ms    1 ms    1 ms  192.168.1.1",
+     o:"<b>TTL = 1.</b> R1 decrements it to zero, drops the packet and returns <b>ICMP Time Exceeded</b>. That complaint is what names hop 1."},
+    {ttl:2,hit:2,line:" 2    8 ms    7 ms    9 ms  10.20.0.1",
+     o:"<b>TTL = 2.</b> R1 passes it on, R2 kills it and reports back. Each iteration reaches exactly one hop further."},
+    {ttl:3,hit:3,line:" 3    <span class='fail'>*        *        *     Request timed out.</span>",
+     o:"<b>TTL = 3 — three asterisks.</b> The firewall received it and chose not to answer. This is <b>not necessarily a fault</b>: many devices are configured not to respond to ICMP. Traffic may still be passing through."},
+    {ttl:4,hit:4,line:" 4   24 ms   23 ms   25 ms  203.0.113.50\n\n<span class='pass'>Trace complete.</span>",
+     o:"<b>Destination reached.</b> Hop 3 stayed silent but hop 4 answered, which proves packets crossed the firewall. If the trace had stopped at 3, that is where you would start investigating."}
+  ];
+  var at=-1;
+  function draw(){
+    var lines="C:\\&gt; <span class='cmd'>tracert 203.0.113.50</span>\n\nTracing route to 203.0.113.50 over a maximum of 30 hops\n\n";
+    for(var i=0;i<=at;i++)lines+=HOPS[i].line+"\n";
+    if(at<0)lines+="_";
+    document.getElementById("trTerm").innerHTML=lines;
+    nodes.forEach(function(n,i){n.classList.toggle("hi",at>=0&&i<=HOPS[at].hit);});
+    wires.forEach(function(w,i){w.classList.toggle("hi",at>=0&&i<HOPS[at].hit);});
+    tag.textContent=at<0?"":"TTL = "+HOPS[at].ttl;
+    document.getElementById("trOut").innerHTML=at<0
+      ? "Traceroute works by sending packets designed to expire. Press next TTL to start."
+      : HOPS[at].o;
+    document.getElementById("trNext").disabled=at>=HOPS.length-1;
+  }
+  document.getElementById("trNext").addEventListener("click",function(){if(at<HOPS.length-1){at++;draw();}});
+  document.getElementById("trReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+/* 05 host config */
+(function(){
+  var H={
+    plain:{t:"C:\\&gt; <span class='cmd'>ipconfig</span>\n\nEthernet adapter Ethernet:\n\n   IPv4 Address. . . . : 192.168.1.45\n   Subnet Mask . . . . : 255.255.255.0\n   Default Gateway . . : 192.168.1.1",
+      o:"<b>The bare minimum.</b> Address, mask, gateway. Enough to confirm the host has an address, not enough to diagnose much. No DNS servers, no MAC, no lease information."},
+    all:{t:"C:\\&gt; <span class='cmd'>ipconfig /all</span>\n\n   Physical Address. . . : AA-BB-CC-11-22-33\n   DHCP Enabled. . . . . : Yes\n   DHCP Server . . . . . : 192.168.1.1\n   Lease Obtained. . . . : Monday, 9:14:02 AM\n   IPv4 Address. . . . . : 192.168.1.45\n   Subnet Mask . . . . . : 255.255.255.0\n   Default Gateway . . . : 192.168.1.1\n   DNS Servers . . . . . : 192.168.1.1\n                           8.8.8.8",
+      o:"<b>This is the troubleshooting version.</b> Check the <b>DHCP Server</b> line against the address you expect — a rogue DHCP server handing out false configuration shows up right here."},
+    dns:{t:"C:\\&gt; <span class='cmd'>ipconfig /displaydns</span>\n\n    bank.example.com\n    ----------------------------------------\n    Record Name . : bank.example.com\n    Record Type . : 1\n    Time To Live  : 284\n    <span class='flag'>A (Host) Record : 198.51.100.66</span>\n\n    expected: 203.0.113.10",
+      o:"<b>Cached DNS entries.</b> The module names this as the check for <b>DNS poisoning</b> — a trusted name resolving to an address you do not recognise. Flush and re-resolve, then find out how it got there."},
+    apipa:{t:"C:\\&gt; <span class='cmd'>ipconfig</span>\n\nEthernet adapter Ethernet:\n\n   <span class='flag'>Autoconfiguration IPv4 Address. . : 169.254.88.12</span>\n   Subnet Mask . . . . : 255.255.0.0\n   Default Gateway . . :",
+      o:"<b>169.254 means DHCP failed.</b> The host gave up and assigned itself a link-local address. Either the DHCP server is unreachable or it has been tampered with — and note the <b>empty default gateway</b>, so this machine can reach nothing beyond its own segment."}
+  };
+  function set(k){
+    document.getElementById("hostTerm").innerHTML=H[k].t;
+    document.getElementById("hostOut").innerHTML=H[k].o;
+  }
+  document.getElementById("hostPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-h]");if(!b)return;pressed(this,b);set(b.dataset.h);
+  });
+  set("plain");
+})();
+
+/* 06 ARP */
+(function(){
+  var A={
+    clean:{t:"C:\\&gt; <span class='cmd'>arp -a</span>\n\nInterface: 192.168.1.45 --- 0x4\n  Internet Address      Physical Address      Type\n  192.168.1.1           <span class='pass'>11-11-11-ee-ee-ee</span>     dynamic\n  192.168.1.20          22-22-22-aa-aa-aa     dynamic\n  192.168.1.33          33-33-33-bb-bb-bb     dynamic\n  192.168.1.60          44-44-44-cc-cc-cc     dynamic",
+      o:"<b>Normal.</b> Every IP maps to its own distinct MAC. The gateway at .1 has the MAC you expect. Nothing to see."},
+    spoof:{t:"C:\\&gt; <span class='cmd'>arp -a</span>\n\nInterface: 192.168.1.45 --- 0x4\n  Internet Address      Physical Address      Type\n  192.168.1.1           <span class='flag'>66-66-66-ff-ff-ff</span>     dynamic\n  192.168.1.20          22-22-22-aa-aa-aa     dynamic\n  192.168.1.33          <span class='flag'>66-66-66-ff-ff-ff</span>     dynamic\n  192.168.1.60          44-44-44-cc-cc-cc     dynamic",
+      o:"<b>Two IPs, one MAC.</b> The gateway's MAC changed, and .33 now claims the same address. That is ARP spoofing — the attacker at .33 has told your machine it is the gateway. Every packet you send off-segment goes to them first. Remediation from the module: <b>Dynamic ARP Inspection</b>."}
+  };
+  function set(k){
+    document.getElementById("arpTerm").innerHTML=A[k].t;
+    document.getElementById("arpOut").innerHTML=A[k].o;
+  }
+  document.getElementById("arpPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-a]");if(!b)return;pressed(this,b);set(b.dataset.a);
+  });
+  set("clean");
+})();
+
+/* 07 CDP */
+(function(){
+  var C={
+    admin:{t:"Switch# <span class='cmd'>show cdp neighbors detail</span>\n\nDevice ID: Core-RTR-01\nEntry address(es):\n  IP address: 192.168.1.1\nPlatform: cisco ISR4331,  Capabilities: Router\nInterface: GigabitEthernet0/1\nVersion: Cisco IOS Software, Version 15.4(3)M2",
+      o:"<b>Exactly what you need when nothing works.</b> CDP runs at Layer 2, so it identifies the neighbour even before IP connectivity exists. Platform, interface and version, all without logging into the other device."},
+    attacker:{t:"Switch# <span class='cmd'>show cdp neighbors detail</span>\n\nDevice ID: Core-RTR-01\nEntry address(es):\n  IP address: <span class='flag'>192.168.1.1</span>       ← the gateway, named\nPlatform: <span class='flag'>cisco ISR4331</span>        ← exact hardware\nInterface: GigabitEthernet0/1\nVersion: <span class='flag'>IOS Version 15.4(3)M2</span>  ← searchable CVEs",
+      o:"<b>The same output is a targeting package.</b> Hardware model and software version let an attacker look up known vulnerabilities for that exact build. Disable it where users can reach it: <b>no cdp enable</b> per interface, or <b>no cdp run</b> globally."}
+  };
+  function set(k){
+    document.getElementById("cdpTerm").innerHTML=C[k].t;
+    document.getElementById("cdpOut").innerHTML=C[k].o;
+  }
+  document.getElementById("cdpPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-c]");if(!b)return;pressed(this,b);set(b.dataset.c);
+  });
+  set("admin");
+})();
+
+/* 08 IOS show */
+(function(){
+  var I={
+    run:{c:"show running-config",t:"Router# <span class='cmd'>show running-config</span>\n\nhostname Router1\nenable password cisco\n!\nline vty 0 4\n <span class='flag'>transport input telnet</span>\n login\n!\ninterface GigabitEthernet0/1\n ip address 192.168.1.1 255.255.255.0\n <span class='flag'>no ip access-group</span>",
+      f:"View active configuration settings",
+      o:"<b>Audit for weak passwords, missing access control lists and open ports.</b> This sample has three problems: a plaintext enable password, Telnet enabled instead of SSH, and no ACL on the interface."},
+    ver:{c:"show version",t:"Router# <span class='cmd'>show version</span>\n\nCisco IOS Software, Version <span class='flag'>15.1(4)M4</span>\nROM: System Bootstrap, Version 15.1(4)M4\nRouter1 uptime is 412 days, 6 hours\nSystem image file is \"flash:c2900-universalk9\"",
+      f:"IOS and hardware information",
+      o:"<b>Check for patching needs or unsupported platforms.</b> 412 days of uptime sounds impressive and means the device has not been patched in over a year."},
+    proto:{c:"show protocols",t:"Router# <span class='cmd'>show protocols</span>\n\nGlobal values:\n  Internet Protocol routing is enabled\nGigabitEthernet0/0 is up, line protocol is up\n  Internet address is 192.168.1.1/24\nGigabitEthernet0/1 is administratively down",
+      f:"View enabled Layer 3 protocols",
+      o:"<b>Disable unused protocols to reduce attack surface.</b> Anything running that nobody needs is one more thing that can be exploited."},
+    route:{c:"show ip route",t:"Router# <span class='cmd'>show ip route</span>\n\nC    192.168.1.0/24 is directly connected, Gi0/0\nS    10.0.0.0/8 [1/0] via 192.168.1.1\n<span class='flag'>S    0.0.0.0/0 [1/0] via 198.51.100.66</span>",
+      f:"Display the routing table",
+      o:"<b>Detect rogue routes or routing anomalies.</b> A default route pointing somewhere unexpected sends all your outbound traffic through a device you did not choose."},
+    arp:{c:"show arp",t:"Router# <span class='cmd'>show arp</span>\n\nProtocol  Address        Age  Hardware Addr   Type\nInternet  192.168.1.1      -  11-11-11-ee-ee  ARPA\nInternet  192.168.1.20    14  22-22-22-aa-aa  ARPA\nInternet  192.168.1.33     2  <span class='flag'>11-11-11-ee-ee</span>  ARPA",
+      f:"View the ARP table",
+      o:"<b>Spot ARP spoofing or suspicious IP-to-MAC mappings.</b> Same duplicate-MAC pattern as concept 06, seen from the router's side."},
+    ipint:{c:"show ip interface",t:"Router# <span class='cmd'>show ip interface</span>\n\nGigabitEthernet0/0 is up, line protocol is up\n  Internet address is 192.168.1.1/24\n  Outgoing access list is not set\n  Inbound  access list is not set\n  NAT: inside",
+      f:"Detailed IP settings per interface",
+      o:"<b>Validate access control lists, IP addresses and NAT or firewall status.</b> Both access lists reading \"not set\" means nothing is being filtered on this interface."},
+    ints:{c:"show interfaces",t:"Router# <span class='cmd'>show interfaces</span>\n\nGigabitEthernet0/0 is up, line protocol is up\n  Full-duplex, 1000Mb/s\n  5 minute input rate 4180000 bits/sec\n  <span class='flag'>1247 input errors, 0 CRC, 1247 frame</span>\n  0 output errors, 0 collisions",
+      f:"Physical and logical interface statistics",
+      o:"<b>Detect flooding, errors, or unused ports left open.</b> A rising error count alongside an unusual input rate is what the module means by comparing against a baseline."},
+    brief:{c:"show ip interface brief",t:"Router# <span class='cmd'>show ip interface brief</span>\n\nInterface        IP-Address     OK? Status                Protocol\nGi0/0            192.168.1.1    YES <span class='pass'>up</span>                    <span class='pass'>up</span>\nGi0/1            10.0.0.1       YES <span class='pass'>up</span>                    <span class='pass'>up</span>\nGi0/2            unassigned     NO  <span class='fail'>administratively down</span> <span class='fail'>down</span>",
+      f:"Display Layer 3 interface information",
+      o:"<b>Detect unauthorised or misconfigured router interfaces.</b> Fastest way to spot an interface someone brought up that should not be, or one you forgot to enable."}
+  };
+  function set(k){
+    document.getElementById("iosTerm").innerHTML=I[k].t;
+    document.getElementById("iosOut").innerHTML="<b>Function:</b> "+I[k].f+". <b>Security use:</b> "+I[k].o.replace(/^<b>/,"").replace(/<\/b>/,"");
+  }
+  document.getElementById("iosPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-i]");if(!b)return;pressed(this,b);set(b.dataset.i);
+  });
+  set("run");
+})();
+
+/* 09 baselines */
+(function(){
+  var METRICS=[
+    {n:"Latency",base:22,unit:"ms",max:400},
+    {n:"Packet loss",base:0,unit:"%",max:40},
+    {n:"Throughput",base:640,unit:"Mbps",max:1000},
+    {n:"Interface errors",base:2,unit:"/min",max:300}
+  ];
+  var SET={
+    norm:{v:[24,0,610,3],o:"<b>Everything within tolerance.</b> This is what you log, with a timestamp, over and over until you know what normal looks like at 9am, at noon and at 3pm."},
+    busy:{v:[61,1,880,9],o:"<b>Busy, not broken.</b> Latency and throughput are both up because more people are working. Without a baseline covering different times of day, you might escalate this — with one, you recognise it."},
+    ddos:{v:[380,31,120,270],o:"<b>Latency up seventeen-fold, loss at 31%, throughput collapsed, errors climbing.</b> The module lists exactly this pattern as a possible <b>DDoS attack or botnet traffic</b>. The baseline is what turns four numbers into that conclusion."}
+  };
+  var box=document.getElementById("blRows");
+  METRICS.forEach(function(m){
+    var d=document.createElement("div");
+    d.className="blrow";
+    d.innerHTML='<div class="bn">'+m.n+'</div><div class="bltrack"><div class="blfill"></div><div class="blmark"></div></div><div class="bv"></div>';
+    box.appendChild(d);
+  });
+  function set(k){
+    var s=SET[k];
+    METRICS.forEach(function(m,i){
+      var row=box.children[i];
+      var v=s.v[i];
+      var ratio=v/m.max;
+      var isThru=(m.n==="Throughput");
+      var bad=isThru?(v<m.base*0.5):(v>m.base*4+2);
+      var warn=!bad&&(isThru?(v<m.base*0.8):(v>m.base*2+1));
+      var f=row.querySelector(".blfill");
+      f.style.width=Math.max(2,Math.min(100,ratio*100))+"%";
+      f.className="blfill"+(bad?" bad":(warn?" warn":""));
+      row.querySelector(".blmark").style.left=(m.base/m.max*100)+"%";
+      var val=row.querySelector(".bv");
+      val.textContent=v+" "+m.unit;
+      val.className="bv"+(bad?" bad":(warn?" warn":""));
+    });
+    document.getElementById("blOut").innerHTML=s.o+" <i>The dark line on each bar is the baseline figure.</i>";
+  }
+  document.getElementById("blPills").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-b]");if(!b)return;pressed(this,b);set(b.dataset.b);
+  });
+  set("norm");
+})();
+
+/* 10 six steps */
+(function(){
+  var S=[
+    {n:"Identify the problem",
+     t:"Interview users, gather error messages and logs\nObserve device LEDs\nDetermine the scope: one device, a subnet, or everything\n\n<span class='cmd'>ping [IP/hostname]</span>          tests Layer 3 connectivity\n<span class='cmd'>ipconfig /all</span>              IP, DNS, gateway, MAC\n<span class='cmd'>ifconfig / ip a</span>            Linux settings\n<span class='cmd'>show ip interface brief</span>    IP and status on Cisco",
+     o:"<b>Scope first.</b> One machine, one subnet or the whole network — that answer alone eliminates most causes. <b>Security insight:</b> a 169.254 address means DHCP is unreachable or tampered with, and diagnosing it correctly here can prevent a man-in-the-middle attack from an unauthorised device issuing leases."},
+    {n:"Establish a theory of probable cause",
+     t:"Are IP addresses configured incorrectly?\nIs DNS unreachable?\nAre interfaces down or mismatched — duplex, for example?\n\n<span class='cmd'>show interfaces</span>    physical and logical status\n<span class='cmd'>show protocols</span>     active Layer 3 protocols\n<span class='cmd'>arp -a</span>             IP-to-MAC mappings",
+     o:"<b>A theory, not a fix.</b> <b>Security insight:</b> use arp -a to identify ARP spoofing — duplicate IPs with different MACs. Interfaces unexpectedly active may indicate unauthorised physical access."},
+    {n:"Test the theory to determine cause",
+     t:"Test whether the IP is reachable\nTrace the path of the data\nMonitor responses to pings and name resolution\n\n<span class='cmd'>traceroute / tracert</span>   maps the packet path\n<span class='cmd'>nslookup [hostname]</span>    tests DNS resolution\n<span class='cmd'>debug ip icmp</span>          real-time ICMP monitoring\n<span class='cmd'>debug dhcp detail</span>      DHCP lease process",
+     o:"<b>Security insight:</b> traceroute showing drops at a firewall could mean overly strict rules; debugging DHCP reveals suspicious lease offers or rogue servers. <b>Use debug with caution</b> — it can overwhelm the device. Always run <b>undebug all</b> when finished."},
+    {n:"Establish a plan of action and implement it",
+     t:"Reconfigure faulty interfaces\nFix incorrect IP, subnet or DNS entries\nReboot affected systems if necessary\nApply patches or firmware updates\n\n<span class='cmd'>show running-config</span>   verify current config\n<span class='cmd'>interface [name]</span>      modify interface settings\n<span class='cmd'>no shutdown</span>           enable a down interface\n<span class='cmd'>show ip route</span>         confirm routing entries",
+     o:"<b>Security insight:</b> review show running-config for insecure defaults, open Telnet, or missing ACLs. Apply access control lists or port security as part of the fix rather than afterwards."},
+    {n:"Verify full system functionality and prevent recurrence",
+     t:"Test user access again\nPing local and remote addresses\nValidate services — web, file sharing\nLog the preventive fixes\n\n<span class='cmd'>show interfaces</span>      look for interface errors\n<span class='cmd'>show ip interface</span>    confirm IP, ACLs, NAT\n<span class='cmd'>terminal monitor</span>     show debug output over SSH",
+     o:"<b>Verify with the user, not just the device.</b> <b>Security insight:</b> confirm unused interfaces are shut down before you close the ticket."},
+    {n:"Document findings, actions and outcomes",
+     t:"Problem symptoms and causes\nDiagnostic commands used and their results\nConfiguration changes made\nPreventative security measures implemented\nTimestamps and who handled the incident",
+     o:"<b>The step everyone skips.</b> <b>Security insight:</b> thorough documentation gives incident response traceability and supports compliance audits. It also helps detect repeat patterns, which may indicate an ongoing threat rather than a recurring accident."}
+  ];
+  var at=-1;
+  function draw(){
+    var lad=document.getElementById("tsLadder");
+    lad.innerHTML="";
+    S.forEach(function(s,i){
+      var li=document.createElement("li");
+      li.className=i<at?"ok":(i===at?"now":"");
+      li.innerHTML='<span class="n">'+(i+1)+"</span>"+s.n;
+      lad.appendChild(li);
+    });
+    document.getElementById("tsTerm").innerHTML=at<0
+      ? "Six steps, in order.\nStep 1 is always identify the problem; step 6 is always document."
+      : S[at].t;
+    document.getElementById("tsOut").innerHTML=at<0
+      ? "Working out of order is how you end up fixing a symptom and leaving the cause in place."
+      : S[at].o;
+    document.getElementById("tsNext").disabled=at>=S.length-1;
+  }
+  document.getElementById("tsNext").addEventListener("click",function(){if(at<S.length-1){at++;draw();}});
+  document.getElementById("tsReset").addEventListener("click",function(){at=-1;draw();});
+  draw();
+})();
+
+/* 10b scenarios */
+quiz([
+  {q:"A PC cannot reach the internet, but other machines on the same switch are fine.",a:"A",
+   why:"Start with ipconfig /all and a ping. Check whether it has a valid address at all, whether the gateway answers, and which DNS servers it was handed. A 169.254 address would point straight at DHCP."},
+  {q:"The connection works but everything is slow, and it has been getting worse all week.",a:"B",
+   why:"show interfaces. The module points at duplex mismatch and QoS misconfiguration, and rising error counters are visible here — especially compared against a baseline."},
+  {q:"A user reports intermittent drops, and two devices seem to be fighting over an address.",a:"C",
+   why:"arp -a. Duplicate IPs with different MACs, or two IPs sharing one MAC, is the signature of ARP spoofing or an address conflict."},
+  {q:"Traffic to a partner site is taking a strange path and latency has doubled.",a:"D",
+   why:"show ip route and show cdp neighbors. The module flags this as possible route hijacking — a misleading path is worth checking against what you expect to be there."},
+  {q:"A hostname resolves to an address nobody recognises.",a:"A",
+   why:"ipconfig /all to confirm which DNS servers are in use, then nslookup to query directly. The module's concern here is a rogue or untrusted DNS server."}
+],"sc","Scenario","Pick the tool you would reach for first.");
+
+go(0);
+})();
+</script>
+</body>
+</html>
